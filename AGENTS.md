@@ -18,8 +18,8 @@ The site serves two purposes:
 2. **OpenAPI REPL / API explorer** — interactive API reference with live try-it, server selector, and auth, powered by Zudoku's built-in OpenAPI playground
 
 **Tech stack**: Zudoku 0.82.x + React 19 + Vite 8 + Tailwind (via Zudoku)
-**Deployment**: Cloudflare Workers (free plan) via `wrangler deploy` (SSR mode)
-**Rendering**: Server-side rendered via `--experimental-ssr --adapter cloudflare`
+**Deployment**: Cloudflare Workers (free plan) via `wrangler deploy` (static assets mode)
+**Rendering**: Prerendered at build time (SSG). 0ms Worker CPU, free unlimited requests.
 
 The landing page (`primebrick.dev`) is a SEPARATE project (`primebrick-v3-website`, Astro).
 This repo only handles `docs.primebrick.dev`.
@@ -32,7 +32,7 @@ This repo only handles `docs.primebrick.dev`.
 |--------|---------|
 | Install | `pnpm install` |
 | Dev | `pnpm run dev` (Zudoku dev server, default port) |
-| Build | `pnpm run build` |
+| Build | `pnpm run build` (prerenders static HTML) |
 | Preview (Worker) | `pnpm run preview` (wrangler dev, port 8787) |
 | Deploy | `pnpm run deploy` (build + wrangler deploy) |
 | Lint | `pnpm run lint` |
@@ -58,17 +58,15 @@ Do NOT start a second `wrangler dev` instance. If one is already running, reuse 
 
 ## Deployment architecture
 
-This project deploys as a **Cloudflare Worker** (NOT Pages — Pages is deprecated).
+This project deploys as a **Cloudflare Worker** with static assets (NOT Pages — Pages is deprecated).
 
-- `wrangler.jsonc` configures the Worker with `main: "./dist/server/entry.js"` (SSR entry)
-- `assets.directory: "./dist"` serves static assets (JS, CSS, images) from the Worker
-- `compatibility_flags: ["nodejs_compat"]` required for SSR bundle
-- `keep_names: false` prevents wrangler's esbuild from breaking `Function.toString()` inlined scripts
-- Build command: `zudoku build --experimental-ssr --adapter cloudflare`
+- `wrangler.jsonc` configures an assets-only Worker (no `main` script)
+- `assets.directory: "./dist"` serves prerendered HTML + static assets (JS, CSS, images)
+- `assets.not_found_handling: "404-page"` serves `404.html` for unmatched routes
+- No `nodejs_compat` flag needed (no SSR, no Worker script)
+- Build command: `zudoku build` (prerenders all routes to static HTML)
 - Deploy command: `wrangler deploy`
-
-The `dist/.assetsignore` file excludes `server/`, `.vite/`, and `zudoku-manifest.json`
-from being served as public static assets.
+- 0ms Worker CPU — all requests served as static assets (free, unlimited)
 
 ## Custom domain
 

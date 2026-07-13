@@ -8,9 +8,9 @@
   },
   "scripts": {
     "dev": "zudoku dev",
-    "build": "zudoku build --experimental-ssr --adapter cloudflare",
+    "build": "zudoku build",
     "preview": "wrangler dev",
-    "deploy": "zudoku build --experimental-ssr --adapter cloudflare && wrangler deploy",
+    "deploy": "zudoku build && wrangler deploy",
     "lint": "eslint"
   },
   "dependencies": {
