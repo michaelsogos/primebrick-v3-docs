@@ -154,6 +154,20 @@ const config: ZudokuConfig = {
     path: "/catalog",
     label: "API Catalog",
   },
+  syntaxHighlighting: {
+    languages: [
+      "php",
+      "python",
+      "bash",
+      "json",
+      "typescript",
+      "javascript",
+      "sql",
+      "svelte",
+      "dotenv",
+      "mermaid",
+    ],
+  },
   apis: generatedApis,
 };
 
