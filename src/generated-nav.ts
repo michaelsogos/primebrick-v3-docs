@@ -34,7 +34,7 @@ export const generatedRepoNav: Navigation = [
   },
   {
     "type": "category",
-    "label": "DAL",
+    "label": "DAL Library",
     "icon": "database",
     "collapsed": true,
     "items": [
@@ -44,7 +44,62 @@ export const generatedRepoNav: Navigation = [
   },
   {
     "type": "category",
-    "label": "SDK",
+    "label": "SDK Library",
+    "icon": "package",
+    "collapsed": true,
+    "items": [
+      "sdk/deepwiki/index",
+      "sdk/manual/overview"
+    ]
+  }
+];
+
+// Split for stacked navigation: Services (BE, FE, Microservices) + Libraries (DAL, SDK)
+export const serviceNav: Navigation = [
+  {
+    "type": "category",
+    "label": "Backend",
+    "icon": "server",
+    "collapsed": true,
+    "items": [
+      "backend/deepwiki/index",
+      "backend/manual/overview"
+    ]
+  },
+  {
+    "type": "category",
+    "label": "Frontend",
+    "icon": "monitor",
+    "collapsed": true,
+    "items": [
+      "frontend/deepwiki/index",
+      "frontend/manual/overview"
+    ]
+  },
+  {
+    "type": "category",
+    "label": "Microservices",
+    "icon": "boxes",
+    "collapsed": true,
+    "items": [
+      "microservices/deepwiki/index"
+    ]
+  }
+];
+export const libraryNav: Navigation = [
+  {
+    "type": "category",
+    "label": "DAL Library",
+    "icon": "database",
+    "collapsed": true,
+    "items": [
+      "dal/deepwiki/index",
+      "dal/manual/overview"
+    ]
+  },
+  {
+    "type": "category",
+    "label": "SDK Library",
     "icon": "package",
     "collapsed": true,
     "items": [

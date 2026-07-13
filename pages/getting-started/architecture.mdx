@@ -56,7 +56,7 @@ Each microservice is an independent repository with its own lifecycle, database 
 
 - **Self-register** with the backend on startup via `@primebrick/sdk`
 - **Send heartbeats** to maintain their registry entry
-- **Expose OpenAPI** at `/api/openapi.json`
+- **Expose OpenAPI** at `/api/v1/openapi.json`
 - **Communicate** with other services via NATS messaging
 
 ### DAL (Data Access Layer)
@@ -108,13 +108,14 @@ Client → /ws/billing/...       → Backend proxies to billing microservice
 Primebrick follows an **OpenAPI-first** approach:
 
 1. Every service defines its API in an OpenAPI specification.
-2. Each service exposes its spec at `/api/openapi.json`.
+2. Each service exposes its spec at `/api/v1/openapi.json`.
 3. The backend aggregates all specs into a single document at `/api/v1/openapi/aggregated.json`.
 4. Microservice paths are prefixed with `/ws/:serviceCode` in the aggregated spec to match the proxy.
 
-This means the [API Explorer](/api) always reflects the services that are currently online.
+This means the [API Catalog](/catalog) always reflects the services that are currently online.
 
 ## Next steps
 
+- [Infrastructure](./infrastructure) — detailed infrastructure map with ports and protocols.
 - [API Overview](../api/introduction) — learn about base URLs and the OpenAPI spec.
 - [Microservice Standard](../api/microservice-standard) — how to build a compliant microservice.

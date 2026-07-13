@@ -1,6 +1,6 @@
 import type { ZudokuConfig } from "zudoku";
 import type { ComponentPropsWithoutRef } from "react";
-import { generatedRepoNav } from "./src/generated-nav";
+import { serviceNav, libraryNav } from "./src/generated-nav";
 import { generatedApis } from "./src/generated-apis";
 import Mermaid from "./src/Mermaid";
 import "./src/styles.css";
@@ -25,7 +25,7 @@ const config: ZudokuConfig = {
       src: { light: "/logo-light.svg", dark: "/logo-dark.svg" },
       alt: "Primebrick",
       width: "140px",
-      href: "/",
+      href: "https://primebrick.dev",
     },
     sidebar: {
       collapsible: true,
@@ -129,6 +129,7 @@ const config: ZudokuConfig = {
             "getting-started/introduction",
             "getting-started/quick-start",
             "getting-started/architecture",
+            "getting-started/infrastructure",
           ],
         },
         { type: "separator" },
@@ -154,7 +155,24 @@ const config: ZudokuConfig = {
         },
       ],
     },
-    ...generatedRepoNav,
+    {
+      type: "category",
+      label: "Services",
+      icon: "layers",
+      stack: true,
+      items: [
+        ...serviceNav,
+      ],
+    },
+    {
+      type: "category",
+      label: "Libraries",
+      icon: "library",
+      stack: true,
+      items: [
+        ...libraryNav,
+      ],
+    },
     {
       type: "link",
       to: "/catalog",
