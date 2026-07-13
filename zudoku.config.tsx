@@ -151,8 +151,8 @@ const config: ZudokuConfig = {
   ],
   apis: [
     {
-      type: "file",
-      input: "./apis/openapi.json",
+      type: "url",
+      input: "http://localhost:3001/api/v1/openapi/aggregated.json",
       path: "/api",
       options: {
         disableSecurity: false,

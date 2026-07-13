@@ -39,19 +39,14 @@ jobs:
       - name: Generate navigation
         run: node scripts/generate-nav.mjs
 
-      - name: Fetch OpenAPI spec
-        env:
-          OPENAPI_URL: ${{ secrets.OPENAPI_URL }}
-        run: node scripts/fetch-openapi.mjs
-
       - name: Commit synced content
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add pages/ src/generated-nav.ts apis/openapi.json
+          git add pages/ src/generated-nav.ts
           if git diff --cached --quiet; then
             echo "No changes to commit"
           else
-            git commit -m "chore: sync docs, DeepWiki, and OpenAPI spec [skip ci]"
+            git commit -m "chore: sync docs and DeepWiki [skip ci]"
             git push
           fi
