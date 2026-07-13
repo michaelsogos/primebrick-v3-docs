@@ -99,6 +99,7 @@ for (const repo of REPOS) {
   }
 }
 
-// Cleanup
-rmSync(TMP_DIR, { recursive: true, force: true });
+// NOTE: .tmp-repo-sync/ is NOT cleaned up here.
+// fetch-openapi.mjs reads from it and cleans up when done.
 console.log('=== In-repo docs sync complete ===');
+console.log('(.tmp-repo-sync/ left for fetch-openapi.mjs)');

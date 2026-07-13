@@ -1,5 +1,6 @@
 import type { ZudokuConfig } from "zudoku";
 import { generatedRepoNav } from "./src/generated-nav";
+import { generatedApis } from "./src/generated-apis";
 import "./src/styles.css";
 
 const config: ZudokuConfig = {
@@ -23,7 +24,7 @@ const config: ZudokuConfig = {
           title: "Resources",
           links: [
             { label: "Landing Page", href: "https://primebrick.dev" },
-            { label: "API Explorer", href: "/api" },
+            { label: "API Catalog", href: "/catalog" },
             { label: "GitHub", href: "https://github.com/michaelsogos" },
           ],
         },
@@ -132,40 +133,28 @@ const config: ZudokuConfig = {
         { type: "separator" },
         {
           type: "link",
-          label: "Try the API",
-          to: "/api",
-          icon: "play",
+          label: "API Catalog",
+          to: "/catalog",
+          icon: "square-library",
         },
       ],
     },
     ...generatedRepoNav,
     {
       type: "link",
-      to: "/api",
-      label: "API Explorer",
-      icon: "play",
+      to: "/catalog",
+      label: "API Catalog",
+      icon: "square-library",
     },
   ],
   redirects: [
     { from: "/", to: "/getting-started/introduction" },
   ],
-  apis: [
-    {
-      type: "url",
-      input: "http://localhost:3001/api/v1/openapi/aggregated.json",
-      path: "/api",
-      options: {
-        disableSecurity: false,
-        expandAllTags: true,
-        showInfoPage: true,
-        examplesLanguage: "js",
-        schemaDownload: {
-          enabled: true,
-          fileName: "primebrick-openapi",
-        },
-      },
-    },
-  ],
+  catalogs: {
+    path: "/catalog",
+    label: "API Catalog",
+  },
+  apis: generatedApis,
 };
 
 export default config;

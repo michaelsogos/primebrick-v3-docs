@@ -10,7 +10,7 @@ export const generatedRepoNav: Navigation = [
     "collapsed": true,
     "items": [
       "backend/deepwiki/index",
-      "backend/manual/index"
+      "backend/manual/overview"
     ]
   },
   {
@@ -20,7 +20,7 @@ export const generatedRepoNav: Navigation = [
     "collapsed": true,
     "items": [
       "frontend/deepwiki/index",
-      "frontend/manual/index"
+      "frontend/manual/overview"
     ]
   },
   {
@@ -29,8 +29,7 @@ export const generatedRepoNav: Navigation = [
     "icon": "boxes",
     "collapsed": true,
     "items": [
-      "microservices/deepwiki/index",
-      "microservices/manual/index"
+      "microservices/deepwiki/index"
     ]
   },
   {
@@ -40,7 +39,7 @@ export const generatedRepoNav: Navigation = [
     "collapsed": true,
     "items": [
       "dal/deepwiki/index",
-      "dal/manual/index"
+      "dal/manual/overview"
     ]
   },
   {
@@ -50,7 +49,7 @@ export const generatedRepoNav: Navigation = [
     "collapsed": true,
     "items": [
       "sdk/deepwiki/index",
-      "sdk/manual/index"
+      "sdk/manual/overview"
     ]
   }
 ];

@@ -36,3 +36,4 @@ yarn-error.log*
 
 # sync temp
 .tmp-repo-sync/
+_extract-spec.ts
