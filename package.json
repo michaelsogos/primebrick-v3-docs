@@ -1,0 +1,31 @@
+{
+  "name": "primebrick-v3-docs",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "engines": {
+    "node": "24"
+  },
+  "scripts": {
+    "dev": "zudoku dev",
+    "build": "zudoku build --experimental-ssr --adapter cloudflare",
+    "preview": "wrangler dev",
+    "deploy": "zudoku build --experimental-ssr --adapter cloudflare && wrangler deploy",
+    "lint": "eslint"
+  },
+  "dependencies": {
+    "react": "19.2.7",
+    "react-dom": "19.2.7",
+    "zudoku": "0.82.3"
+  },
+  "devDependencies": {
+    "@types/node": "22.20.1",
+    "@types/react": "19.2.17",
+    "@types/react-dom": "19.2.3",
+    "@typescript-eslint/eslint-plugin": "8.63.0",
+    "@typescript-eslint/parser": "8.63.0",
+    "eslint": "8.57.1",
+    "typescript": "7.0.2",
+    "wrangler": "4.110.0"
+  }
+}
