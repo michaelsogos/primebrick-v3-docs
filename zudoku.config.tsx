@@ -1,7 +1,22 @@
 import type { ZudokuConfig } from "zudoku";
+import type { ComponentPropsWithoutRef } from "react";
 import { generatedRepoNav } from "./src/generated-nav";
 import { generatedApis } from "./src/generated-apis";
+import Mermaid from "./src/Mermaid";
 import "./src/styles.css";
+
+// Override <pre> to render mermaid code blocks as diagrams instead of highlighted code
+function PreComponent(props: ComponentPropsWithoutRef<"pre">) {
+  const child = props.children as React.ReactNode;
+  // Shiki/rehype wraps code blocks in <pre><code class="language-xxx">
+  if (child && typeof child === "object" && "props" in child) {
+    const childProps = (child as React.ReactElement).props as { className?: string; children?: React.ReactNode };
+    if (childProps.className?.includes("language-mermaid")) {
+      return <Mermaid>{childProps.children}</Mermaid>;
+    }
+  }
+  return <pre {...props} />;
+}
 
 const config: ZudokuConfig = {
   site: {
@@ -154,6 +169,11 @@ const config: ZudokuConfig = {
     path: "/catalog",
     label: "API Catalog",
   },
+  mdx: {
+    components: {
+      pre: PreComponent,
+    },
+  },
   syntaxHighlighting: {
     languages: [
       "php",
@@ -165,7 +185,6 @@ const config: ZudokuConfig = {
       "sql",
       "svelte",
       "dotenv",
-      "mermaid",
     ],
   },
   apis: generatedApis,
