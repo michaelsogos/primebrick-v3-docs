@@ -1,0 +1,135 @@
+---
+title: "Quick Start"
+description: "Clone, install, and run Primebrick locally in minutes."
+---
+
+## Prerequisites
+
+Before you begin, make sure you have the following installed:
+
+| Tool | Minimum version | Check |
+|------|----------------|-------|
+| Node.js | 20+ | `node --version` |
+| pnpm | latest | `pnpm --version` |
+| Docker | latest | `docker --version` |
+
+You also need access to the Primebrick GitHub repositories.
+
+## 1. Clone the repositories
+
+Primebrick is split into several repos. For a full local environment you need at minimum the backend and frontend:
+
+```bash
+git clone https://github.com/michaelsogos/primebrick-be-v3.git
+git clone https://github.com/michaelsogos/primebrick-fe-v3.git
+```
+
+If you plan to develop microservices or shared libraries, also clone:
+
+```bash
+git clone https://github.com/michaelsogos/primebrick-us-v3.git   # microservices
+git clone https://github.com/michaelsogos/primebrick-dal-v3.git  # DAL library
+git clone https://github.com/michaelsogos/primebrick-v3-sdk.git  # SDK
+```
+
+## 2. Start infrastructure with Docker
+
+The backend repo includes a `docker-compose.yml` that spins up PostgreSQL, Casdoor, and NATS:
+
+```bash
+cd primebrick-be-v3
+docker compose up -d
+```
+
+This starts:
+
+- **PostgreSQL** — primary database
+- **Casdoor** — identity provider (OIDC / OAuth2)
+- **NATS** — messaging bus for microservice communication
+
+## 3. Install dependencies
+
+Install dependencies for the backend and frontend:
+
+```bash
+cd primebrick-be-v3
+pnpm install
+
+cd ../primebrick-fe-v3
+pnpm install
+```
+
+## 4. Set up Casdoor
+
+Primebrick includes a setup script that configures Casdoor with the default application, organizations, and roles:
+
+```bash
+cd primebrick-be-v3
+pnpm run setup:casdoor
+```
+
+This provisions the OIDC client and seed users needed for local development.
+
+## 5. Run database migrations
+
+Apply the database schema migrations:
+
+```bash
+pnpm run db:migrate
+```
+
+## 6. Start the development servers
+
+Start the backend and frontend in separate terminals:
+
+```bash
+# Terminal 1 — backend
+cd primebrick-be-v3
+pnpm run dev
+```
+
+```bash
+# Terminal 2 — frontend
+cd primebrick-fe-v3
+pnpm run dev
+```
+
+## Where things run
+
+| Service | URL |
+|---------|-----|
+| Backend API | `http://localhost:3001` |
+| Frontend (SvelteKit) | `http://localhost:5173` |
+| Casdoor console | `http://localhost:8000` |
+| NATS | `nats://localhost:4222` |
+
+## Verify it works
+
+1. Open `http://localhost:5173` in your browser — you should see the Primebrick frontend.
+2. Check the backend health at `http://localhost:3001/api/v1/health`.
+3. View the aggregated OpenAPI spec at `http://localhost:3001/api/v1/openapi/aggregated.json`.
+
+## Troubleshooting
+
+<details>
+<summary>Docker containers won't start</summary>
+
+Make sure ports 5432 (PostgreSQL), 8000 (Casdoor), and 4222 (NATS) are not already in use. Stop any conflicting services or adjust the port mappings in `docker-compose.yml`.
+</details>
+
+<details>
+<summary>Casdoor setup script fails</summary>
+
+Ensure the Casdoor container is fully up before running `pnpm run setup:casdoor`. Check with `docker compose ps` and wait until the Casdoor service shows a healthy state.
+</details>
+
+<details>
+<summary>Database migration errors</summary>
+
+Confirm PostgreSQL is running and the connection string in your `.env` file points to the Dockerized instance. Run `pnpm run db:migrate` again after fixing the connection.
+</details>
+
+## Next steps
+
+- [Architecture](./architecture) — understand how the pieces fit together.
+- [API Overview](../api/introduction) — learn about the REST API.

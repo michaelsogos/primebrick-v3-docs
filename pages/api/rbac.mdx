@@ -1,0 +1,126 @@
+---
+title: "RBAC"
+description: "Role-based access control with wildcard-based permissions in Primebrick."
+---
+
+## Overview
+
+Primebrick uses **Role-Based Access Control (RBAC)** with a **wildcard-based permission system**. Permissions are expressive, easy to reason about, and integrated with Casdoor for identity-level role mapping.
+
+## Permission format
+
+Permissions follow a **three-part dot notation**:
+
+```text
+module.action.granularity
+```
+
+| Part | Description | Examples |
+|------|-------------|----------|
+| `module` | The business module | `customers`, `billing`, `inventory` |
+| `action` | The operation | `read`, `write`, `delete`, `export` |
+| `granularity` | The scope level | `*` (all), `own` (own data), `team` (team data) |
+
+### Examples
+
+```text
+customers.read.*          # Read all customers
+customers.read.own        # Read only customers you own
+customers.write.*         # Create/update any customer
+billing.export.team       # Export billing data for your team
+inventory.delete.*        # Delete any inventory record
+```
+
+## Wildcards
+
+The `*` character acts as a wildcard and can appear in any segment:
+
+```text
+customers.*.*     # All actions on customers, all granularities
+*.read.*          # Read access to every module
+*.*.*             # Full access (typically admin only)
+```
+
+Pattern matching is performed at runtime. A user's permissions are checked against the required permission using wildcard expansion:
+
+```typescript
+// Required: customers.read.*
+// User has: customers.read.own
+// Match? No — granularity doesn't match the wildcard.
+
+// Required: customers.read.*
+// User has: customers.read.*
+// Match? Yes.
+```
+
+## Roles
+
+Roles are collections of permissions. A role bundles together the permissions needed for a specific job function:
+
+| Role | Example permissions |
+|------|-------------------|
+| `viewer` | `*.read.own` |
+| `editor` | `customers.read.*`, `customers.write.own` |
+| `admin` | `*.*.*` |
+
+### Role storage
+
+Role-to-permission mappings are **stored in the database** and managed via the admin UI or API. Roles are **integrated with Casdoor** — Casdoor manages users and their role assignments, and Primebrick syncs this information to resolve permissions at request time.
+
+## Admin bypass
+
+Users with `is_admin = true` bypass all permission checks. This is an escape hatch for super-administrators and should be granted sparingly.
+
+```typescript
+if (user.is_admin) {
+  // Permission check skipped — full access
+  return next();
+}
+```
+
+## Permission enum in code
+
+Permissions are defined as a **typed enum** in the codebase to prevent typos and enable IDE autocompletion:
+
+```typescript
+export enum Permission {
+  CustomersReadAll    = 'customers.read.*',
+  CustomersReadOwn    = 'customers.read.own',
+  CustomersWriteAll   = 'customers.write.*',
+  CustomersWriteOwn   = 'customers.write.own',
+  BillingExportTeam   = 'billing.export.team',
+  InventoryDeleteAll  = 'inventory.delete.*',
+}
+
+export enum Role {
+  Viewer  = 'viewer',
+  Editor  = 'editor',
+  Admin   = 'admin',
+}
+```
+
+Middleware checks permissions on every protected route:
+
+```typescript
+import { Permission, hasPermission } from '@primebrick/sdk';
+
+router.get('/customers', requirePermission(Permission.CustomersReadAll), async (req, res) => {
+  // Only reached if the user has customers.read.*
+  const customers = await customerService.list();
+  res.json(customers);
+});
+```
+
+## How checks work
+
+1. The middleware extracts the JWT from the `Authorization` header.
+2. It loads the user's roles and their associated permissions from the database.
+3. If `is_admin` is true, the check passes immediately.
+4. Otherwise, it tests each of the user's permissions against the required permission using wildcard matching.
+5. If any permission matches, the request proceeds. Otherwise, a `403` Problem Details error is returned.
+
+## Next steps
+
+- [Authentication](./authentication) — how tokens are obtained before RBAC checks.
+- [Error Handling](./error-handling) — what a permission-denied error looks like.
+- [Microservice Standard](./microservice-standard) — how microservices enforce RBAC.

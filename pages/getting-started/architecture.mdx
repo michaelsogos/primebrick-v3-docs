@@ -1,0 +1,120 @@
+---
+title: "Architecture"
+description: "The layered architecture of Primebrick and how the components communicate."
+---
+
+## Overview
+
+Primebrick follows a **layered architecture** with clear separation of concerns. Each layer has a well-defined responsibility and communicates with others through established protocols.
+
+```text
+┌─────────────────────────────────────────────────┐
+│                  Frontend (SvelteKit)            │
+│              Admin UI · port 5173                │
+└──────────────────────┬──────────────────────────┘
+                       │ HTTP / WebSocket
+┌──────────────────────▼──────────────────────────┐
+│              Backend (Express API)               │
+│              port 3001 · /api/v1/                │
+│  Auth · RBAC · Service Registry · Proxy          │
+└──────┬──────────────┬───────────────┬───────────┘
+       │              │               │
+       │ NATS         │ HTTP          │ HTTP
+       │              │               │
+┌──────▼─────┐ ┌──────▼──────┐ ┌──────▼──────┐
+│ Microservice│ │ Microservice│ │ Microservice│
+│   (repo A)  │ │   (repo B)  │ │   (repo C)  │
+└─────────────┘ └─────────────┘ └─────────────┘
+       │
+┌──────▼──────────────────────────┐
+│   DAL (@primebrick/dal)          │
+│   Data Access Layer library      │
+└──────────────────────────────────┘
+```
+
+## Layers
+
+### Backend (Express API)
+
+The central backend is the entry point for all client requests. It handles:
+
+- **Authentication** — JWT validation, Casdoor OIDC integration
+- **Authorization** — RBAC permission checks
+- **Service registry** — tracks all registered microservices with heartbeats
+- **Proxy** — routes requests to microservices via a round-robin load balancer
+- **OpenAPI aggregation** — merges its own spec with all online microservice specs
+
+All endpoints are served under `/api/v1/`.
+
+### Frontend (SvelteKit)
+
+The admin frontend is a SvelteKit application that provides the backoffice UI. It communicates exclusively with the backend API — it never talks to microservices directly.
+
+### Microservices (independent repos)
+
+Each microservice is an independent repository with its own lifecycle, database schema, and deployment. Microservices:
+
+- **Self-register** with the backend on startup via `@primebrick/sdk`
+- **Send heartbeats** to maintain their registry entry
+- **Expose OpenAPI** at `/api/openapi.json`
+- **Communicate** with other services via NATS messaging
+
+### DAL (Data Access Layer)
+
+`@primebrick/dal` is a shared library that provides consistent data access patterns across all services — connection management, repository patterns, and multi-tenant data isolation.
+
+### SDK (Shared Toolkit)
+
+`@primebrick/sdk` is the shared toolkit used by every microservice. It provides:
+
+- Service registration and heartbeat management
+- NATS messaging helpers
+- OpenAPI scaffolding
+- Standardized error handling (RFC 7807)
+- Middleware for auth and RBAC
+
+## Communication
+
+### NATS messaging
+
+Microservices communicate with each other and with the backend through **NATS**. This decouples services and enables:
+
+- **Publish/subscribe** for event-driven workflows
+- **Request/reply** for synchronous-style calls without HTTP coupling
+- **Horizontal scaling** — multiple instances of a service all subscribe to the same subjects
+
+### Service registry and heartbeats
+
+Every microservice registers itself with the backend on startup. The registry entry includes:
+
+- **Service code** — a unique identifier (e.g. `billing`, `inventory`)
+- **Base URL** — where the service instance is reachable
+- **Health endpoint** — for liveness checks
+- **OpenAPI URL** — for spec aggregation
+
+Services send **heartbeats** at a regular interval. If a heartbeat is not received within the stale threshold, the instance is marked offline and removed from the proxy rotation.
+
+### Round-robin proxy
+
+The backend exposes a transparent proxy at `/ws/:serviceCode` that forwards requests to registered instances of the requested microservice. When multiple instances are online, the proxy uses **round-robin** load balancing.
+
+```text
+Client → /api/v1/...           → Backend handles directly
+Client → /ws/billing/...       → Backend proxies to billing microservice
+```
+
+### OpenAPI-first
+
+Primebrick follows an **OpenAPI-first** approach:
+
+1. Every service defines its API in an OpenAPI specification.
+2. Each service exposes its spec at `/api/openapi.json`.
+3. The backend aggregates all specs into a single document at `/api/v1/openapi/aggregated.json`.
+4. Microservice paths are prefixed with `/ws/:serviceCode` in the aggregated spec to match the proxy.
+
+This means the [API Explorer](/api) always reflects the services that are currently online.
+
+## Next steps
+
+- [API Overview](../api/introduction) — learn about base URLs and the OpenAPI spec.
+- [Microservice Standard](../api/microservice-standard) — how to build a compliant microservice.

@@ -1,0 +1,107 @@
+---
+title: "Authentication"
+description: "Casdoor IDP, JWT tokens, and the three credential types supported by Primebrick."
+---
+
+## Overview
+
+Primebrick uses **Casdoor** as its identity provider (IDP). Casdoor implements **OIDC** (OpenID Connect) and **OAuth2**, giving Primebrick a standards-based authentication layer.
+
+The backend validates JWT access tokens issued by Casdoor and manages refresh tokens via HTTP-only cookies.
+
+## Credential types
+
+Primebrick supports **three credential types** for API access:
+
+### 1. User access tokens
+
+The most common flow for interactive users (e.g. the admin frontend). A user provides a username and password, and the backend exchanges them for a JWT access token.
+
+```bash
+curl -X POST http://localhost:3001/api/v1/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{
+    "username": "admin@primebrick.dev",
+    "password": "your-password"
+  }'
+```
+
+Response:
+
+```json
+{
+  "access_token": "eyJhbGciOi...",
+  "token_type": "Bearer",
+  "expires_in": 3600
+}
+```
+
+A **refresh token** is set as an HTTP-only cookie. The frontend can call the refresh endpoint to obtain a new access token without re-prompting the user.
+
+```bash
+curl http://localhost:3001/api/v1/auth/refresh \
+  -H "Cookie: refresh_token=..." 
+```
+
+Use the access token in the `Authorization` header for subsequent requests:
+
+```bash
+curl http://localhost:3001/api/v1/customers \
+  -H "Authorization: Bearer eyJhbGciOi..."
+```
+
+### 2. Client access tokens (OAuth2 client credentials)
+
+For server-to-server communication where no user is involved. The client uses the **OAuth2 client credentials flow** to obtain a token directly from Casdoor:
+
+```bash
+curl -X POST http://localhost:3000/api/v1/auth/token \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  -d "grant_type=client_credentials&client_id=YOUR_CLIENT_ID&client_secret=YOUR_CLIENT_SECRET"
+```
+
+This is suitable for backend integrations, scheduled jobs, and microservice-to-microservice calls that act on behalf of an application rather than a user.
+
+### 3. API keys
+
+For third-party integrations and simple scripting scenarios. API keys are long-lived, revocable credentials that can be issued and managed from the admin UI.
+
+```bash
+curl http://localhost:3001/api/v1/customers \
+  -H "X-API-Key: <YOUR_API_KEY>"
+```
+
+API keys are the simplest credential type — no token exchange, no refresh logic, no cookie handling.
+
+## API Explorer authentication
+
+The [API Explorer](/api) on this site uses **API keys** for simplicity. This keeps the explorer straightforward: paste a key and start making requests.
+
+> **Note:** User tokens (username/password → JWT) and OAuth2 client credentials are fully supported by the Primebrick platform, but they are **not exposed in the API Explorer REPL yet**. The explorer's auth UI supports bearer tokens and API keys. For full OAuth2 flows, use Casdoor directly or your own client.
+
+## Token lifecycle
+
+```text
+┌──────────┐     login      ┌──────────┐
+│  User    │ ──────────────▶ │  Casdoor │
+│          │                 │   (IDP)  │
+└──────────┘                 └────┬─────┘
+                                  │ JWT + refresh token
+                                  ▼
+┌──────────────────────────────────────────┐
+│            Backend (Express)             │
+│  Validates JWT · Checks RBAC · Routes    │
+└──────────────────────────────────────────┘
+```
+
+| Token type | Lifetime | Storage |
+|-----------|----------|---------|
+| Access token (JWT) | Short (e.g. 1 hour) | Client memory / `Authorization` header |
+| Refresh token | Long (e.g. 30 days) | HTTP-only cookie |
+| API key | Until revoked | Client-side, sent in `X-API-Key` header |
+
+## Next steps
+
+- [RBAC](./rbac) — how permissions are checked after authentication.
+- [Error Handling](./error-handling) — what auth errors look like.
+- [API Explorer](/api) — try it live.

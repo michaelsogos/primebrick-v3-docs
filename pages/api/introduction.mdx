@@ -1,0 +1,89 @@
+---
+title: "API Overview"
+description: "Base URLs, OpenAPI spec, and error format for the Primebrick REST API."
+---
+
+## Base URLs
+
+The Primebrick API is served by the central backend. In development:
+
+```text
+http://localhost:3001
+```
+
+In production, the base URL is configurable — typically a custom domain or API gateway. All environments expose the API under the same path prefix.
+
+## API versioning
+
+All endpoints are served under **`/api/v1/`**:
+
+```text
+http://localhost:3001/api/v1/auth/login
+http://localhost:3001/api/v1/customers
+http://localhost:3001/api/v1/health
+```
+
+The version prefix allows breaking changes to be introduced in future major versions (`/api/v2/`) without disrupting existing clients.
+
+## OpenAPI specification
+
+Primebrick is **OpenAPI-first**. The backend exposes an aggregated OpenAPI document that merges:
+
+1. The backend's own endpoints (auth, RBAC, registry, etc.)
+2. All currently online microservice endpoints (prefixed with `/ws/:serviceCode`)
+
+### Aggregated spec endpoint
+
+```text
+GET /api/v1/openapi/aggregated.json
+```
+
+This endpoint is **public** — no authentication required. It is mounted before the auth guard so that the API Explorer and any external tooling can fetch the spec without credentials.
+
+If some microservices are offline, the aggregated spec simply omits them. The spec always reflects the services that are currently registered and healthy.
+
+### Using the spec
+
+You can import the aggregated spec into any OpenAPI-compatible tool:
+
+```bash
+# Fetch the spec
+curl http://localhost:3001/api/v1/openapi/aggregated.json -o openapi.json
+
+# Use with any OpenAPI client generator
+npx openapi-typescript openapi.json -o ./src/api/types.ts
+```
+
+## API Explorer
+
+Primebrick includes an interactive [API Explorer](/api) powered by Zudoku. It lets you:
+
+- Browse all endpoints from the aggregated spec
+- Configure the backend host (localhost, staging, production)
+- Authenticate with bearer tokens, API keys, or OAuth2 client credentials
+- Send live requests and inspect responses
+
+The explorer fetches the spec client-side, so it always reflects the backend you point it at.
+
+## Error format
+
+All errors follow **RFC 7807 Problem Details for HTTP APIs**. Every error response has a consistent JSON structure:
+
+```json
+{
+  "type": "https://primebrick.dev/errors/permission-denied",
+  "title": "Permission denied",
+  "status": 403,
+  "detail": "You do not have permission to read customers.",
+  "instance": "/api/v1/customers"
+}
+```
+
+See [Error Handling](./error-handling) for the full specification and common error codes.
+
+## Next steps
+
+- [Authentication](./authentication) — how to get tokens and call the API.
+- [RBAC](./rbac) — the permission system.
+- [Error Handling](./error-handling) — the error response format.
+- [API Explorer](/api) — try the API live.

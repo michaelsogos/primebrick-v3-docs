@@ -1,0 +1,328 @@
+---
+title: "Authentication How-To"
+description: "Practical guide to authenticating with the Primebrick API — user tokens, client credentials, and API keys with code examples"
+---
+
+## Overview
+
+Primebrick supports **three authentication methods** for API access. Choose the one that matches your use case:
+
+- **User Access Token** — for end users logging in with username/password.
+- **OAuth2 Client Credentials** — for server-to-server, machine-to-machine calls.
+- **API Key** — for third-party integrations and simple scripting.
+
+Each method is covered below with copy-paste code examples in cURL, JavaScript, Python, and PHP.
+
+## Method 1: User Access Token (User Way)
+
+**Best for:** end users logging in with a username and password (e.g. the admin frontend).
+
+**Flow:**
+
+1. `POST /api/v1/auth/login` with `username` + `password`
+2. Receive a JWT **access token** in the response body and a **refresh token** in an HTTP-only cookie
+3. Send the access token as a `Bearer` token in the `Authorization` header on subsequent requests
+
+### cURL
+
+Login request:
+
+```bash
+curl -X POST http://localhost:3001/api/v1/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{
+    "username": "admin@primebrick.dev",
+    "password": "your-password"
+  }'
+```
+
+Response:
+
+```json
+{
+  "access_token": "eyJhbGciOi...",
+  "token_type": "Bearer",
+  "expires_in": 3600
+}
+```
+
+Authenticated request:
+
+```bash
+curl http://localhost:3001/api/v1/customers \
+  -H "Authorization: Bearer eyJhbGciOi..."
+```
+
+### JavaScript (fetch)
+
+```js
+// 1. Login
+const loginRes = await fetch("http://localhost:3001/api/v1/auth/login", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  credentials: "include", // receive the refresh-token cookie
+  body: JSON.stringify({
+    username: "admin@primebrick.dev",
+    password: "your-password",
+  }),
+});
+
+const { access_token } = await loginRes.json();
+
+// 2. Authenticated request
+const dataRes = await fetch("http://localhost:3001/api/v1/customers", {
+  headers: { Authorization: `Bearer ${access_token}` },
+  credentials: "include",
+});
+
+const customers = await dataRes.json();
+```
+
+### Python (requests)
+
+```python
+import requests
+
+base = "http://localhost:3001"
+
+# 1. Login
+login = requests.post(
+    f"{base}/api/v1/auth/login",
+    json={"username": "admin@primebrick.dev", "password": "your-password"},
+)
+login.raise_for_status()
+access_token = login.json()["access_token"]
+
+# session keeps the refresh-token cookie for later refresh calls
+session = requests.Session()
+session.headers.update({"Authorization": f"Bearer {access_token}"})
+
+# 2. Authenticated request
+customers = session.get(f"{base}/api/v1/customers").json()
+```
+
+### PHP (curl)
+
+```php
+<?php
+// 1. Login
+$ch = curl_init("http://localhost:3001/api/v1/auth/login");
+curl_setopt_array($ch, [
+    CURLOPT_POST           => true,
+    CURLOPT_RETURNTRANSFER => true,
+    CURLOPT_HEADER         => true, // keep cookies
+    CURLOPT_HTTPHEADER     => ["Content-Type: application/json"],
+    CURLOPT_POSTFIELDS     => json_encode([
+        "username" => "admin@primebrick.dev",
+        "password" => "your-password",
+    ]),
+]);
+$response = curl_exec($ch);
+curl_close($ch);
+
+// parse access_token from the JSON body
+preg_match('/\{.*\}/s', $response, $matches);
+$body = json_decode($matches[0], true);
+$accessToken = $body["access_token"];
+
+// 2. Authenticated request
+$ch = curl_init("http://localhost:3001/api/v1/customers");
+curl_setopt_array($ch, [
+    CURLOPT_RETURNTRANSFER => true,
+    CURLOPT_HTTPHEADER     => ["Authorization: Bearer {$accessToken}"],
+]);
+$customers = json_decode(curl_exec($ch), true);
+curl_close($ch);
+```
+
+> **Note:** Access tokens are short-lived. When the token expires, call `POST /api/v1/auth/refresh` (the refresh token is sent automatically via the HTTP-only cookie) to obtain a new access token without re-entering credentials.
+
+## Method 2: OAuth2 Client Credentials (Client Way)
+
+**Best for:** server-to-server communication, scheduled jobs, and microservice-to-microservice calls where no user is involved.
+
+**Flow:**
+
+1. `POST /api/v1/auth/token` with `client_id` + `client_secret` + `grant_type=client_credentials`
+2. Receive an access token in the response body
+3. Send the access token as a `Bearer` token in the `Authorization` header
+
+### cURL
+
+Token request:
+
+```bash
+curl -X POST http://localhost:3000/api/v1/auth/token \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  -d "grant_type=client_credentials&client_id=YOUR_CLIENT_ID&client_secret=YOUR_CLIENT_SECRET"
+```
+
+Response:
+
+```json
+{
+  "access_token": "eyJhbGciOi...",
+  "token_type": "Bearer",
+  "expires_in": 3600
+}
+```
+
+Authenticated request:
+
+```bash
+curl http://localhost:3001/api/v1/customers \
+  -H "Authorization: Bearer eyJhbGciOi..."
+```
+
+### JavaScript (fetch)
+
+```js
+// 1. Request a token
+const tokenRes = await fetch("http://localhost:3000/api/v1/auth/token", {
+  method: "POST",
+  headers: { "Content-Type": "application/x-www-form-urlencoded" },
+  body: new URLSearchParams({
+    grant_type: "client_credentials",
+    client_id: "YOUR_CLIENT_ID",
+    client_secret: "YOUR_CLIENT_SECRET",
+  }),
+});
+
+const { access_token } = await tokenRes.json();
+
+// 2. Authenticated request
+const dataRes = await fetch("http://localhost:3001/api/v1/customers", {
+  headers: { Authorization: `Bearer ${access_token}` },
+});
+
+const customers = await dataRes.json();
+```
+
+### Python (requests)
+
+```python
+import requests
+
+base = "http://localhost:3000"
+
+# 1. Request a token
+token = requests.post(
+    f"{base}/api/v1/auth/token",
+    data={
+        "grant_type": "client_credentials",
+        "client_id": "YOUR_CLIENT_ID",
+        "client_secret": "YOUR_CLIENT_SECRET",
+    },
+)
+token.raise_for_status()
+access_token = token.json()["access_token"]
+
+# 2. Authenticated request
+session = requests.Session()
+session.headers.update({"Authorization": f"Bearer {access_token}"})
+customers = session.get("http://localhost:3001/api/v1/customers").json()
+```
+
+### PHP (curl)
+
+```php
+<?php
+// 1. Request a token
+$ch = curl_init("http://localhost:3000/api/v1/auth/token");
+curl_setopt_array($ch, [
+    CURLOPT_POST           => true,
+    CURLOPT_RETURNTRANSFER => true,
+    CURLOPT_POSTFIELDS     => http_build_query([
+        "grant_type"    => "client_credentials",
+        "client_id"     => "YOUR_CLIENT_ID",
+        "client_secret" => "YOUR_CLIENT_SECRET",
+    ]),
+]);
+$token = json_decode(curl_exec($ch), true);
+curl_close($ch);
+
+$accessToken = $token["access_token"];
+
+// 2. Authenticated request
+$ch = curl_init("http://localhost:3001/api/v1/customers");
+curl_setopt_array($ch, [
+    CURLOPT_RETURNTRANSFER => true,
+    CURLOPT_HTTPHEADER     => ["Authorization: Bearer {$accessToken}"],
+]);
+$customers = json_decode(curl_exec($ch), true);
+curl_close($ch);
+```
+
+> **Note:** Client credentials are obtained from the Primebrick admin panel or directly from Casdoor. Treat them like passwords — store them in a secrets manager, never in source control.
+
+## Method 3: API Key (Third-Party Way)
+
+**Best for:** third-party integrations, simple scripts, and any scenario where token exchange logic is overkill.
+
+**Flow:**
+
+1. Obtain an API key from the Primebrick admin panel
+2. Send the key as an `X-API-Key` header on every request
+
+No token exchange, no refresh logic, no cookie handling.
+
+### cURL
+
+```bash
+curl http://localhost:3001/api/v1/customers \
+  -H "X-API-Key: <YOUR_API_KEY>"
+```
+
+### JavaScript (fetch)
+
+```js
+const res = await fetch("http://localhost:3001/api/v1/customers", {
+  headers: { "X-API-Key": "<YOUR_API_KEY>" },
+});
+
+const customers = await res.json();
+```
+
+### Python (requests)
+
+```python
+import requests
+
+customers = requests.get(
+    "http://localhost:3001/api/v1/customers",
+    headers={"X-API-Key": "<YOUR_API_KEY>"},
+).json()
+```
+
+### PHP (curl)
+
+```php
+<?php
+$ch = curl_init("http://localhost:3001/api/v1/customers");
+curl_setopt_array($ch, [
+    CURLOPT_RETURNTRANSFER => true,
+    CURLOPT_HTTPHEADER     => ["X-API-Key: <YOUR_API_KEY>"],
+]);
+$customers = json_decode(curl_exec($ch), true);
+curl_close($ch);
+```
+
+> **Note:** API keys are long-lived but **revocable** from the admin panel. They can also be **scoped** to specific permissions, limiting what a third party can do if a key is leaked.
+
+## Comparison Table
+
+| Method | Use Case | Token Type | Expiry | Scopes |
+|--------|----------|------------|--------|--------|
+| User Token | End user login | JWT | Short-lived (refresh) | User permissions |
+| Client Credentials | Server-to-server | JWT | Short-lived | Client permissions |
+| API Key | Third-party integrations | Static key | No expiry (revocable) | Scoped permissions |
+
+## API Explorer
+
+The [API Explorer](/api) on this site uses **API keys** for simplicity. To try the API:
+
+1. Get an API key from your Primebrick admin panel.
+2. Enter it in the config panel at the top of the API Explorer page.
+3. The key is sent as an `X-API-Key` header on all requests.
+
+> **Note:** User tokens (username/password → JWT) and OAuth2 client credentials are fully supported by the Primebrick platform, but they are **not exposed in the API Explorer REPL yet**. The explorer's auth UI supports bearer tokens and API keys. For full OAuth2 flows, use Casdoor directly or your own client.
