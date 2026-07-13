@@ -1,4 +1,5 @@
 import type { ZudokuConfig } from "zudoku";
+import { generatedRepoNav } from "./src/generated-nav";
 import "./src/styles.css";
 
 const config: ZudokuConfig = {
@@ -137,56 +138,7 @@ const config: ZudokuConfig = {
         },
       ],
     },
-    {
-      type: "category",
-      label: "Backend",
-      icon: "server",
-      collapsed: true,
-      items: [
-        "backend/deepwiki/index",
-        "backend/manual/index",
-      ],
-    },
-    {
-      type: "category",
-      label: "Frontend",
-      icon: "monitor",
-      collapsed: true,
-      items: [
-        "frontend/deepwiki/index",
-        "frontend/manual/index",
-      ],
-    },
-    {
-      type: "category",
-      label: "Microservices",
-      icon: "boxes",
-      collapsed: true,
-      items: [
-        "microservices/deepwiki/index",
-        "microservices/manual/index",
-      ],
-    },
-    {
-      type: "category",
-      label: "DAL",
-      icon: "database",
-      collapsed: true,
-      items: [
-        "dal/deepwiki/index",
-        "dal/manual/index",
-      ],
-    },
-    {
-      type: "category",
-      label: "SDK",
-      icon: "package",
-      collapsed: true,
-      items: [
-        "sdk/deepwiki/index",
-        "sdk/manual/index",
-      ],
-    },
+    ...generatedRepoNav,
     {
       type: "link",
       to: "/api",
@@ -200,22 +152,20 @@ const config: ZudokuConfig = {
   apis: [
     {
       type: "file",
-      input: "./apis/openapi.yaml",
+      input: "./apis/openapi.json",
       path: "/api",
       options: {
         disableSecurity: false,
+        expandAllTags: true,
+        showInfoPage: true,
+        examplesLanguage: "js",
+        schemaDownload: {
+          enabled: true,
+          fileName: "primebrick-openapi",
+        },
       },
     },
   ],
-  defaults: {
-    apis: {
-      examplesLanguage: "js",
-      schemaDownload: {
-        enabled: true,
-        fileName: "primebrick-openapi",
-      },
-    },
-  },
 };
 
 export default config;
