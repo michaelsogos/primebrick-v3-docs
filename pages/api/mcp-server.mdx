@@ -1,0 +1,195 @@
+---
+title: "MCP Server"
+description: "Primebrick exposes an MCP (Model Context Protocol) server that lets AI clients like Claude, ChatGPT, Cursor, and VS Code interact with your Primebrick entities directly."
+---
+
+import { Mermaid } from "zudoku/mermaid";
+
+## Overview
+
+Primebrick includes a built-in **MCP (Model Context Protocol) server** that allows AI
+clients — such as Claude, ChatGPT, Cursor, and VS Code Copilot — to interact with
+your Primebrick entities, microservices, and service registry through a standardized
+tool interface.
+
+The MCP server is exposed at the `/mcp` endpoint on the backend and uses
+**OAuth 2.1 Bearer token** authentication. AI clients discover the server via
+RFC 9728 Protected Resource Metadata and register dynamically via RFC 7591
+Dynamic Client Registration.
+
+## Available tools
+
+The MCP server exposes 11 generic tools that work across all registered entities:
+
+| Tool | Description |
+|------|-------------|
+| `list_entities` | List all available entities across all modules (BE + microservices) |
+| `get_entity_meta` | Get metadata for a specific entity (fields, types, validation rules) |
+| `list_records` | List records for a specific entity with search, filter, sort, and pagination |
+| `get_record` | Get a single record by UUID |
+| `create_record` | Create a new record for a specific entity |
+| `update_record` | Update an existing record by UUID |
+| `delete_record` | Soft-delete a record by UUID |
+| `restore_record` | Restore a soft-deleted record by UUID |
+| `get_audit` | Get audit history for a specific record |
+| `bulk_delete_records` | Bulk soft-delete multiple records by UUID |
+| `list_services` | List all registered microservices in the service registry |
+
+Each tool is parameterized by `module` and `entity` — for example, you can call
+`list_records` with `module="be"` and `entity="customers"` to list customers from
+the backend, or `module="emailsender"` and `entity="providers"` to list email
+providers from the emailsender microservice.
+
+## Dynamic entity discovery
+
+When a microservice registers with the backend (via NATS), the MCP server
+automatically:
+
+1. Fetches the microservice's OpenAPI spec from `/api/v1/openapi.json`
+2. Parses it to find entity CRUD paths matching `/api/v1/entities/:entity/...`
+3. Registers each entity in the MCP entity registry with its supported operations
+
+This means any microservice that follows the
+[Microservice Standard](/api/microservice-standard) is automatically available
+to AI clients — no manual configuration needed.
+
+## OAuth 2.1 authentication
+
+The MCP server uses OAuth 2.1 with the Authorization Code flow. AI clients
+follow this flow:
+
+<Mermaid chart={`sequenceDiagram
+    participant AI as AI Client
+    participant BE as Primebrick BE
+    participant FE as Primebrick FE
+    participant Casdoor as Casdoor IDP
+
+    AI->>BE: 1. GET /.well-known/oauth-protected-resource/mcp
+    BE-->>AI: RFC 9728 PRM (points to AS metadata)
+    AI->>BE: 2. GET /.well-known/oauth-authorization-server
+    BE-->>AI: RFC 8414 AS Metadata
+    AI->>BE: 3. POST /mcp/oauth/register (RFC 7591 DCR)
+    BE-->>AI: client_id + client_secret
+    AI->>BE: 4. GET /mcp/oauth/authorize?client_id=...&scope=...
+    BE->>FE: 5. Redirect to /mcp/consent (consent screen)
+    FE->>FE: 6. User approves/denies scopes
+    FE->>BE: 7. Redirect back with consent_approved=true
+    BE->>Casdoor: 8. Proxy to Casdoor auth code flow
+    Casdoor-->>BE: 9. Auth code
+    BE-->>AI: 10. Redirect with auth code
+    AI->>BE: 11. POST /mcp/oauth/token (exchange code)
+    BE->>Casdoor: 12. Exchange code for tokens
+    Casdoor-->>BE: 13. Access + refresh tokens
+    BE-->>AI: 14. Access token
+    AI->>BE: 15. POST /mcp (Bearer token + MCP request)
+    BE-->>AI: 16. MCP response (tools/list, tools/call, etc.)
+`} />
+
+### Consent screen
+
+When an AI client initiates the OAuth flow, the user is redirected to the
+Primebrick frontend consent screen at `/mcp/consent`. This screen shows:
+
+- The AI client name (from DCR registration)
+- The requested scopes
+- **Approve** and **Deny** buttons
+
+If the user denies consent, the AI client receives an `access_denied` error.
+If the user approves, the flow continues to Casdoor for authentication.
+
+## Connecting your AI client
+
+The easiest way to connect is through the interactive MCP card on the
+[API Catalog](/catalog/system/mcp) page, which provides copy-paste
+configuration for Claude, ChatGPT, Cursor, VS Code, and generic MCP clients.
+
+### Claude (Desktop)
+
+Add the MCP server via the Claude desktop app:
+
+```json
+{
+  "mcpServers": {
+    "primebrick": {
+      "url": "http://localhost:3001/mcp",
+      "transport": "http"
+    }
+  }
+}
+```
+
+Or via CLI:
+
+```bash
+claude mcp add primebrick --transport http http://localhost:3001/mcp
+```
+
+### Cursor
+
+Add to `.cursor/mcp.json` in your project:
+
+```json
+{
+  "mcpServers": {
+    "primebrick": {
+      "url": "http://localhost:3001/mcp",
+      "transport": "http"
+    }
+  }
+}
+```
+
+### VS Code (Copilot)
+
+Add to `.vscode/mcp.json`:
+
+```json
+{
+  "servers": {
+    "primebrick": {
+      "type": "http",
+      "url": "http://localhost:3001/mcp"
+    }
+  }
+}
+```
+
+### Generic MCP client
+
+For any MCP client that supports HTTP transport:
+
+```json
+{
+  "mcpServers": {
+    "primebrick": {
+      "url": "http://localhost:3001/mcp",
+      "transport": "http"
+    }
+  }
+}
+```
+
+## OAuth discovery endpoints
+
+The MCP server exposes the following OAuth 2.1 discovery endpoints:
+
+| Endpoint | RFC | Purpose |
+|----------|-----|---------|
+| `GET /.well-known/oauth-protected-resource/mcp` | RFC 9728 | Protected Resource Metadata — tells AI clients where the AS is |
+| `GET /.well-known/oauth-authorization-server` | RFC 8414 | Authorization Server Metadata — endpoints, scopes, grant types |
+| `POST /mcp/oauth/register` | RFC 7591 | Dynamic Client Registration — AI clients register themselves |
+| `GET /mcp/oauth/authorize` | — | Authorization endpoint (proxies to Casdoor via FE consent screen) |
+| `POST /mcp/oauth/token` | — | Token endpoint (proxies to Casdoor token exchange) |
+
+## RBAC enforcement
+
+All MCP tool calls are subject to the same RBAC permission system as the
+regular API. The user's OAuth access token contains their Casdoor roles,
+which are mapped to Primebrick permissions via the `role_mappings` table.
+
+For example, calling `list_records` with `entity="customers"` requires the
+`customers.read.all` permission. Calling `delete_record` requires
+`customers.delete.single`. Admin users (with `is_admin=true`) bypass all
+permission checks.
+
+See [RBAC](/api/rbac) for the full permission system documentation.

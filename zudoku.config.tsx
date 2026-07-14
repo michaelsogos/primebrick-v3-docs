@@ -130,6 +130,12 @@ const config: ZudokuConfig = {
         { type: "separator" },
         {
           type: "link",
+          label: "MCP Server",
+          to: "/api/mcp-server",
+          icon: "bot",
+        },
+        {
+          type: "link",
           label: "API Catalog",
           to: "/catalog",
           icon: "square-library",
