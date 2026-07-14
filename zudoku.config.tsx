@@ -2,6 +2,7 @@ import type { ZudokuConfig } from "zudoku";
 import { Mermaid } from "zudoku/mermaid";
 import { serviceNav, libraryNav } from "./src/generated-nav";
 import { generatedApis } from "./src/generated-apis";
+import GitHubDropdown from "./src/components/GitHubDropdown";
 import "./src/styles.css";
 
 const config: ZudokuConfig = {
@@ -20,16 +21,6 @@ const config: ZudokuConfig = {
     },
     footer: {
       position: "center",
-      columns: [
-        {
-          title: "Resources",
-          links: [
-            { label: "Landing Page", href: "https://primebrick.dev" },
-            { label: "API Catalog", href: "/catalog" },
-            { label: "GitHub", href: "https://github.com/michaelsogos" },
-          ],
-        },
-      ],
       social: [
         { icon: "github", href: "https://github.com/michaelsogos" },
       ],
@@ -92,15 +83,17 @@ const config: ZudokuConfig = {
       enabled: true,
     },
     navigation: [
-      { label: "Docs", to: "https://primebrick.dev", target: "_blank" },
+      { label: "Docs", to: "/getting-started/introduction" },
       { label: "Contact", to: "https://primebrick.dev/en/contact", target: "_blank" },
       { label: "MIT License", to: "https://opensource.org/license/MIT", target: "_blank" },
-      { label: "GitHub", to: "https://github.com/michaelsogos", target: "_blank" },
     ],
     placements: {
       navigation: "end",
       auth: "end",
     },
+  },
+  slots: {
+    "head-navigation-end": () => <GitHubDropdown />,
   },
   navigation: [
     {
