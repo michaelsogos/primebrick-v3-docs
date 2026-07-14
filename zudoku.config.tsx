@@ -140,10 +140,18 @@ const config: ZudokuConfig = {
       icon: "bot",
     },
     {
-      type: "link",
+      type: "category",
       label: "API Catalog",
-      to: "/catalog",
       icon: "square-library",
+      items: [
+        { type: "link", label: "Overview", to: "/catalog", icon: "layout-grid" },
+        ...generatedApis.map((api) => ({
+          type: "link" as const,
+          label: api.label ?? api.path,
+          to: api.path,
+          icon: "plug",
+        })),
+      ],
     },
     {
       type: "category",
