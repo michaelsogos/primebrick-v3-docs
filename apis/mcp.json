@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.3",
   "info": {
-    "title": "MCP Server",
+    "title": "MCP Catalog",
     "version": "1.0.0",
     "description": "Model Context Protocol (MCP) server for Primebrick. AI clients (Claude, ChatGPT, Cursor, VS Code) connect to the MCP endpoint to access Primebrick tools for entity CRUD, discovery, and service management. OAuth 2.1 authentication with RFC 9728, RFC 8414, and RFC 7591 support."
   },

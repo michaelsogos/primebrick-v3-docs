@@ -177,7 +177,7 @@ if (existsSync(beOpenapiPath)) {
     extractedApis.push({
       file: './apis/system.json',
       path: '/catalog/system',
-      label: 'System Catalog',
+      label: spec.info.title,
       categories: [{ label: 'System Brick', tags: ['Backend', 'Core'] }],
     });
 
@@ -185,7 +185,7 @@ if (existsSync(beOpenapiPath)) {
     const mcpSpec = {
       openapi: spec.openapi,
       info: {
-        title: 'MCP Server',
+        title: 'MCP Catalog',
         version: '1.0.0',
         description: 'Model Context Protocol (MCP) server for Primebrick. AI clients (Claude, ChatGPT, Cursor, VS Code) connect to the MCP endpoint to access Primebrick tools for entity CRUD, discovery, and service management. OAuth 2.1 authentication with RFC 9728, RFC 8414, and RFC 7591 support.'
       },
@@ -206,7 +206,7 @@ if (existsSync(beOpenapiPath)) {
     extractedApis.push({
       file: './apis/mcp.json',
       path: '/catalog/mcp',
-      label: 'MCP Catalog',
+      label: mcpSpec.info.title,
       categories: [{ label: 'System Brick', tags: ['MCP', 'AI'] }],
     });
   }
@@ -232,18 +232,14 @@ for (const { serviceCode, routePath } of microserviceSpecs) {
     writeFileSync(outFile, JSON.stringify(spec, null, 2), 'utf-8');
     console.log(`  Wrote ${outFile} (${JSON.stringify(spec).length} bytes)`);
 
-    // Derive a human-readable label from the service code
-    const baseLabel = serviceCode
-      .split(/[-_]/)
-      .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
-      .join(' ');
-    const label = `${baseLabel} Catalog`;
+    // Use the spec's info.title as the label (same source as catalog card)
+    const label = spec.info?.title || serviceCode;
 
     extractedApis.push({
       file: `./apis/${serviceCode}.json`,
       path: `/catalog/${serviceCode}`,
       label,
-      categories: [{ label: 'Microservices', tags: [baseLabel, 'Brick'] }],
+      categories: [{ label: 'Microservices', tags: [label, 'Brick'] }],
     });
   }
 }
@@ -264,7 +260,7 @@ if (extractedApis.length === 0) {
   extractedApis.push({
     file: './apis/system.json',
     path: '/catalog/system',
-    label: 'System Catalog',
+    label: placeholder.info.title,
     categories: [{ label: 'System Brick', tags: ['Backend', 'Core'] }],
   });
 }
