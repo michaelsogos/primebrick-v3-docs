@@ -68,6 +68,34 @@ This project deploys as a **Cloudflare Worker** with static assets (NOT Pages �
 - Deploy command: `wrangler deploy`
 - 0ms Worker CPU — all requests served as static assets (free, unlimited)
 
+## CI / Deployment
+
+**This repo uses Cloudflare Worker CI — push to `main` triggers deployment.**
+
+No GitFlow release process is needed for this repo. A simple `git push origin main`
+is sufficient — Cloudflare's GitHub integration automatically builds and deploys
+the site on every push to `main`.
+
+### Primebrick CI/Deployment overview (all repos)
+
+| Repo | CI/Deployment | Process to deploy |
+|------|--------------|-------------------|
+| **primebrick-v3-docs** (this repo) | Cloudflare Worker CI | Push to `main` — auto-deploys |
+| **primebrick-v3-website** | Cloudflare Worker CI | Push to `main` — auto-deploys |
+| **primebrick-v3-backend** (BE) | No auto-deploy CI | GitFlow: create release branch → close → merge to `main` + tag |
+| **primebrick-v3-frontend** (FE) | No auto-deploy CI | GitFlow: create release branch → close → merge to `main` + tag |
+| **primebrick-v3-microservices** (US) | No auto-deploy CI | GitFlow: create release branch → close → merge to `main` + tag |
+| **primebrick-v3-sdk** (SDK) | GitHub Actions | GitFlow: create release → close → merge to `main` + tag → CI publishes to npm |
+| **primebrick-v3-dal** (DAL) | GitHub Actions | GitFlow: create release → close → merge to `main` + tag → CI publishes to npm |
+
+**Key points for AI agents:**
+- **Docs/Website**: Just push to `main`. No release process.
+- **BE/FE/US**: Must follow full GitFlow. Pushing to `develop` or feature branches
+  is fine for development, but deployment only happens when a release is closed
+  and merged to `main` with a version tag.
+- **SDK/DAL**: Same GitFlow process as BE/FE/US, but GitHub Actions auto-publishes
+  to npm when the tagged release lands on `main`.
+
 ## Custom domain
 
 The Worker should be bound to `docs.primebrick.dev` via Cloudflare dashboard
