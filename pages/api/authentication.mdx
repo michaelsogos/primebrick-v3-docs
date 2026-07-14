@@ -55,7 +55,7 @@ curl http://localhost:3001/api/v1/customers \
 For server-to-server communication where no user is involved. The client uses the **OAuth2 client credentials flow** to obtain a token directly from Casdoor:
 
 ```bash
-curl -X POST http://localhost:3000/api/v1/auth/token \
+curl -X POST http://localhost:3001/api/v1/auth/token \
   -H "Content-Type: application/x-www-form-urlencoded" \
   -d "grant_type=client_credentials&client_id=YOUR_CLIENT_ID&client_secret=YOUR_CLIENT_SECRET"
 ```
@@ -75,7 +75,7 @@ API keys are the simplest credential type — no token exchange, no refresh logi
 
 ## API Explorer authentication
 
-The [API Explorer](/api) on this site uses **API keys** for simplicity. This keeps the explorer straightforward: paste a key and start making requests.
+The [API Catalog](/catalog) on this site uses **API keys** for simplicity. This keeps the explorer straightforward: paste a key and start making requests.
 
 > **Note:** User tokens (username/password → JWT) and OAuth2 client credentials are fully supported by the Primebrick platform, but they are **not exposed in the API Explorer REPL yet**. The explorer's auth UI supports bearer tokens and API keys. For full OAuth2 flows, use Casdoor directly or your own client.
 
@@ -104,4 +104,4 @@ The [API Explorer](/api) on this site uses **API keys** for simplicity. This kee
 
 - [RBAC](./rbac) — how permissions are checked after authentication.
 - [Error Handling](./error-handling) — what auth errors look like.
-- [API Explorer](/api) — try it live.
+- [API Catalog](/catalog) — try it live.

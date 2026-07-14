@@ -7,30 +7,58 @@ description: "The layered architecture of Primebrick and how the components comm
 
 Primebrick follows a **layered architecture** with clear separation of concerns. Each layer has a well-defined responsibility and communicates with others through established protocols.
 
-```text
-┌─────────────────────────────────────────────────┐
-│                  Frontend (SvelteKit)            │
-│              Admin UI · port 5173                │
-└──────────────────────┬──────────────────────────┘
-                       │ HTTP / WebSocket
-┌──────────────────────▼──────────────────────────┐
-│              Backend (Express API)               │
-│              port 3001 · /api/v1/                │
-│  Auth · RBAC · Service Registry · Proxy          │
-└──────┬──────────────┬───────────────┬───────────┘
-       │              │               │
-       │ NATS         │ HTTP          │ HTTP
-       │              │               │
-┌──────▼─────┐ ┌──────▼──────┐ ┌──────▼──────┐
-│ Microservice│ │ Microservice│ │ Microservice│
-│   (repo A)  │ │   (repo B)  │ │   (repo C)  │
-└─────────────┘ └─────────────┘ └─────────────┘
-       │
-┌──────▼──────────────────────────┐
-│   DAL (@primebrick/dal)          │
-│   Data Access Layer library      │
-└──────────────────────────────────┘
-```
+<Mermaid chart={`graph TB
+    subgraph FE["Frontend Layer"]
+        SvelteKit["SvelteKit Admin UI<br/>port 5173"]
+    end
+
+    subgraph BE["Backend Layer (System Brick)"]
+        Express["Express API<br/>port 3001 · /api/v1/"]
+        Auth["Auth · RBAC"]
+        Registry["Service Registry"]
+        Proxy["Round-Robin Proxy"]
+    end
+
+    subgraph MS["Microservice Layer (Docker)"]
+        EmailSender["EmailSender"]
+        MS2["Microservice B"]
+        MS3["Microservice C"]
+    end
+
+    subgraph Libs["Shared Libraries"]
+        SDK["@primebrick/sdk"]
+        DAL["@primebrick/dal-pg"]
+    end
+
+    subgraph Data["Data Layer"]
+        Postgres["PostgreSQL<br/>port 5432"]
+    end
+
+    subgraph Infra["Infrastructure"]
+        Casdoor["Casdoor OAuth2<br/>port 8000"]
+        NATS["NATS<br/>port 4222"]
+    end
+
+    SvelteKit -->|HTTP /api/v1/| Express
+    Express --> Auth
+    Express --> Registry
+    Express --> Proxy
+    Express -->|OAuth2| Casdoor
+    Express <-->|NATS| NATS
+    Proxy -->|HTTP /ws/:code| EmailSender
+    Proxy -->|HTTP /ws/:code| MS2
+    Proxy -->|HTTP /ws/:code| MS3
+    EmailSender <-->|NATS| NATS
+    MS2 <-->|NATS| NATS
+    Express -->|SQL via DAL| Postgres
+    EmailSender -->|SQL via DAL| Postgres
+    MS2 -->|SQL via DAL| Postgres
+    SDK -.->|used by| EmailSender
+    SDK -.->|used by| MS2
+    SDK -.->|used by| MS3
+    DAL -.->|used by| Express
+    DAL -.->|used by| EmailSender
+`} />
 
 ## Layers
 

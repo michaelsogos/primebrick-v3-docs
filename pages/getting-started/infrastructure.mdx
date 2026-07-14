@@ -7,8 +7,7 @@ description: "Complete infrastructure map of Primebrick — components, ports, p
 
 Primebrick runs as a set of independent services connected via HTTP and NATS messaging. Everything is Dockerized for local development and deployable to any cloud via Terraform.
 
-```mermaid
-graph TB
+<Mermaid chart={`graph TB
     subgraph Clients["External Clients"]
         Browser["Browser / Admin UI"]
         API["API Clients (SDK, curl)"]
@@ -40,7 +39,7 @@ graph TB
     end
 
     subgraph Data["Data Layer"]
-        Postgres["PostgreSQL<br/>port 5432<br/>+ pgvector"]
+        Postgres["PostgreSQL<br/>port 5432<br/>+ pgvector (planned)"]
     end
 
     subgraph Libs["Shared Libraries"]
@@ -74,7 +73,7 @@ graph TB
     DAL -.->|used by| Express
     DAL -.->|used by| EmailSender
     DAL -.->|used by| MS2
-```
+`} />
 
 ## Components
 
@@ -127,6 +126,7 @@ Each microservice is an independent, Dockerized service with its own lifecycle, 
 - **Protocol**: HTTP for direct calls, NATS for lifecycle events
 - **Self-registration**: Via `@primebrick/sdk` `ServiceRegistrar`
 - **OpenAPI spec**: Served at `/api/v1/openapi.json`
+- **Aggregated spec**: Backend merges all online specs at `/api/v1/openapi/aggregated.json` (microservice paths prefixed with `/ws/:serviceCode`)
 - **Talks to**: PostgreSQL (via DAL), NATS (via SDK), Backend (via proxy)
 
 ### Data Layer — PostgreSQL + pgvector
@@ -166,8 +166,7 @@ The DAL is the shared data access library. It provides:
 
 ### Request flow (client → database)
 
-```mermaid
-sequenceDiagram
+<Mermaid chart={`sequenceDiagram
     participant C as Client
     participant FE as SvelteKit
     participant BE as Backend
@@ -197,12 +196,11 @@ sequenceDiagram
         BE-->>FE: JSON response
         FE-->>C: HTML/JSON
     end
-```
+`} />
 
 ### Service lifecycle (startup → heartbeat → shutdown)
 
-```mermaid
-sequenceDiagram
+<Mermaid chart={`sequenceDiagram
     participant MS as Microservice
     participant SDK as @primebrick/sdk
     participant NATS
@@ -226,7 +224,7 @@ sequenceDiagram
     SDK->>NATS: Publish "service.unregister"
     NATS->>BE: Deliver unregister
     BE->>DB: UPDATE status = offline
-```
+`} />
 
 ## Deployment
 
@@ -236,13 +234,13 @@ sequenceDiagram
 # docker-compose.postgres.yml
 services:
   postgres:
-    image: postgres:17
+    image: postgres:18-bookworm
     ports: ["5432:5432"]
   casdoor:
-    image: casbin/casdoor
+    image: casbin/casdoor:3.75.0
     ports: ["8000:8000"]
   nats:
-    image: nats:2
+    image: nats:latest  # JetStream enabled
     ports: ["4222:4222", "8222:8222"]
 ```
 

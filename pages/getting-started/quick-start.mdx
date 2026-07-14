@@ -20,15 +20,15 @@ You also need access to the Primebrick GitHub repositories.
 Primebrick is split into several repos. For a full local environment you need at minimum the backend and frontend:
 
 ```bash
-git clone https://github.com/michaelsogos/primebrick-be-v3.git
-git clone https://github.com/michaelsogos/primebrick-fe-v3.git
+git clone https://github.com/michaelsogos/primebrick-v3-backend.git
+git clone https://github.com/michaelsogos/primebrick-v3-frontend.git
 ```
 
 If you plan to develop microservices or shared libraries, also clone:
 
 ```bash
-git clone https://github.com/michaelsogos/primebrick-us-v3.git   # microservices
-git clone https://github.com/michaelsogos/primebrick-dal-v3.git  # DAL library
+git clone https://github.com/michaelsogos/primebrick-v3-microservices.git   # microservices
+git clone https://github.com/michaelsogos/primebrick-v3-dal.git  # DAL library
 git clone https://github.com/michaelsogos/primebrick-v3-sdk.git  # SDK
 ```
 
@@ -37,7 +37,7 @@ git clone https://github.com/michaelsogos/primebrick-v3-sdk.git  # SDK
 The backend repo includes a `docker-compose.yml` that spins up PostgreSQL, Casdoor, and NATS:
 
 ```bash
-cd primebrick-be-v3
+cd primebrick-v3-backend
 docker compose up -d
 ```
 
@@ -52,10 +52,10 @@ This starts:
 Install dependencies for the backend and frontend:
 
 ```bash
-cd primebrick-be-v3
+cd primebrick-v3-backend
 pnpm install
 
-cd ../primebrick-fe-v3
+cd ../primebrick-v3-frontend
 pnpm install
 ```
 
@@ -64,7 +64,7 @@ pnpm install
 Primebrick includes a setup script that configures Casdoor with the default application, organizations, and roles:
 
 ```bash
-cd primebrick-be-v3
+cd primebrick-v3-backend
 pnpm run setup:casdoor
 ```
 
@@ -84,13 +84,13 @@ Start the backend and frontend in separate terminals:
 
 ```bash
 # Terminal 1 — backend
-cd primebrick-be-v3
+cd primebrick-v3-backend
 pnpm run dev
 ```
 
 ```bash
 # Terminal 2 — frontend
-cd primebrick-fe-v3
+cd primebrick-v3-frontend
 pnpm run dev
 ```
 

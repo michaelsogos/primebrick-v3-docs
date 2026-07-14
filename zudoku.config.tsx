@@ -1,22 +1,8 @@
 import type { ZudokuConfig } from "zudoku";
-import type { ComponentPropsWithoutRef } from "react";
+import { Mermaid } from "zudoku/mermaid";
 import { serviceNav, libraryNav } from "./src/generated-nav";
 import { generatedApis } from "./src/generated-apis";
-import Mermaid from "./src/Mermaid";
 import "./src/styles.css";
-
-// Override <pre> to render mermaid code blocks as diagrams instead of highlighted code
-function PreComponent(props: ComponentPropsWithoutRef<"pre">) {
-  const child = props.children as React.ReactNode;
-  // Shiki/rehype wraps code blocks in <pre><code class="language-xxx">
-  if (child && typeof child === "object" && "props" in child) {
-    const childProps = (child as React.ReactElement).props as { className?: string; children?: React.ReactNode };
-    if (childProps.className?.includes("language-mermaid")) {
-      return <Mermaid>{childProps.children}</Mermaid>;
-    }
-  }
-  return <pre {...props} />;
-}
 
 const config: ZudokuConfig = {
   site: {
@@ -189,7 +175,7 @@ const config: ZudokuConfig = {
   },
   mdx: {
     components: {
-      pre: PreComponent,
+      Mermaid,
     },
   },
   syntaxHighlighting: {

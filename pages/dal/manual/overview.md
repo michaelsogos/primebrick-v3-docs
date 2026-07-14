@@ -16,8 +16,8 @@ The `Dal` gateway class (`getDal()`) owns the `pg.Pool`, registers type parsers,
 
 ## Consumers
 
-- **primebrick-us-v3** (microservices) — Phase 2 (after DAL is released)
-- **primebrick-be-v3** (backend) — Phase 3 (after US integration)
+- **primebrick-v3-microservices** (microservices) — Phase 2 (after DAL is released)
+- **primebrick-v3-backend** (backend) — Phase 3 (after US integration)
 
 ## Commands
 

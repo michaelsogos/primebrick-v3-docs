@@ -13,7 +13,7 @@ A compliant microservice must:
 
 1. **Self-register** with the backend on startup
 2. **Send heartbeats** at a regular interval
-3. **Expose OpenAPI** at `/api/openapi.json`
+3. **Expose OpenAPI** at `/api/v1/openapi.json`
 4. **Use NATS** for inter-service messaging
 5. **Return RFC 7807 Problem Details** for all errors
 
@@ -28,7 +28,7 @@ const service = new Microservice({
   serviceCode: 'billing',
   baseUrl: 'http://localhost:3002',
   healthEndpoint: '/health',
-  openapiEndpoint: '/api/openapi.json',
+  openapiEndpoint: '/api/v1/openapi.json',
   natsUrl: 'nats://localhost:4222',
 });
 
@@ -94,7 +94,7 @@ NATS decouples services: a service can publish events without knowing who consum
 Each microservice must expose its OpenAPI specification at:
 
 ```text
-GET /api/openapi.json
+GET /api/v1/openapi.json
 ```
 
 The backend fetches each online service's spec and merges it into the **aggregated spec** at `/api/v1/openapi/aggregated.json`. Microservice paths are prefixed with `/ws/:serviceCode` so they match the proxy.
@@ -127,7 +127,7 @@ A microservice is compliant when it:
 - [x] Sends heartbeats and handles stale detection
 - [x] Is reachable through the `/ws/:serviceCode` proxy
 - [x] Uses NATS for inter-service messaging
-- [x] Exposes OpenAPI at `/api/openapi.json`
+- [x] Exposes OpenAPI at `/api/v1/openapi.json`
 - [x] Returns RFC 7807 Problem Details for all errors
 
 ## Next steps
