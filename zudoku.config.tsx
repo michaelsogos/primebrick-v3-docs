@@ -10,7 +10,7 @@ const config: ZudokuConfig = {
     logo: {
       src: { light: "/logo-light.svg", dark: "/logo-dark.svg" },
       alt: "Primebrick",
-      width: "140px",
+      width: "120px",
       href: "https://primebrick.dev",
     },
     sidebar: {
@@ -92,7 +92,9 @@ const config: ZudokuConfig = {
       enabled: true,
     },
     navigation: [
-      { label: "Primebrick.dev", to: "https://primebrick.dev", target: "_blank" },
+      { label: "Docs", to: "https://primebrick.dev", target: "_blank" },
+      { label: "Contact", to: "https://primebrick.dev/en/contact", target: "_blank" },
+      { label: "MIT License", to: "https://opensource.org/license/MIT", target: "_blank" },
       { label: "GitHub", to: "https://github.com/michaelsogos", target: "_blank" },
     ],
     placements: {
