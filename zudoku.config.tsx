@@ -3,6 +3,7 @@ import { Mermaid } from "zudoku/mermaid";
 import { serviceNav, libraryNav } from "./src/generated-nav";
 import { generatedApis } from "./src/generated-apis";
 import GitHubDropdown from "./src/components/GitHubDropdown";
+import ApiSwitcher from "./src/components/ApiSwitcher";
 import "./src/styles.css";
 
 const config: ZudokuConfig = {
@@ -84,6 +85,7 @@ const config: ZudokuConfig = {
     },
     navigation: [
       { label: "Docs", to: "/getting-started/introduction" },
+      { label: "API Catalog", to: "/catalog" },
       { label: "Contact", to: "https://primebrick.dev/en/contact", target: "_blank" },
       { label: "MIT License", to: "https://opensource.org/license/MIT", target: "_blank" },
     ],
@@ -94,6 +96,7 @@ const config: ZudokuConfig = {
   },
   slots: {
     "head-navigation-end": () => <GitHubDropdown />,
+    "navigation-before": () => <ApiSwitcher />,
   },
   navigation: [
     {

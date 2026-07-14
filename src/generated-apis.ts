@@ -8,6 +8,7 @@ export const generatedApis: ZudokuConfig["apis"] = [
     type: "file",
     input: "./apis/system.json",
     path: "/catalog/system",
+    label: "Primebrick API",
     options: {
       disableSecurity: false,
       expandAllTags: true,
