@@ -85,7 +85,6 @@ const config: ZudokuConfig = {
     },
     navigation: [
       { label: "Docs", to: "/getting-started/introduction" },
-      { label: "API Catalog", to: "/catalog" },
       { label: "Contact", to: "https://primebrick.dev/en/contact", target: "_blank" },
       { label: "MIT License", to: "https://opensource.org/license/MIT", target: "_blank" },
     ],
@@ -131,27 +130,20 @@ const config: ZudokuConfig = {
           ],
         },
         { type: "separator" },
-        {
-          type: "link",
-          label: "MCP Server",
-          to: "/api/mcp-server",
-          icon: "bot",
-        },
-        {
-          type: "category",
-          label: "API Catalog",
-          icon: "square-library",
-          items: [
-            { type: "link", label: "Overview", to: "/catalog", icon: "layout-grid" },
-            ...generatedApis.map((api) => ({
-              type: "link" as const,
-              label: api.label ?? api.path,
-              to: api.path,
-              icon: "plug",
-            })),
-          ],
-        },
+        "api/mcp-server",
       ],
+    },
+    {
+      type: "link",
+      label: "MCP Server",
+      to: "/api/mcp-server",
+      icon: "bot",
+    },
+    {
+      type: "link",
+      label: "API Catalog",
+      to: "/catalog",
+      icon: "square-library",
     },
     {
       type: "category",

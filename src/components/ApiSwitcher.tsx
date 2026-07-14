@@ -11,14 +11,15 @@ import { generatedApis } from "../generated-apis";
 /**
  * Dropdown that appears at the top of the sidebar on API explorer pages
  * (paths starting with /catalog/). Lets users switch between APIs without
- * going back to the catalog overview.
+ * going back to the catalog overview. Includes an "Overview" option that
+ * navigates back to /catalog.
  */
 export default function ApiSwitcher() {
   const location = useLocation();
   const navigate = useNavigate();
 
   // Only render on API catalog pages
-  if (!location.pathname.startsWith("/catalog/")) return null;
+  if (!location.pathname.startsWith("/catalog")) return null;
 
   // Find the current API from the path
   const currentApi = generatedApis.find(
@@ -27,20 +28,25 @@ export default function ApiSwitcher() {
       location.pathname.startsWith(api.path + "/"),
   );
 
-  // Don't render if we're on the catalog overview itself (no specific API)
-  if (!currentApi) return null;
+  // Current value: the API path, or "overview" if on /catalog
+  const currentValue = currentApi ? currentApi.path : "overview";
 
   const handleChange = (value: string) => {
-    navigate(value);
+    if (value === "overview") {
+      navigate("/catalog");
+    } else {
+      navigate(value);
+    }
   };
 
   return (
     <div className="px-2 pb-3 pt-2">
-      <Select value={currentApi.path} onValueChange={handleChange}>
+      <Select value={currentValue} onValueChange={handleChange}>
         <SelectTrigger size="sm" className="w-full">
           <SelectValue placeholder="Select API..." />
         </SelectTrigger>
         <SelectContent>
+          <SelectItem value="overview">Catalog Overview</SelectItem>
           {generatedApis.map((api) => (
             <SelectItem key={api.path} value={api.path}>
               {api.label ?? api.path}

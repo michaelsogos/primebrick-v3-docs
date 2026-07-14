@@ -123,14 +123,91 @@ const beOpenapiPath = join(tmpDir, 'backend', 'src', 'openapi', 'openapi.ts');
 if (existsSync(beOpenapiPath)) {
   const spec = extractSpecViaTsx(beOpenapiPath, 'openapi');
   if (spec) {
-    const outFile = join(apisDir, 'system.json');
-    writeFileSync(outFile, JSON.stringify(spec, null, 2), 'utf-8');
-    console.log(`  Wrote ${outFile} (${JSON.stringify(spec).length} bytes)`);
+    // Split MCP endpoints into a separate spec
+    const mcpPaths = {};
+    const systemPaths = {};
+    const mcpSchemaNames = new Set();
+    for (const [path, methods] of Object.entries(spec.paths)) {
+      let isMcp = false;
+      for (const [method, op] of Object.entries(methods)) {
+        if (op.tags && (op.tags.includes('MCP') || op.tags.includes('MCP OAuth'))) {
+          isMcp = true;
+          if (op.requestBody?.content) {
+            for (const ct of Object.values(op.requestBody.content)) {
+              if (ct.schema?.$ref) mcpSchemaNames.add(ct.schema.$ref.split('/').pop());
+            }
+          }
+          if (op.responses) {
+            for (const resp of Object.values(op.responses)) {
+              if (resp.content) {
+                for (const ct of Object.values(resp.content)) {
+                  if (ct.schema?.$ref) mcpSchemaNames.add(ct.schema.$ref.split('/').pop());
+                }
+              }
+            }
+          }
+        }
+      }
+      if (isMcp) {
+        mcpPaths[path] = methods;
+      } else {
+        systemPaths[path] = methods;
+      }
+    }
+
+    // Build MCP-specific schemas
+    const mcpSchemas = {};
+    for (const name of mcpSchemaNames) {
+      if (spec.components?.schemas?.[name]) {
+        mcpSchemas[name] = spec.components.schemas[name];
+      }
+    }
+
+    // Write system.json (without MCP endpoints)
+    spec.paths = systemPaths;
+    spec.tags = (spec.tags || []).filter(t => t.name !== 'MCP' && t.name !== 'MCP OAuth');
+    if (spec.components?.schemas) {
+      for (const name of mcpSchemaNames) {
+        delete spec.components.schemas[name];
+      }
+    }
+    const systemFile = join(apisDir, 'system.json');
+    writeFileSync(systemFile, JSON.stringify(spec, null, 2), 'utf-8');
+    console.log(`  Wrote ${systemFile} (${JSON.stringify(spec).length} bytes)`);
     extractedApis.push({
       file: './apis/system.json',
       path: '/catalog/system',
-      label: 'System (Backend)',
+      label: 'System Catalog',
       categories: [{ label: 'System Brick', tags: ['Backend', 'Core'] }],
+    });
+
+    // Write mcp.json (MCP endpoints only)
+    const mcpSpec = {
+      openapi: spec.openapi,
+      info: {
+        title: 'MCP Server',
+        version: '1.0.0',
+        description: 'Model Context Protocol (MCP) server for Primebrick. AI clients (Claude, ChatGPT, Cursor, VS Code) connect to the MCP endpoint to access Primebrick tools for entity CRUD, discovery, and service management. OAuth 2.1 authentication with RFC 9728, RFC 8414, and RFC 7591 support.'
+      },
+      servers: spec.servers,
+      tags: [
+        { name: 'MCP', description: 'Model Context Protocol server endpoint for AI client integration' },
+        { name: 'MCP OAuth', description: 'OAuth 2.1 endpoints for MCP server authentication (RFC 9728, RFC 8414, RFC 7591)' }
+      ],
+      paths: mcpPaths,
+      components: {
+        securitySchemes: spec.components?.securitySchemes || {},
+        schemas: mcpSchemas
+      }
+    };
+    const mcpFile = join(apisDir, 'mcp.json');
+    writeFileSync(mcpFile, JSON.stringify(mcpSpec, null, 2), 'utf-8');
+    console.log(`  Wrote ${mcpFile} (${JSON.stringify(mcpSpec).length} bytes)`);
+    extractedApis.push({
+      file: './apis/mcp.json',
+      path: '/catalog/mcp',
+      label: 'MCP Catalog',
+      categories: [{ label: 'System Brick', tags: ['MCP', 'AI'] }],
     });
   }
 } else {
@@ -156,16 +233,17 @@ for (const { serviceCode, routePath } of microserviceSpecs) {
     console.log(`  Wrote ${outFile} (${JSON.stringify(spec).length} bytes)`);
 
     // Derive a human-readable label from the service code
-    const label = serviceCode
+    const baseLabel = serviceCode
       .split(/[-_]/)
       .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
       .join(' ');
+    const label = `${baseLabel} Catalog`;
 
     extractedApis.push({
       file: `./apis/${serviceCode}.json`,
       path: `/catalog/${serviceCode}`,
       label,
-      categories: [{ label: 'Microservices', tags: [label, 'Brick'] }],
+      categories: [{ label: 'Microservices', tags: [baseLabel, 'Brick'] }],
     });
   }
 }
@@ -186,7 +264,7 @@ if (extractedApis.length === 0) {
   extractedApis.push({
     file: './apis/system.json',
     path: '/catalog/system',
-    label: 'System (Backend)',
+    label: 'System Catalog',
     categories: [{ label: 'System Brick', tags: ['Backend', 'Core'] }],
   });
 }

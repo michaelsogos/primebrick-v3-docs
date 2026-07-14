@@ -8,7 +8,7 @@ export const generatedApis: ZudokuConfig["apis"] = [
     type: "file",
     input: "./apis/system.json",
     path: "/catalog/system",
-    label: "Primebrick API",
+    label: "System Catalog",
     options: {
       disableSecurity: false,
       expandAllTags: true,
@@ -20,13 +20,38 @@ export const generatedApis: ZudokuConfig["apis"] = [
       },
     },
     categories: [
-          {
-                "label": "System Brick",
-                "tags": [
-                      "Backend",
-                      "Core"
-                ]
-          }
+      {
+        "label": "System Brick",
+        "tags": [
+          "Backend",
+          "Core"
+        ]
+      }
+    ],
+  },
+  {
+    type: "file",
+    input: "./apis/mcp.json",
+    path: "/catalog/mcp",
+    label: "MCP Catalog",
+    options: {
+      disableSecurity: false,
+      expandAllTags: true,
+      showInfoPage: true,
+      examplesLanguage: "js",
+      schemaDownload: {
+        enabled: true,
+        fileName: "primebrick-mcp",
+      },
+    },
+    categories: [
+      {
+        "label": "System Brick",
+        "tags": [
+          "MCP",
+          "AI"
+        ]
+      }
     ],
   },
 ];
