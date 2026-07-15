@@ -20,13 +20,13 @@ export const generatedApis: ZudokuConfig["apis"] = [
       },
     },
     categories: [
-      {
-        "label": "System Brick",
-        "tags": [
-          "Backend",
-          "Core"
-        ]
-      }
+          {
+                "label": "System Brick",
+                "tags": [
+                      "Backend",
+                      "Core"
+                ]
+          }
     ],
   },
   {
@@ -45,13 +45,38 @@ export const generatedApis: ZudokuConfig["apis"] = [
       },
     },
     categories: [
-      {
-        "label": "System Brick",
-        "tags": [
-          "MCP",
-          "AI"
-        ]
-      }
+          {
+                "label": "System Brick",
+                "tags": [
+                      "MCP",
+                      "AI"
+                ]
+          }
+    ],
+  },
+  {
+    type: "file",
+    input: "./apis/emailsender.json",
+    path: "/catalog/emailsender",
+    label: "EmailSender Catalog",
+    options: {
+      disableSecurity: false,
+      expandAllTags: true,
+      showInfoPage: true,
+      examplesLanguage: "js",
+      schemaDownload: {
+        enabled: true,
+        fileName: "primebrick-emailsender",
+      },
+    },
+    categories: [
+          {
+                "label": "Microservices",
+                "tags": [
+                      "EmailSender Catalog",
+                      "Brick"
+                ]
+          }
     ],
   },
 ];
