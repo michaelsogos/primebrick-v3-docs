@@ -190,6 +190,7 @@ if (existsSync(beOpenapiPath)) {
         description: 'Model Context Protocol (MCP) server for Primebrick. AI clients (Claude, ChatGPT, Cursor, VS Code) connect to the MCP endpoint to access Primebrick tools for entity CRUD, discovery, and service management. OAuth 2.1 authentication with RFC 9728, RFC 8414, and RFC 7591 support.'
       },
       servers: spec.servers,
+      security: spec.security,
       tags: [
         { name: 'MCP', description: 'Model Context Protocol server endpoint for AI client integration' },
         { name: 'MCP OAuth', description: 'OAuth 2.1 endpoints for MCP server authentication (RFC 9728, RFC 8414, RFC 7591)' }
