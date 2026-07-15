@@ -280,6 +280,7 @@ ${extractedApis
     type: "file",
     input: "${api.file}",
     path: "${api.path}",
+    label: ${JSON.stringify(api.label)},
     options: {
       disableSecurity: false,
       expandAllTags: true,
