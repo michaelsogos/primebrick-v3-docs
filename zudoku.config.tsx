@@ -7,12 +7,15 @@ import ApiSwitcher from "./src/components/ApiSwitcher";
 import "./src/styles.css";
 
 const config: ZudokuConfig = {
+  metadata: {
+    favicon: "/favicon.svg",
+  },
   site: {
-    title: "Primebrick Docs",
+    title: "PrimeBrick Docs",
     logo: {
       src: { light: "/logo-light.svg", dark: "/logo-dark.svg" },
-      alt: "Primebrick",
-      width: "120px",
+      alt: "PrimeBrick",
+      width: "170px",
       href: "https://primebrick.dev",
     },
     sidebar: {
@@ -25,11 +28,11 @@ const config: ZudokuConfig = {
       social: [
         { icon: "github", href: "https://github.com/michaelsogos" },
       ],
-      copyright: `© ${new Date().getFullYear()} Primebrick. MIT License.`,
+      copyright: `© ${new Date().getFullYear()} PrimeBrick. MIT License.`,
       logo: {
         src: { light: "/logo-light.svg", dark: "/logo-dark.svg" },
-        alt: "Primebrick",
-        width: "120px",
+        alt: "PrimeBrick",
+        width: "170px",
       },
     },
   },
