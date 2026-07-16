@@ -14,7 +14,7 @@ deployed at `docs.primebrick.dev`. It is a Zudoku (React + Vite) site deployed t
 Cloudflare Workers free plan via the experimental SSR adapter.
 
 The site serves two purposes:
-1. **Project documentation** — architecture docs, guides sourced from DeepWiki + in-repo `docs/` folders, served as MDX pages
+1. **Project documentation** — architecture docs, user-facing guides sourced from per-repo `docs/user-guide/` directories, served as MDX pages
 2. **OpenAPI REPL / API explorer** — interactive API reference with live try-it, server selector, and auth, powered by Zudoku's built-in OpenAPI playground
 
 **Tech stack**: Zudoku 0.82.x + React 19 + Vite 8 + Tailwind (via Zudoku)
@@ -36,6 +36,36 @@ This repo only handles `docs.primebrick.dev`.
 | Preview (Worker) | `pnpm run preview` (wrangler dev, port 8787) |
 | Deploy | `pnpm run deploy` (build + wrangler deploy) |
 | Lint | `pnpm run lint` |
+| Full sync + build (local) | `pnpm install && node scripts/sync-repo-docs.mjs && node scripts/fetch-openapi.mjs && node scripts/generate-nav.mjs && pnpm run build` |
+
+## CI build chain (Cloudflare build agent on push to main)
+
+The Cloudflare build agent runs the full chain on every push to `main`:
+
+```
+pnpm install
+&& node scripts/sync-repo-docs.mjs
+&& node scripts/fetch-openapi.mjs
+&& node scripts/generate-nav.mjs
+&& pnpm run build
+```
+
+1. **`sync-repo-docs.mjs`** — shallow-clones all 5 Primebrick repos, copies
+   `docs/user-guide/**` → `pages/<repo>/guide/**` (recursive, preserves
+   subdirectories like `services/`).
+2. **`fetch-openapi.mjs`** — extracts OpenAPI specs from the shallow-cloned
+   repos: BE's `src/openapi/openapi.ts` → `apis/system.json` + `apis/mcp.json`,
+   and each microservice's `src/server/openapi-route.ts` → `apis/<service>.json`.
+   Also generates `src/generated-apis.ts` for Zudoku's API Catalog config.
+3. **`generate-nav.mjs`** — reads `_order.json` from each `pages/<repo>/guide/`
+   directory and generates `src/generated-nav.ts` with the sidebar navigation
+   in logical reading order. Recurses into subdirectories (e.g. `services/`)
+   and creates nested categories.
+4. **`zudoku build`** — prerenders all routes to static HTML.
+
+The GitHub Actions workflow (`sync-docs.yml`) also runs this chain on a cron
+schedule (every 6 hours) and on push to `main`, committing any changes back
+to the repo.
 
 ## Dev server
 
@@ -103,14 +133,47 @@ The Worker should be bound to `docs.primebrick.dev` via Cloudflare dashboard
 
 ## Synced documentation
 
-Synced MD/MDX files (DeepWiki, in-repo `docs/`) are written into `pages/` by
-sync scripts that run in GitHub Actions CI (NOT on the Worker). These scripts
-will be ported from `primebrick-v3-website/scripts/` and retargeted to write
-into this repo's `pages/` directory.
+User-facing MDX files are written into `pages/<repo>/guide/` by sync scripts
+that run in GitHub Actions CI (NOT on the Worker). The sync flow is:
 
-- Files under `pages/*/deepwiki/` and `pages/*/manual/` are auto-generated.
-  Do NOT hand-edit them — changes will be overwritten on next sync.
-- Hand-written docs go in `pages/*/handwritten/` or directly in `pages/`.
+1. **`scripts/sync-repo-docs.mjs`** — shallow-clones each Primebrick repo,
+   copies `docs/user-guide/**` → `pages/<repo>/guide/`. README.md is used as
+   `overview.md` fallback if no `overview.mdx` exists in `docs/user-guide/`.
+2. **`scripts/generate-nav.mjs`** — reads `_order.json` from each
+   `pages/<repo>/guide/` directory and generates `src/generated-nav.ts` with
+   the sidebar navigation in logical reading order (not alphabetical).
+
+### Where docs content lives
+
+- **User-facing guides** are authored in each repo's `docs/user-guide/`
+  directory (MDX files with frontmatter). They are synced to this repo by
+  the sync scripts — do NOT hand-edit `pages/*/guide/` files here.
+- **Hand-written docs** (getting-started, api guides) live directly in
+  `pages/getting-started/` and `pages/api/` in this repo.
+- **Internal AI docs** (`docs/ai/`, `docs/skills/`, `docs/gitflow.md`) stay
+  in each repo and are NOT synced to the docs site.
+
+### _order.json manifest
+
+Each repo's `docs/user-guide/_order.json` defines the logical reading order
+of pages in the sidebar. Format:
+
+```json
+{
+  "pages": ["overview", "authentication", "rbac", "creating-a-microservice"]
+}
+```
+
+Pages listed in `_order.json` appear first in the specified order. Pages not
+listed are appended alphabetically. If `_order.json` is missing, all pages
+fall back to alphabetical order.
+
+### Mermaid diagrams
+
+All Mermaid diagrams in MDX files MUST use the `<Mermaid chart={...} />`
+component (registered in `zudoku.config.tsx`). NEVER use ` ```Code ` or
+` ```mermaid ` fenced code blocks for Mermaid — they will not render on
+the docs site.
 
 ## Package Versioning — FIXED versions only (MANDATORY)
 

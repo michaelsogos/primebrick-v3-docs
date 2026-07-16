@@ -1,0 +1,70 @@
+name: Sync Docs
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - 'pages/**'
+      - 'src/generated-nav.ts'
+  schedule:
+    # Run every 6 hours to pick up changes from the 5 source repos
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-docs
+  cancel-in-progress: true
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout docs repo
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Sync docs from source repos
+        run: node scripts/sync-repo-docs.mjs
+
+      - name: Fetch OpenAPI specs from source repos
+        run: node scripts/fetch-openapi.mjs
+
+      - name: Generate navigation
+        run: node scripts/generate-nav.mjs
+
+      - name: Check for changes
+        id: changes
+        run: |
+          git add pages/ src/generated-nav.ts src/generated-apis.ts apis/
+          if git diff --staged --quiet; then
+            echo "changed=false" >> $GITHUB_OUTPUT
+            echo "No changes to sync."
+          else
+            echo "changed=true" >> $GITHUB_OUTPUT
+            echo "Changes detected, will commit."
+          fi
+
+      - name: Commit and push
+        if: steps.changes.outputs.changed == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git commit -m "docs: sync from source repos [skip ci]"
+          git push
