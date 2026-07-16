@@ -9,8 +9,7 @@ export const generatedRepoNav: Navigation = [
     "icon": "server",
     "collapsed": true,
     "items": [
-      "backend/deepwiki/index",
-      "backend/manual/overview"
+      "backend/guide/index"
     ]
   },
   {
@@ -19,8 +18,7 @@ export const generatedRepoNav: Navigation = [
     "icon": "monitor",
     "collapsed": true,
     "items": [
-      "frontend/deepwiki/index",
-      "frontend/manual/overview"
+      "frontend/guide/index"
     ]
   },
   {
@@ -29,7 +27,7 @@ export const generatedRepoNav: Navigation = [
     "icon": "boxes",
     "collapsed": true,
     "items": [
-      "microservices/deepwiki/index"
+      "microservices/guide/index"
     ]
   },
   {
@@ -38,8 +36,7 @@ export const generatedRepoNav: Navigation = [
     "icon": "database",
     "collapsed": true,
     "items": [
-      "dal/deepwiki/index",
-      "dal/manual/overview"
+      "dal/guide/index"
     ]
   },
   {
@@ -48,8 +45,7 @@ export const generatedRepoNav: Navigation = [
     "icon": "package",
     "collapsed": true,
     "items": [
-      "sdk/deepwiki/index",
-      "sdk/manual/overview"
+      "sdk/guide/index"
     ]
   }
 ];
@@ -62,8 +58,7 @@ export const serviceNav: Navigation = [
     "icon": "server",
     "collapsed": true,
     "items": [
-      "backend/deepwiki/index",
-      "backend/manual/overview"
+      "backend/guide/index"
     ]
   },
   {
@@ -72,8 +67,7 @@ export const serviceNav: Navigation = [
     "icon": "monitor",
     "collapsed": true,
     "items": [
-      "frontend/deepwiki/index",
-      "frontend/manual/overview"
+      "frontend/guide/index"
     ]
   },
   {
@@ -82,7 +76,7 @@ export const serviceNav: Navigation = [
     "icon": "boxes",
     "collapsed": true,
     "items": [
-      "microservices/deepwiki/index"
+      "microservices/guide/index"
     ]
   }
 ];
@@ -93,8 +87,7 @@ export const libraryNav: Navigation = [
     "icon": "database",
     "collapsed": true,
     "items": [
-      "dal/deepwiki/index",
-      "dal/manual/overview"
+      "dal/guide/index"
     ]
   },
   {
@@ -103,8 +96,7 @@ export const libraryNav: Navigation = [
     "icon": "package",
     "collapsed": true,
     "items": [
-      "sdk/deepwiki/index",
-      "sdk/manual/overview"
+      "sdk/guide/index"
     ]
   }
 ];
