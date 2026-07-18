@@ -1,0 +1,80 @@
+---
+title: "Security Posture & Step-Up Authentication"
+description: "Primebrick enforces a strict security posture: critical actions require in-app re-authentication with MFA verification. No session reuse, no silent elevation."
+---
+
+## Overview
+
+Primebrick enforces a strict security posture: every critical action — changing
+a user password, modifying RBAC permissions, altering security settings —
+requires an **in-app security guard** with admin re-login and MFA verification.
+No session reuse, no silent elevation.
+
+## In-app security guard
+
+When a user attempts a critical action, the Primebrick Frontend opens an
+**in-app modal** that requires:
+
+1. **Admin credentials**: The user must re-enter their password
+2. **MFA verification**: A fresh MFA challenge (TOTP, hardware key, or passkey)
+
+No action proceeds without fresh verification. This prevents session hijacking
+from being sufficient to perform destructive operations.
+
+### Critical actions that require step-up
+
+| Action | Why it's critical |
+|--------|-------------------|
+| Change user password | Account takeover vector |
+| Modify RBAC permissions | Privilege escalation |
+| Alter security settings | Could weaken the system |
+| Delete organization | Irreversible data loss |
+| Manage API keys | Credential management |
+| Modify identity provider config | Authentication bypass risk |
+
+## Step-up authentication (NIST SP 800-63B)
+
+Following **NIST SP 800-63B**, sensitive operations require a **fresh
+authentication event**, not just an existing session. This is known as
+**step-up authentication** or **re-authentication**.
+
+The existing JWT/session token is insufficient for critical actions. A new MFA
+challenge is always required, and the resulting step-up token has a short
+lifetime (typically 5 minutes) and is scoped to the specific action being
+performed.
+
+### How it works
+
+1. User clicks a critical action (e.g., "Delete organization")
+2. Frontend opens the security guard modal
+3. User enters credentials + completes MFA challenge
+4. Backend issues a **step-up token** (short-lived, action-scoped)
+5. Frontend sends the step-up token with the critical action request
+6. Backend validates the step-up token before executing the action
+7. Step-up token is consumed — it cannot be reused
+
+## OWASP ASVS alignment
+
+Primebrick's security posture meets **OWASP Application Security Verification
+Standard (ASVS) V3.4** — session management requirements for high-value
+transactions:
+
+- **V3.4.1**: Step-up authentication for high-value transactions
+- **V3.4.2**: Re-authentication before sensitive operations
+- **V3.4.3**: Step-up token has limited lifetime and scope
+
+## No session reuse
+
+Existing JWT/session tokens are **insufficient** for critical actions. Even if
+an attacker steals a session token, they cannot perform critical operations
+without completing a fresh MFA challenge. This significantly reduces the blast
+radius of session theft.
+
+## Standards & references
+
+| Standard | Relevance |
+|----------|-----------|
+| [NIST SP 800-63B](https://pages.nist.gov/800-63-3/sp800-63b.html) | Step-up authentication requirements |
+| [OWASP ASVS V3.4](https://owasp.org/www-project-application-security-verification-standard/) | Session management for high-value transactions |
+| [OWASP Top 10](https://owasp.org/www-project-top-ten/) | A07:2021 — Identification and Authentication Failures |
+| [CIS Controls v8](https://www.cisecurity.org/controls) | Control 6 — Access Control Management |

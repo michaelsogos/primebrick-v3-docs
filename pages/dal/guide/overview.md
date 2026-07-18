@@ -1,10 +1,3 @@
----
-title: "README"
-source: guide
-repo: "dal"
----
-
-# @primebrick/dal-pg
 
 Type-driven PostgreSQL Data Access Layer for Primebrick v3.
 
