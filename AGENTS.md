@@ -36,7 +36,7 @@ This repo only handles `docs.primebrick.dev`.
 | Preview (Worker) | `pnpm run preview` (wrangler dev, port 8787) |
 | Deploy | `pnpm run deploy` (build + wrangler deploy) |
 | Lint | `pnpm run lint` |
-| Full sync + build (local) | `pnpm install && node scripts/sync-repo-docs.mjs && node scripts/fetch-openapi.mjs && node scripts/generate-nav.mjs && pnpm run build` |
+| Full sync + build (local) | `pnpm install && node scripts/sync-repo-docs.mjs && node scripts/sync-vpat-data.mjs && node scripts/fetch-openapi.mjs && node scripts/generate-nav.mjs && node scripts/generate-vpat-pdf.mjs && pnpm run build` |
 
 ## CI build chain (Cloudflare build agent on push to main)
 
@@ -45,23 +45,32 @@ The Cloudflare build agent runs the full chain on every push to `main`:
 ```
 pnpm install
 && node scripts/sync-repo-docs.mjs
+&& node scripts/sync-vpat-data.mjs
 && node scripts/fetch-openapi.mjs
 && node scripts/generate-nav.mjs
+&& node scripts/generate-vpat-pdf.mjs
 && pnpm run build
 ```
 
 1. **`sync-repo-docs.mjs`** — shallow-clones all 5 Primebrick repos, copies
    `docs/user-guide/**` → `pages/<repo>/guide/**` (recursive, preserves
    subdirectories like `services/`).
-2. **`fetch-openapi.mjs`** — extracts OpenAPI specs from the shallow-cloned
+2. **`sync-vpat-data.mjs`** — copies `public/vpat/vpat-data.json` from the
+   shallow-cloned FE repo (`.tmp-repo-sync/frontend/`) to `public/vpat/`.
+   Skips gracefully if the FE repo doesn't have it yet.
+3. **`fetch-openapi.mjs`** — extracts OpenAPI specs from the shallow-cloned
    repos: BE's `src/openapi/openapi.ts` → `apis/system.json` + `apis/mcp.json`,
    and each microservice's `src/server/openapi-route.ts` → `apis/<service>.json`.
    Also generates `src/generated-apis.ts` for Zudoku's API Catalog config.
-3. **`generate-nav.mjs`** — reads `_order.json` from each `pages/<repo>/guide/`
+4. **`generate-nav.mjs`** — reads `_order.json` from each `pages/<repo>/guide/`
    directory and generates `src/generated-nav.ts` with the sidebar navigation
    in logical reading order. Recurses into subdirectories (e.g. `services/`)
    and creates nested categories.
-4. **`zudoku build`** — prerenders all routes to static HTML.
+5. **`generate-vpat-pdf.mjs`** — generates `public/vpat/vpat-2.5.pdf` using
+   pdfkit (pure Node.js, no browser). Reads `public/vpat/vpat-data.json`
+   (synced in step 2) and produces a formal VPAT 2.5 INT PDF document.
+6. **`zudoku build`** — prerenders all routes to static HTML. Copies
+   `public/**` → `dist/**` (including `public/vpat/vpat-2.5.pdf`).
 
 The GitHub Actions workflow (`sync-docs.yml`) also runs this chain on a cron
 schedule (every 6 hours) and on push to `main`, committing any changes back
