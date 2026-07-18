@@ -1,6 +1,6 @@
 ---
 title: "README"
-source: manual
+source: guide
 repo: "dal"
 ---
 

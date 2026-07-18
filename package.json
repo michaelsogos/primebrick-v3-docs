@@ -11,7 +11,13 @@
     "build": "zudoku build",
     "preview": "wrangler dev",
     "deploy": "zudoku build && wrangler deploy",
-    "lint": "eslint"
+    "lint": "eslint",
+    "sync:docs": "node scripts/sync-repo-docs.mjs",
+    "sync:vpat": "node scripts/sync-vpat-data.mjs",
+    "fetch:openapi": "node scripts/fetch-openapi.mjs",
+    "generate:nav": "node scripts/generate-nav.mjs",
+    "generate:vpat-pdf": "node scripts/generate-vpat-pdf.mjs",
+    "build:full": "pnpm install && node scripts/sync-repo-docs.mjs && node scripts/sync-vpat-data.mjs && node scripts/fetch-openapi.mjs && node scripts/generate-nav.mjs && node scripts/generate-vpat-pdf.mjs && pnpm run build"
   },
   "dependencies": {
     "mermaid": "11.16.0",
@@ -26,6 +32,7 @@
     "@typescript-eslint/eslint-plugin": "8.63.0",
     "@typescript-eslint/parser": "8.63.0",
     "eslint": "8.57.1",
+    "pdfkit": "0.19.1",
     "tsx": "4.23.1",
     "typescript": "7.0.2",
     "wrangler": "4.110.0"

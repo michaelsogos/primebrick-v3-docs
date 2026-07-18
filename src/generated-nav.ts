@@ -9,7 +9,7 @@ export const generatedRepoNav: Navigation = [
     "icon": "server",
     "collapsed": true,
     "items": [
-      "backend/guide/index"
+      "backend/guide/overview"
     ]
   },
   {
@@ -18,7 +18,7 @@ export const generatedRepoNav: Navigation = [
     "icon": "monitor",
     "collapsed": true,
     "items": [
-      "frontend/guide/index"
+      "frontend/guide/overview"
     ]
   },
   {
@@ -27,7 +27,16 @@ export const generatedRepoNav: Navigation = [
     "icon": "boxes",
     "collapsed": true,
     "items": [
-      "microservices/guide/index"
+      "microservices/guide/architecture",
+      "microservices/guide/conventions",
+      "microservices/guide/overview",
+      {
+        "type": "category",
+        "label": "Services",
+        "items": [
+          "microservices/guide/services/emailsender"
+        ]
+      }
     ]
   },
   {
@@ -36,7 +45,10 @@ export const generatedRepoNav: Navigation = [
     "icon": "database",
     "collapsed": true,
     "items": [
-      "dal/guide/index"
+      "dal/guide/api-reference",
+      "dal/guide/audit-trail",
+      "dal/guide/clone",
+      "dal/guide/overview"
     ]
   },
   {
@@ -45,7 +57,14 @@ export const generatedRepoNav: Navigation = [
     "icon": "package",
     "collapsed": true,
     "items": [
-      "sdk/guide/index"
+      "sdk/guide/api-reference",
+      "sdk/guide/authentication",
+      "sdk/guide/ext-json",
+      "sdk/guide/getting-started",
+      "sdk/guide/http-server",
+      "sdk/guide/nats-client",
+      "sdk/guide/overview",
+      "sdk/guide/service-registration"
     ]
   }
 ];
@@ -58,7 +77,7 @@ export const serviceNav: Navigation = [
     "icon": "server",
     "collapsed": true,
     "items": [
-      "backend/guide/index"
+      "backend/guide/overview"
     ]
   },
   {
@@ -67,7 +86,7 @@ export const serviceNav: Navigation = [
     "icon": "monitor",
     "collapsed": true,
     "items": [
-      "frontend/guide/index"
+      "frontend/guide/overview"
     ]
   },
   {
@@ -76,7 +95,16 @@ export const serviceNav: Navigation = [
     "icon": "boxes",
     "collapsed": true,
     "items": [
-      "microservices/guide/index"
+      "microservices/guide/architecture",
+      "microservices/guide/conventions",
+      "microservices/guide/overview",
+      {
+        "type": "category",
+        "label": "Services",
+        "items": [
+          "microservices/guide/services/emailsender"
+        ]
+      }
     ]
   }
 ];
@@ -87,7 +115,10 @@ export const libraryNav: Navigation = [
     "icon": "database",
     "collapsed": true,
     "items": [
-      "dal/guide/index"
+      "dal/guide/api-reference",
+      "dal/guide/audit-trail",
+      "dal/guide/clone",
+      "dal/guide/overview"
     ]
   },
   {
@@ -96,7 +127,14 @@ export const libraryNav: Navigation = [
     "icon": "package",
     "collapsed": true,
     "items": [
-      "sdk/guide/index"
+      "sdk/guide/api-reference",
+      "sdk/guide/authentication",
+      "sdk/guide/ext-json",
+      "sdk/guide/getting-started",
+      "sdk/guide/http-server",
+      "sdk/guide/nats-client",
+      "sdk/guide/overview",
+      "sdk/guide/service-registration"
     ]
   }
 ];

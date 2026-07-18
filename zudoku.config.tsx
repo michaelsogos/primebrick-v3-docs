@@ -4,6 +4,7 @@ import { serviceNav, libraryNav } from "./src/generated-nav";
 import { generatedApis } from "./src/generated-apis";
 import GitHubDropdown from "./src/components/GitHubDropdown";
 import ApiSwitcher from "./src/components/ApiSwitcher";
+import VpatReport from "./src/components/VpatReport";
 import "./src/styles.css";
 
 const config: ZudokuConfig = {
@@ -116,6 +117,7 @@ const config: ZudokuConfig = {
             "getting-started/quick-start",
             "getting-started/architecture",
             "getting-started/infrastructure",
+            "getting-started/vpat-2.5-int",
           ],
         },
         { type: "separator" },
@@ -191,6 +193,7 @@ const config: ZudokuConfig = {
   mdx: {
     components: {
       Mermaid,
+      VpatReport,
     },
   },
   syntaxHighlighting: {
