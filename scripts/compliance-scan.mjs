@@ -14,9 +14,10 @@
  * Usage: node scripts/compliance-scan.mjs
  * Output: public/compliance/compliance-report.json
  */
-import { readFileSync, writeFileSync, existsSync, mkdirSync, readdirSync, statSync } from 'node:fs';
+import { readFileSync, writeFileSync, existsSync, mkdirSync, readdirSync, statSync, rmSync } from 'node:fs';
 import { join, dirname, relative, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { execSync } from 'node:child_process';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const projectRoot = join(__dirname, '..');
@@ -26,11 +27,11 @@ const OUTPUT_PATH = join(OUTPUT_DIR, 'compliance-report.json');
 
 // ─── Repos to scan ──────────────────────────────────────────────────────
 const REPOS = [
-  { slug: 'backend', dir: 'backend', label: 'Backend (primebrick-v3-backend)' },
-  { slug: 'frontend', dir: 'frontend', label: 'Frontend (primebrick-v3-frontend)' },
-  { slug: 'microservices', dir: 'microservices', label: 'Microservices (primebrick-v3-microservices)' },
-  { slug: 'dal', dir: 'dal', label: 'DAL (primebrick-v3-dal)' },
-  { slug: 'sdk', dir: 'sdk', label: 'SDK (primebrick-v3-sdk)' },
+  { git: 'https://github.com/michaelsogos/primebrick-v3-backend.git', slug: 'backend', dir: 'backend', label: 'Backend (primebrick-v3-backend)' },
+  { git: 'https://github.com/michaelsogos/primebrick-v3-frontend.git', slug: 'frontend', dir: 'frontend', label: 'Frontend (primebrick-v3-frontend)' },
+  { git: 'https://github.com/michaelsogos/primebrick-v3-microservices.git', slug: 'microservices', dir: 'microservices', label: 'Microservices (primebrick-v3-microservices)' },
+  { git: 'https://github.com/michaelsogos/primebrick-v3-dal.git', slug: 'dal', dir: 'dal', label: 'DAL (primebrick-v3-dal)' },
+  { git: 'https://github.com/michaelsogos/primebrick-v3-sdk.git', slug: 'sdk', dir: 'sdk', label: 'SDK (primebrick-v3-sdk)' },
 ];
 
 // ─── File extensions to scan ────────────────────────────────────────────
@@ -527,43 +528,49 @@ function scanDependencies(repoSlug) {
 console.log('=== Compliance scan started ===');
 
 if (!existsSync(TMP_DIR)) {
-  console.warn('.tmp-repo-sync/ not found — producing stub report (build will continue)');
-  const stubReport = {
-    scanDate: new Date().toISOString(),
-    scannerVersion: '1.0.0',
-    reposScanned: [],
-    overallScore: 0,
-    frameworkScores: {},
-    controls: CONTROLS.map(c => ({
-      id: c.id,
-      title: c.title,
-      description: c.description,
-      severity: c.severity,
-      frameworks: c.frameworks,
-      status: 'not-found',
-      evidenceCount: 0,
-      violationCount: 0,
+  console.log('.tmp-repo-sync/ not found — cloning repos for compliance scan...');
+  mkdirSync(TMP_DIR, { recursive: true });
+  let clonedCount = 0;
+  for (const repo of REPOS) {
+    const cloneDir = join(TMP_DIR, repo.slug);
+    try {
+      execSync(`git clone --depth 1 ${repo.git} ${cloneDir}`, {
+        stdio: 'pipe',
+        timeout: 60000,
+      });
+      clonedCount++;
+      console.log(`  Cloned ${repo.slug}`);
+    } catch (err) {
+      console.warn(`  Failed to clone ${repo.slug}: ${err.message}`);
+    }
+  }
+  if (clonedCount === 0) {
+    console.warn('  No repos could be cloned — producing stub report');
+    const stubReport = {
+      scanDate: new Date().toISOString(),
+      scannerVersion: '1.0.0',
       reposScanned: [],
-      evidence: [],
-      violations: [],
-    })),
-    dependencies: {},
-    summary: {
-      totalControls: CONTROLS.length,
-      compliant: 0,
-      partiallyCompliant: 0,
-      notFound: CONTROLS.length,
-      nonCompliant: 0,
-      totalEvidence: 0,
-      totalViolations: 0,
-      unpinnedDependencies: 0,
-    },
-  };
-  mkdirSync(OUTPUT_DIR, { recursive: true });
-  writeFileSync(OUTPUT_PATH, JSON.stringify(stubReport, null, 2), 'utf-8');
-  console.log(`Stub report written to ${OUTPUT_PATH}`);
-  console.log('=== Compliance scan complete (stub — no source code available) ===');
-  process.exit(0);
+      overallScore: 0,
+      frameworkScores: {},
+      controls: CONTROLS.map(c => ({
+        id: c.id, title: c.title, description: c.description, severity: c.severity,
+        frameworks: c.frameworks, status: 'not-found', evidenceCount: 0,
+        violationCount: 0, reposScanned: [], evidence: [], violations: [],
+      })),
+      dependencies: {},
+      summary: {
+        totalControls: CONTROLS.length, compliant: 0, partiallyCompliant: 0,
+        notFound: CONTROLS.length, nonCompliant: 0, totalEvidence: 0,
+        totalViolations: 0, unpinnedDependencies: 0,
+      },
+    };
+    mkdirSync(OUTPUT_DIR, { recursive: true });
+    writeFileSync(OUTPUT_PATH, JSON.stringify(stubReport, null, 2), 'utf-8');
+    console.log(`Stub report written to ${OUTPUT_PATH}`);
+    console.log('=== Compliance scan complete (stub — no repos could be cloned) ===');
+    process.exit(0);
+  }
+  console.log(`  Cloned ${clonedCount}/${REPOS.length} repos`);
 }
 
 // Scan all controls
