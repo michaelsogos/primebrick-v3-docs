@@ -18,7 +18,27 @@ export const generatedRepoNav: Navigation = [
     "icon": "monitor",
     "collapsed": true,
     "items": [
-      "frontend/guide/overview"
+      "frontend/guide/overview",
+      "frontend/guide/getting-started",
+      "frontend/guide/ui-stack",
+      "frontend/guide/app-shell",
+      "frontend/guide/authentication",
+      "frontend/guide/entity-list-table",
+      "frontend/guide/settings",
+      "frontend/guide/ui-components",
+      {
+        "type": "category",
+        "label": "Components",
+        "items": [
+          "frontend/guide/components/combo-select",
+          "frontend/guide/components/dynamic-icon",
+          "frontend/guide/components/color-selector",
+          "frontend/guide/components/avatar-preview",
+          "frontend/guide/components/event-card",
+          "frontend/guide/components/command-palette"
+        ]
+      },
+      "frontend/guide/api-reference"
     ]
   },
   {
@@ -86,7 +106,27 @@ export const serviceNav: Navigation = [
     "icon": "monitor",
     "collapsed": true,
     "items": [
-      "frontend/guide/overview"
+      "frontend/guide/overview",
+      "frontend/guide/getting-started",
+      "frontend/guide/ui-stack",
+      "frontend/guide/app-shell",
+      "frontend/guide/authentication",
+      "frontend/guide/entity-list-table",
+      "frontend/guide/settings",
+      "frontend/guide/ui-components",
+      {
+        "type": "category",
+        "label": "Components",
+        "items": [
+          "frontend/guide/components/combo-select",
+          "frontend/guide/components/dynamic-icon",
+          "frontend/guide/components/color-selector",
+          "frontend/guide/components/avatar-preview",
+          "frontend/guide/components/event-card",
+          "frontend/guide/components/command-palette"
+        ]
+      },
+      "frontend/guide/api-reference"
     ]
   },
   {
