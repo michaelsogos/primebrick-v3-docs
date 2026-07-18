@@ -51,7 +51,7 @@ for:
   BE->>NATS: publish emailsender.send (SendEmailRequest)
   NATS->>ES: deliver request
   ES->>ES: render template + send via Brevo
-  ES->>NATS: publish emailsender.response.&#123;requestId&#125;
+  ES->>NATS: publish emailsender.response.{requestId}
   NATS->>BE: deliver response (SendEmailResponse)
 `} />
 
