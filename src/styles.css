@@ -9,27 +9,50 @@ body {
   background-attachment: fixed;
 }
 
-/* Selected sidebar navigation items — gradient border only, page background,
-   normal text color (same as unselected items).
-   Targets only items that are both selected (aria-current="page") AND have the
-   accent background (bg-accent), so hover states and top-nav are unaffected. */
-a[aria-current="page"].bg-accent {
-  background: #ffffff;
-  border: 1px solid transparent;
-  border-image: linear-gradient(to right, #0ea5e9, #6366f1) 1;
+/* Sidebar navigation items — hover and selected states.
+   Uses the double background-clip technique (padding-box + border-box) so the
+   gradient border renders with proper rounded corners (border-image alone
+   cannot combine with border-radius).
+
+   - HOVER (unselected): 2px gradient border, transparent/page background
+   - SELECTED: soft gradient background (sky-200 → indigo-200) with 1px gradient
+     border, matching the FE sidebar selected item (border-primary-gradient-soft)
+*/
+
+/* HOVER — gradient border only, page background */
+nav a:not([aria-current="page"]):hover {
+  border: 2px solid transparent;
+  background:
+    linear-gradient(#ffffff, #ffffff) padding-box,
+    linear-gradient(to bottom right, #38bdf8, #818cf8) border-box;
   border-radius: 0.5rem;
-  /* Reset the accent foreground so text matches unselected items */
+}
+
+.dark nav a:not([aria-current="page"]):hover {
+  background:
+    linear-gradient(#020617, #020617) padding-box,
+    linear-gradient(to bottom right, #38bdf8, #818cf8) border-box;
+}
+
+/* SELECTED — soft gradient background + gradient border (like FE border-primary-gradient-soft) */
+nav a[aria-current="page"].bg-accent {
+  border: 1px solid transparent;
+  background:
+    linear-gradient(to bottom right, #bae6fd, #c7d2fe) padding-box,
+    linear-gradient(to bottom right, #38bdf8, #818cf8) border-box;
+  border-radius: 0.5rem;
   color: inherit;
 }
 
-.dark a[aria-current="page"].bg-accent {
-  background: #020617;
-  border-image: linear-gradient(to right, #38bdf8, #818cf8) 1;
+.dark nav a[aria-current="page"].bg-accent {
+  background:
+    linear-gradient(to bottom right, rgba(56, 189, 248, 0.15), rgba(129, 140, 248, 0.15)) padding-box,
+    linear-gradient(to bottom right, #38bdf8, #818cf8) border-box;
   color: inherit;
 }
 
 /* Ensure the label text inherits the normal (non-gradient) color */
-a[aria-current="page"].bg-accent .truncate {
+nav a[aria-current="page"].bg-accent .truncate {
   -webkit-text-fill-color: currentColor;
   background: none;
 }
