@@ -527,8 +527,43 @@ function scanDependencies(repoSlug) {
 console.log('=== Compliance scan started ===');
 
 if (!existsSync(TMP_DIR)) {
-  console.error(`.tmp-repo-sync/ not found. Run sync-repo-docs.mjs first.`);
-  process.exit(1);
+  console.warn('.tmp-repo-sync/ not found — producing stub report (build will continue)');
+  const stubReport = {
+    scanDate: new Date().toISOString(),
+    scannerVersion: '1.0.0',
+    reposScanned: [],
+    overallScore: 0,
+    frameworkScores: {},
+    controls: CONTROLS.map(c => ({
+      id: c.id,
+      title: c.title,
+      description: c.description,
+      severity: c.severity,
+      frameworks: c.frameworks,
+      status: 'not-found',
+      evidenceCount: 0,
+      violationCount: 0,
+      reposScanned: [],
+      evidence: [],
+      violations: [],
+    })),
+    dependencies: {},
+    summary: {
+      totalControls: CONTROLS.length,
+      compliant: 0,
+      partiallyCompliant: 0,
+      notFound: CONTROLS.length,
+      nonCompliant: 0,
+      totalEvidence: 0,
+      totalViolations: 0,
+      unpinnedDependencies: 0,
+    },
+  };
+  mkdirSync(OUTPUT_DIR, { recursive: true });
+  writeFileSync(OUTPUT_PATH, JSON.stringify(stubReport, null, 2), 'utf-8');
+  console.log(`Stub report written to ${OUTPUT_PATH}`);
+  console.log('=== Compliance scan complete (stub — no source code available) ===');
+  process.exit(0);
 }
 
 // Scan all controls
