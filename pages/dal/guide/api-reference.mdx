@@ -75,7 +75,7 @@ This entity has NO
 | `changed_at` | Date |  |
 | `changed_by` | string |  |
 | `version` | number |  |
-| `delta` | Record<string, {   old: unknown;   new: unknown }> | optional |
+| `delta` | `Record<string, { old: unknown; new: unknown }>` | optional |
 
 ### `Dal`
 
@@ -83,7 +83,7 @@ This entity has NO
 
 | Property | Type | Flags |
 |----------|------|-------|
-| `config` | Required<Pick<DalConfig, "connectionString" | "max" | "statementTimeoutMs" | "connectionTimeoutMillis" | "idleTimeoutMillis" | "applicationName">> & Pick<DalConfig, "schema" | "maxUses"> | readonly |
+| `config` | `Required<Pick<DalConfig, "connectionString" \| "max" \| "statementTimeoutMs" \| "connectionTimeoutMillis" \| "idleTimeoutMillis" \| "applicationName">> & Pick<DalConfig, "schema" \| "maxUses">` | readonly |
 
 #### `getPool(): Pool`
 
@@ -155,81 +155,81 @@ Graceful shutdown — drains the pool with a timeout deadline.
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `entity` | EntityClass & () => TEntity |  |
-| `row` | Partial<Record<any & string, unknown>> |  |
+| `entity` | `EntityClass & () => TEntity` |  |
+| `row` | `Partial<Record<any & string, unknown>>` |  |
 | `options` | AuditableWriteOptions |  |
 
 #### `upsert(entity: EntityClass & () => TEntity, row: Partial<Record<any & string, unknown>>, options: WriteOptions & {   actor: string } & UpsertOptions): Promise<TEntity>`
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `entity` | EntityClass & () => TEntity |  |
-| `row` | Partial<Record<any & string, unknown>> |  |
-| `options` | WriteOptions & {   actor: string } & UpsertOptions |  |
+| `entity` | `EntityClass & () => TEntity` |  |
+| `row` | `Partial<Record<any & string, unknown>>` |  |
+| `options` | `WriteOptions & { actor: string } & UpsertOptions` |  |
 
 #### `update(entity: EntityClass & () => TEntity, updates: Partial<Record<any & string, unknown>>, options: WriteOptions & {   actor: string } & MatchByOptions<TEntity>): Promise<TEntity>`
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `entity` | EntityClass & () => TEntity |  |
-| `updates` | Partial<Record<any & string, unknown>> |  |
-| `options` | WriteOptions & {   actor: string } & MatchByOptions<TEntity> |  |
+| `entity` | `EntityClass & () => TEntity` |  |
+| `updates` | `Partial<Record<any & string, unknown>>` |  |
+| `options` | `WriteOptions & { actor: string } & MatchByOptions<TEntity>` |  |
 
 #### `delete(entity: EntityClass & () => TEntity, match: Partial<Record<any & string, unknown>>, options: WriteOptions & {   actor: string } & MatchByOptions<TEntity>): Promise<TEntity>`
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `entity` | EntityClass & () => TEntity |  |
-| `match` | Partial<Record<any & string, unknown>> |  |
-| `options` | WriteOptions & {   actor: string } & MatchByOptions<TEntity> |  |
+| `entity` | `EntityClass & () => TEntity` |  |
+| `match` | `Partial<Record<any & string, unknown>>` |  |
+| `options` | `WriteOptions & { actor: string } & MatchByOptions<TEntity>` |  |
 
 #### `restore(entity: EntityClass & () => TEntity, match: Partial<Record<any & string, unknown>>, options: WriteOptions & {   actor: string } & MatchByOptions<TEntity>): Promise<TEntity>`
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `entity` | EntityClass & () => TEntity |  |
-| `match` | Partial<Record<any & string, unknown>> |  |
-| `options` | WriteOptions & {   actor: string } & MatchByOptions<TEntity> |  |
+| `entity` | `EntityClass & () => TEntity` |  |
+| `match` | `Partial<Record<any & string, unknown>>` |  |
+| `options` | `WriteOptions & { actor: string } & MatchByOptions<TEntity>` |  |
 
 #### `hardDelete(entity: EntityClass & () => TEntity, match: Partial<Record<any & string, unknown>>, options: WriteOptions & {   actor: string } & MatchByOptions<TEntity>): Promise<void>`
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `entity` | EntityClass & () => TEntity |  |
-| `match` | Partial<Record<any & string, unknown>> |  |
-| `options` | WriteOptions & {   actor: string } & MatchByOptions<TEntity> |  |
+| `entity` | `EntityClass & () => TEntity` |  |
+| `match` | `Partial<Record<any & string, unknown>>` |  |
+| `options` | `WriteOptions & { actor: string } & MatchByOptions<TEntity>` |  |
 
 #### `addMany(entity: EntityClass & () => TEntity, rows: Partial<Record<any & string, unknown>>[], options: WriteOptions & {   actor: string } & BulkOptions): Promise<TEntity[]>`
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `entity` | EntityClass & () => TEntity |  |
-| `rows` | Partial<Record<any & string, unknown>>[] |  |
-| `options` | WriteOptions & {   actor: string } & BulkOptions |  |
+| `entity` | `EntityClass & () => TEntity` |  |
+| `rows` | `Partial<Record<any & string, unknown>>[]` |  |
+| `options` | `WriteOptions & { actor: string } & BulkOptions` |  |
 
 #### `upsertMany(entity: EntityClass & () => TEntity, rows: Partial<Record<any & string, unknown>>[], options: WriteOptions & {   actor: string } & BulkOptions & UpsertOptions): Promise<TEntity[]>`
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `entity` | EntityClass & () => TEntity |  |
-| `rows` | Partial<Record<any & string, unknown>>[] |  |
-| `options` | WriteOptions & {   actor: string } & BulkOptions & UpsertOptions |  |
+| `entity` | `EntityClass & () => TEntity` |  |
+| `rows` | `Partial<Record<any & string, unknown>>[]` |  |
+| `options` | `WriteOptions & { actor: string } & BulkOptions & UpsertOptions` |  |
 
 #### `updateMany(entity: EntityClass & () => TEntity, updates: Partial<Record<any & string, unknown>>[], options: WriteOptions & {   actor: string } & MatchByOptions<TEntity> & BulkOptions): Promise<TEntity[]>`
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `entity` | EntityClass & () => TEntity |  |
-| `updates` | Partial<Record<any & string, unknown>>[] |  |
-| `options` | WriteOptions & {   actor: string } & MatchByOptions<TEntity> & BulkOptions |  |
+| `entity` | `EntityClass & () => TEntity` |  |
+| `updates` | `Partial<Record<any & string, unknown>>[]` |  |
+| `options` | `WriteOptions & { actor: string } & MatchByOptions<TEntity> & BulkOptions` |  |
 
 #### `deleteMany(entity: EntityClass & () => TEntity, matches: Partial<Record<any & string, unknown>>[], options: WriteOptions & {   actor: string } & MatchByOptions<TEntity>): Promise<TEntity[]>`
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `entity` | EntityClass & () => TEntity |  |
-| `matches` | Partial<Record<any & string, unknown>>[] |  |
-| `options` | WriteOptions & {   actor: string } & MatchByOptions<TEntity> |  |
+| `entity` | `EntityClass & () => TEntity` |  |
+| `matches` | `Partial<Record<any & string, unknown>>[]` |  |
+| `options` | `WriteOptions & { actor: string } & MatchByOptions<TEntity>` |  |
 
 #### `rawSql(text: string, values: unknown[]): Promise<TResult[]>`
 
@@ -252,7 +252,7 @@ Use for:
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `fn` | (client: PoolClient) => Promise<TResult> |  |
+| `fn` | `(client: PoolClient) => Promise<TResult>` |  |
 | `options` | WithClientOptions |  |
 
 ### `DalError`
@@ -671,7 +671,7 @@ a();
 | Parameter | Type | Description |
 |-----------|------|-------------|
 | `entity` | EntityClass |  |
-| `options` | {   tableName?: string } |  |
+| `options` | `{ tableName?: string }` |  |
 
 #### `add(entity: EntityClass & () => TEntity, row: Partial<Record<any & string, unknown>>, options: AuditableWriteOptions): Promise<TEntity>`
 
@@ -679,8 +679,8 @@ Add — auditable entity (actor required).
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `entity` | EntityClass & () => TEntity |  |
-| `row` | Partial<Record<any & string, unknown>> |  |
+| `entity` | `EntityClass & () => TEntity` |  |
+| `row` | `Partial<Record<any & string, unknown>>` |  |
 | `options` | AuditableWriteOptions |  |
 
 #### `upsert(entity: EntityClass & () => TEntity, row: Partial<Record<any & string, unknown>>, options: WriteOptions & {   actor: string } & UpsertOptions): Promise<TEntity>`
@@ -689,9 +689,9 @@ Upsert — auditable entity (actor required).
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `entity` | EntityClass & () => TEntity |  |
-| `row` | Partial<Record<any & string, unknown>> |  |
-| `options` | WriteOptions & {   actor: string } & UpsertOptions |  |
+| `entity` | `EntityClass & () => TEntity` |  |
+| `row` | `Partial<Record<any & string, unknown>>` |  |
+| `options` | `WriteOptions & { actor: string } & UpsertOptions` |  |
 
 #### `update(entity: EntityClass & () => TEntity, updates: Partial<Record<any & string, unknown>>, options: WriteOptions & {   actor: string } & MatchByOptions<TEntity>): Promise<TEntity>`
 
@@ -699,17 +699,17 @@ Update — auditable entity (actor required).
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `entity` | EntityClass & () => TEntity |  |
-| `updates` | Partial<Record<any & string, unknown>> |  |
-| `options` | WriteOptions & {   actor: string } & MatchByOptions<TEntity> |  |
+| `entity` | `EntityClass & () => TEntity` |  |
+| `updates` | `Partial<Record<any & string, unknown>>` |  |
+| `options` | `WriteOptions & { actor: string } & MatchByOptions<TEntity>` |  |
 
 #### `delete(entity: EntityClass & () => TEntity, match: Partial<Record<any & string, unknown>>, options: WriteOptions & {   actor: string } & MatchByOptions<TEntity>): Promise<TEntity>`
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `entity` | EntityClass & () => TEntity |  |
-| `match` | Partial<Record<any & string, unknown>> |  |
-| `options` | WriteOptions & {   actor: string } & MatchByOptions<TEntity> |  |
+| `entity` | `EntityClass & () => TEntity` |  |
+| `match` | `Partial<Record<any & string, unknown>>` |  |
+| `options` | `WriteOptions & { actor: string } & MatchByOptions<TEntity>` |  |
 
 #### `restore(entity: EntityClass & () => TEntity, match: Partial<Record<any & string, unknown>>, options: WriteOptions & {   actor: string } & MatchByOptions<TEntity>): Promise<TEntity>`
 
@@ -717,9 +717,9 @@ Restore — auditable+deletable entity (actor required).
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `entity` | EntityClass & () => TEntity |  |
-| `match` | Partial<Record<any & string, unknown>> |  |
-| `options` | WriteOptions & {   actor: string } & MatchByOptions<TEntity> |  |
+| `entity` | `EntityClass & () => TEntity` |  |
+| `match` | `Partial<Record<any & string, unknown>>` |  |
+| `options` | `WriteOptions & { actor: string } & MatchByOptions<TEntity>` |  |
 
 #### `hardDelete(entity: EntityClass & () => TEntity, match: Partial<Record<any & string, unknown>>, options: WriteOptions & {   actor: string } & MatchByOptions<TEntity>): Promise<void>`
 
@@ -727,9 +727,9 @@ Hard-delete — auditable entity (actor required for audit log).
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `entity` | EntityClass & () => TEntity |  |
-| `match` | Partial<Record<any & string, unknown>> |  |
-| `options` | WriteOptions & {   actor: string } & MatchByOptions<TEntity> |  |
+| `entity` | `EntityClass & () => TEntity` |  |
+| `match` | `Partial<Record<any & string, unknown>>` |  |
+| `options` | `WriteOptions & { actor: string } & MatchByOptions<TEntity>` |  |
 
 #### `clone(entity: EntityClass & () => TEntity, sourceUuid: string, options: AuditableWriteOptions): Promise<TEntity>`
 
@@ -742,7 +742,7 @@ Fetches the source record (including soft-deleted), builds a new row with:
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `entity` | EntityClass & () => TEntity |  |
+| `entity` | `EntityClass & () => TEntity` |  |
 | `sourceUuid` | string |  |
 | `options` | AuditableWriteOptions |  |
 
@@ -752,9 +752,9 @@ Bulk add — auditable entity (actor required).
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `entity` | EntityClass & () => TEntity |  |
-| `rows` | Partial<Record<any & string, unknown>>[] |  |
-| `options` | WriteOptions & {   actor: string } & BulkOptions |  |
+| `entity` | `EntityClass & () => TEntity` |  |
+| `rows` | `Partial<Record<any & string, unknown>>[]` |  |
+| `options` | `WriteOptions & { actor: string } & BulkOptions` |  |
 
 #### `upsertMany(entity: EntityClass & () => TEntity, rows: Partial<Record<any & string, unknown>>[], options: WriteOptions & {   actor: string } & BulkOptions & UpsertOptions): Promise<TEntity[]>`
 
@@ -762,9 +762,9 @@ Bulk upsert — auditable entity (actor required).
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `entity` | EntityClass & () => TEntity |  |
-| `rows` | Partial<Record<any & string, unknown>>[] |  |
-| `options` | WriteOptions & {   actor: string } & BulkOptions & UpsertOptions |  |
+| `entity` | `EntityClass & () => TEntity` |  |
+| `rows` | `Partial<Record<any & string, unknown>>[]` |  |
+| `options` | `WriteOptions & { actor: string } & BulkOptions & UpsertOptions` |  |
 
 #### `deleteMany(entity: EntityClass & () => TEntity, matches: Partial<Record<any & string, unknown>>[], options: WriteOptions & {   actor: string } & MatchByOptions<TEntity>): Promise<TEntity[]>`
 
@@ -772,9 +772,9 @@ Bulk soft-delete — auditable+deletable entity (actor required).
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `entity` | EntityClass & () => TEntity |  |
-| `matches` | Partial<Record<any & string, unknown>>[] |  |
-| `options` | WriteOptions & {   actor: string } & MatchByOptions<TEntity> |  |
+| `entity` | `EntityClass & () => TEntity` |  |
+| `matches` | `Partial<Record<any & string, unknown>>[]` |  |
+| `options` | `WriteOptions & { actor: string } & MatchByOptions<TEntity>` |  |
 
 #### `updateMany(entity: EntityClass & () => TEntity, updates: Partial<Record<any & string, unknown>>[], options: WriteOptions & {   actor: string } & MatchByOptions<TEntity> & BulkOptions): Promise<TEntity[]>`
 
@@ -782,9 +782,9 @@ Bulk update — auditable entity (actor required).
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `entity` | EntityClass & () => TEntity |  |
-| `updates` | Partial<Record<any & string, unknown>>[] |  |
-| `options` | WriteOptions & {   actor: string } & MatchByOptions<TEntity> & BulkOptions |  |
+| `entity` | `EntityClass & () => TEntity` |  |
+| `updates` | `Partial<Record<any & string, unknown>>[]` |  |
+| `options` | `WriteOptions & { actor: string } & MatchByOptions<TEntity> & BulkOptions` |  |
 
 #### `rawSql(text: string, values: unknown[]): Promise<TResult[]>`
 
@@ -1032,19 +1032,19 @@ Parameters passed to ``AuditPort.writeAudit``.
 
 ### `Filter`
 
-**Type**: {   fieldValue: any;   fieldField: any;   raw: any;   group: any }
+**Type**: `{ fieldValue: any; fieldField: any; raw: any; group: any }`
 
 ### `Sort`
 
-**Type**: {   by: any }
+**Type**: `{ by: any }`
 
 ### `Join`
 
-**Type**: {   on: any }
+**Type**: `{ on: any }`
 
 ### `Project`
 
-**Type**: {   field: any;   expr: any }
+**Type**: `{ field: any; expr: any }`
 
 ## Functions
 
@@ -1070,7 +1070,7 @@ Useful when you only need specific audit fields to reduce query overhead.
 |-----------|------|-------------|
 | `entity` | EntityClass | The entity class implementing IAuditableEntity |
 | `userEntity` | EntityClass | The user entity class (e.g. UserProfileEntity) |
-| `options` | {   includeCreator?: boolean;   includeUpdater?: boolean;   includeDeleter?: boolean } | Configuration for which joins to include |
+| `options` | `{ includeCreator?: boolean; includeUpdater?: boolean; includeDeleter?: boolean }` | Configuration for which joins to include |
 
 ### `buildAuditTrailJoins(auditEntity: EntityClass, userEntity: EntityClass): {   joins: JoinExpr[];   projections: FieldProjector[] }`
 
@@ -1097,8 +1097,8 @@ Calculate delta between old and new records for audit.
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `oldEntity` | Record<string, unknown> |  |
-| `newEntity` | Record<string, unknown> |  |
+| `oldEntity` | `Record<string, unknown>` |  |
+| `newEntity` | `Record<string, unknown>` |  |
 
 ### `calculateDeltaWithForcedFields(oldEntity: Record<string, unknown>, newEntity: Record<string, unknown>, forceFields: string[]): Record<string, {   old: unknown;   new: unknown }>`
 
@@ -1106,8 +1106,8 @@ Calculate delta and force include specific fields even when unchanged.
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `oldEntity` | Record<string, unknown> |  |
-| `newEntity` | Record<string, unknown> |  |
+| `oldEntity` | `Record<string, unknown>` |  |
+| `newEntity` | `Record<string, unknown>` |  |
 | `forceFields` | string[] |  |
 
 ### `getDal(config: DalConfig): Dal`
@@ -1135,7 +1135,7 @@ Intended for tests — call in afterAll to release the pool.
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `col` | {   propertyKey: string;   sqlName: string;   isKey: boolean;   isUnique: boolean;   nullable?: boolean;   pgType?: string;   tsDesignTypeCtorName?: string;   defaultSql?: string;   length?: number;   precision?: number;   scale?: number;   inferredPgType: string;   usePostgresIdentity: boolean;   isAuditable?: boolean;   auditableType?: AuditableFieldType;   isDeletable?: boolean;   deletableType?: DeletableFieldType;   isSynchronizable?: boolean;   synchronizableType?: SynchronizableFieldType;   isClone?: boolean;   castInJoin?: string } |  |
+| `col` | `{ propertyKey: string; sqlName: string; isKey: boolean; isUnique: boolean; nullable?: boolean; pgType?: string; tsDesignTypeCtorName?: string; defaultSql?: string; length?: number; precision?: number; scale?: number; inferredPgType: string; usePostgresIdentity: boolean; isAuditable?: boolean; auditableType?: AuditableFieldType; isDeletable?: boolean; deletableType?: DeletableFieldType; isSynchronizable?: boolean; synchronizableType?: SynchronizableFieldType; isClone?: boolean; castInJoin?: string }` |  |
 
 ### `effectivePgStorageType(h: ColumnPgPersistenceHints): string`
 
@@ -1265,7 +1265,7 @@ The changedByColumn specifies which property holds the actor (default: "changed_
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `options` | {   changedByColumn?: string } |  |
+| `options` | `{ changedByColumn?: string }` |  |
 
 ### `isEntityClass(value: unknown): value is EntityClass`
 

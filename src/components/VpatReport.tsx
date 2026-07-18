@@ -12,6 +12,10 @@ import { useEffect, useState } from "react";
  *
  * If the data file is not found (e.g. audit not yet run), all criteria
  * show "Not Evaluated" and a notice is displayed.
+ *
+ * Styling uses Zudoku CSS theme variables (--background, --foreground,
+ * --card, --border, --muted, --muted-foreground, --primary, etc.) so
+ * the component adapts automatically to light/dark mode.
  */
 
 // WCAG 2.2 success criteria — full list with level and axe rule mapping.
@@ -202,11 +206,18 @@ export default function VpatReport() {
 
   if (error) {
     return (
-      <div style={{ padding: "1rem", border: "1px solid #fca5a5", borderRadius: "0.5rem", backgroundColor: "#fef2f2" }}>
-        <p style={{ margin: 0, fontWeight: 600 }}>
+      <div
+        style={{
+          padding: "1rem",
+          border: "1px solid var(--destructive)",
+          borderRadius: "var(--radius)",
+          backgroundColor: "color-mix(in srgb, var(--destructive) 10%, transparent)",
+        }}
+      >
+        <p style={{ margin: 0, fontWeight: 600, color: "var(--foreground)" }}>
           VPAT audit data not available
         </p>
-        <p style={{ margin: "0.5rem 0 0", fontSize: "0.9em", color: "#6b7280" }}>
+        <p style={{ margin: "0.5rem 0 0", fontSize: "0.9em", color: "var(--muted-foreground)" }}>
           The file <code>/vpat/vpat-data.json</code> could not be loaded ({error}).
           All criteria below are marked "Not Evaluated". Run the axe audit in the
           FE repo (<code>pnpm run test:a11y</code>) to generate the data.
@@ -232,19 +243,19 @@ export default function VpatReport() {
           justifyContent: "space-between",
           alignItems: "center",
           padding: "1rem 1.5rem",
-          border: "1px solid #d1d5db",
-          borderRadius: "0.5rem",
-          backgroundColor: "#f9fafb",
+          border: "1px solid var(--border)",
+          borderRadius: "var(--radius)",
+          backgroundColor: "var(--card)",
           marginBottom: "2rem",
           flexWrap: "wrap",
           gap: "1rem",
         }}
       >
         <div>
-          <p style={{ margin: 0, fontWeight: 600 }}>
+          <p style={{ margin: 0, fontWeight: 600, color: "var(--foreground)" }}>
             VPAT 2.5 INT — Primebrick Frontend
           </p>
-          <p style={{ margin: "0.25rem 0 0", fontSize: "0.85em", color: "#6b7280" }}>
+          <p style={{ margin: "0.25rem 0 0", fontSize: "0.85em", color: "var(--muted-foreground)" }}>
             Audit date: {auditDate} · Axe-core v{data?.axe_version} · {data?.routes_audited} routes audited
           </p>
         </div>
@@ -256,10 +267,10 @@ export default function VpatReport() {
             alignItems: "center",
             gap: "0.5rem",
             padding: "0.5rem 1rem",
-            backgroundColor: "#0ea5e9",
-            color: "#ffffff",
+            backgroundColor: "var(--primary)",
+            color: "var(--primary-foreground)",
             textDecoration: "none",
-            borderRadius: "0.375rem",
+            borderRadius: "calc(var(--radius) - 0.125rem)",
             fontWeight: 600,
             fontSize: "0.9em",
           }}
@@ -282,21 +293,22 @@ export default function VpatReport() {
           { label: "Passes", value: data?.total_passes ?? 0, color: "#16a34a" },
           { label: "Incomplete", value: data?.total_incomplete ?? 0, color: "#d97706" },
           { label: "Inapplicable", value: data?.total_inapplicable ?? 0, color: "#6b7280" },
-          { label: "Routes", value: data?.routes_audited ?? 0, color: "#0ea5e9" },
+          { label: "Routes", value: data?.routes_audited ?? 0, color: "var(--primary)" },
         ].map((stat) => (
           <div
             key={stat.label}
             style={{
               padding: "1rem",
-              border: "1px solid #e5e7eb",
-              borderRadius: "0.5rem",
+              border: "1px solid var(--border)",
+              borderRadius: "var(--radius)",
               textAlign: "center",
+              backgroundColor: "var(--card)",
             }}
           >
             <div style={{ fontSize: "1.75rem", fontWeight: 700, color: stat.color }}>
               {stat.value}
             </div>
-            <div style={{ fontSize: "0.8em", color: "#6b7280", marginTop: "0.25rem" }}>
+            <div style={{ fontSize: "0.8em", color: "var(--muted-foreground)", marginTop: "0.25rem" }}>
               {stat.label}
             </div>
           </div>
@@ -305,7 +317,7 @@ export default function VpatReport() {
 
       {/* WCAG 2.x table */}
       <h2 id="wcag-2x-conformance">Section 1: WCAG 2.x Conformance</h2>
-      <p style={{ fontSize: "0.9em", color: "#6b7280" }}>
+      <p style={{ fontSize: "0.9em", color: "var(--muted-foreground)" }}>
         All WCAG 2.2 success criteria with their conformance status. Criteria
         marked "Not Evaluated" require manual review (no automated axe rule
         covers them).
@@ -313,12 +325,12 @@ export default function VpatReport() {
       <div style={{ overflowX: "auto" }}>
         <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "0.85em" }}>
           <thead>
-            <tr style={{ backgroundColor: "#1e3a5f", color: "#ffffff" }}>
-              <th style={{ padding: "0.5rem", textAlign: "left", border: "1px solid #1e3a5f" }}>SC</th>
-              <th style={{ padding: "0.5rem", textAlign: "left", border: "1px solid #1e3a5f" }}>Level</th>
-              <th style={{ padding: "0.5rem", textAlign: "left", border: "1px solid #1e3a5f" }}>Success Criterion</th>
-              <th style={{ padding: "0.5rem", textAlign: "left", border: "1px solid #1e3a5f" }}>Conformance</th>
-              <th style={{ padding: "0.5rem", textAlign: "left", border: "1px solid #1e3a5f" }}>Remarks</th>
+            <tr style={{ backgroundColor: "var(--secondary)", color: "var(--secondary-foreground)" }}>
+              <th style={{ padding: "0.5rem", textAlign: "left", border: "1px solid var(--border)" }}>SC</th>
+              <th style={{ padding: "0.5rem", textAlign: "left", border: "1px solid var(--border)" }}>Level</th>
+              <th style={{ padding: "0.5rem", textAlign: "left", border: "1px solid var(--border)" }}>Success Criterion</th>
+              <th style={{ padding: "0.5rem", textAlign: "left", border: "1px solid var(--border)" }}>Conformance</th>
+              <th style={{ padding: "0.5rem", textAlign: "left", border: "1px solid var(--border)" }}>Remarks</th>
             </tr>
           </thead>
           <tbody>
@@ -338,14 +350,14 @@ export default function VpatReport() {
                 remarks = "Manual review required";
               }
               return (
-                <tr key={sc.num} style={{ backgroundColor: i % 2 === 1 ? "#f9fafb" : "#ffffff" }}>
-                  <td style={{ padding: "0.4rem 0.5rem", border: "1px solid #e5e7eb", fontWeight: 600 }}>{sc.num}</td>
-                  <td style={{ padding: "0.4rem 0.5rem", border: "1px solid #e5e7eb" }}>{sc.level}</td>
-                  <td style={{ padding: "0.4rem 0.5rem", border: "1px solid #e5e7eb" }}>{sc.title}</td>
-                  <td style={{ padding: "0.4rem 0.5rem", border: "1px solid #e5e7eb" }}>
+                <tr key={sc.num} style={{ backgroundColor: i % 2 === 1 ? "var(--muted)" : "var(--background)" }}>
+                  <td style={{ padding: "0.4rem 0.5rem", border: "1px solid var(--border)", fontWeight: 600, color: "var(--foreground)" }}>{sc.num}</td>
+                  <td style={{ padding: "0.4rem 0.5rem", border: "1px solid var(--border)", color: "var(--foreground)" }}>{sc.level}</td>
+                  <td style={{ padding: "0.4rem 0.5rem", border: "1px solid var(--border)", color: "var(--foreground)" }}>{sc.title}</td>
+                  <td style={{ padding: "0.4rem 0.5rem", border: "1px solid var(--border)" }}>
                     <StatusBadge status={status} />
                   </td>
-                  <td style={{ padding: "0.4rem 0.5rem", border: "1px solid #e5e7eb", fontSize: "0.9em", color: "#6b7280" }}>
+                  <td style={{ padding: "0.4rem 0.5rem", border: "1px solid var(--border)", fontSize: "0.9em", color: "var(--muted-foreground)" }}>
                     {remarks}
                   </td>
                 </tr>
@@ -357,7 +369,7 @@ export default function VpatReport() {
 
       {/* Section 508 */}
       <h2 id="section-508">Section 2: Section 508 Conformance</h2>
-      <p style={{ fontSize: "0.9em", color: "#6b7280" }}>
+      <p style={{ fontSize: "0.9em", color: "var(--muted-foreground)" }}>
         Section 508 (2017) Chapter 3 references WCAG 2.0 Level A/AA. Chapters 4,
         5, and 6 require manual evaluation.
       </p>
@@ -365,15 +377,15 @@ export default function VpatReport() {
 
       {/* EN 301 549 */}
       <h2 id="en-301-549">Section 3: EN 301 549 Conformance</h2>
-      <p style={{ fontSize: "0.9em", color: "#6b7280" }}>
-        EN 301 549 v3.2.1 (2021) Clause 5 and 8 reference WCAG 2.1 Level A/AA.
+      <p style={{ fontSize: "0.9em", color: "var(--muted-foreground)" }}>
+        EN 301 549 v3.2.1 Clause 5 and 8 reference WCAG 2.1 Level A/AA.
         Other clauses require manual evaluation.
       </p>
       <En301549Table data={data} />
 
       {/* Methodology */}
       <h2 id="methodology">Methodology and Limitations</h2>
-      <ol style={{ fontSize: "0.9em", lineHeight: 1.6 }}>
+      <ol style={{ fontSize: "0.9em", lineHeight: 1.6, color: "var(--foreground)" }}>
         <li>
           <strong>Automated Testing:</strong> This report is generated from
           automated axe-core scans using @axe-core/playwright. Axe-core
@@ -427,11 +439,11 @@ function Section508Table({ data }: { data: AuditData | null }) {
     <div style={{ overflowX: "auto" }}>
       <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "0.9em" }}>
         <thead>
-          <tr style={{ backgroundColor: "#1e3a5f", color: "#ffffff" }}>
-            <th style={{ padding: "0.5rem", textAlign: "left" }}>Chapter</th>
-            <th style={{ padding: "0.5rem", textAlign: "left" }}>Criteria</th>
-            <th style={{ padding: "0.5rem", textAlign: "left" }}>Conformance</th>
-            <th style={{ padding: "0.5rem", textAlign: "left" }}>Remarks</th>
+          <tr style={{ backgroundColor: "var(--secondary)", color: "var(--secondary-foreground)" }}>
+            <th style={{ padding: "0.5rem", textAlign: "left", border: "1px solid var(--border)" }}>Chapter</th>
+            <th style={{ padding: "0.5rem", textAlign: "left", border: "1px solid var(--border)" }}>Criteria</th>
+            <th style={{ padding: "0.5rem", textAlign: "left", border: "1px solid var(--border)" }}>Conformance</th>
+            <th style={{ padding: "0.5rem", textAlign: "left", border: "1px solid var(--border)" }}>Remarks</th>
           </tr>
         </thead>
         <tbody>
@@ -455,13 +467,13 @@ function Section508Table({ data }: { data: AuditData | null }) {
               }
             }
             return (
-              <tr key={c.chapter} style={{ backgroundColor: i % 2 === 1 ? "#f9fafb" : "#ffffff" }}>
-                <td style={{ padding: "0.5rem", border: "1px solid #e5e7eb", fontWeight: 600 }}>{c.chapter}</td>
-                <td style={{ padding: "0.5rem", border: "1px solid #e5e7eb" }}>{c.title}</td>
-                <td style={{ padding: "0.5rem", border: "1px solid #e5e7eb" }}>
+              <tr key={c.chapter} style={{ backgroundColor: i % 2 === 1 ? "var(--muted)" : "var(--background)" }}>
+                <td style={{ padding: "0.5rem", border: "1px solid var(--border)", fontWeight: 600, color: "var(--foreground)" }}>{c.chapter}</td>
+                <td style={{ padding: "0.5rem", border: "1px solid var(--border)", color: "var(--foreground)" }}>{c.title}</td>
+                <td style={{ padding: "0.5rem", border: "1px solid var(--border)" }}>
                   <StatusBadge status={status} />
                 </td>
-                <td style={{ padding: "0.5rem", border: "1px solid #e5e7eb", fontSize: "0.9em", color: "#6b7280" }}>
+                <td style={{ padding: "0.5rem", border: "1px solid var(--border)", fontSize: "0.9em", color: "var(--muted-foreground)" }}>
                   {remarks}
                 </td>
               </tr>
@@ -491,11 +503,11 @@ function En301549Table({ data }: { data: AuditData | null }) {
     <div style={{ overflowX: "auto" }}>
       <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "0.9em" }}>
         <thead>
-          <tr style={{ backgroundColor: "#1e3a5f", color: "#ffffff" }}>
-            <th style={{ padding: "0.5rem", textAlign: "left" }}>Clause</th>
-            <th style={{ padding: "0.5rem", textAlign: "left" }}>Requirements</th>
-            <th style={{ padding: "0.5rem", textAlign: "left" }}>Conformance</th>
-            <th style={{ padding: "0.5rem", textAlign: "left" }}>Remarks</th>
+          <tr style={{ backgroundColor: "var(--secondary)", color: "var(--secondary-foreground)" }}>
+            <th style={{ padding: "0.5rem", textAlign: "left", border: "1px solid var(--border)" }}>Clause</th>
+            <th style={{ padding: "0.5rem", textAlign: "left", border: "1px solid var(--border)" }}>Requirements</th>
+            <th style={{ padding: "0.5rem", textAlign: "left", border: "1px solid var(--border)" }}>Conformance</th>
+            <th style={{ padding: "0.5rem", textAlign: "left", border: "1px solid var(--border)" }}>Remarks</th>
           </tr>
         </thead>
         <tbody>
@@ -519,13 +531,13 @@ function En301549Table({ data }: { data: AuditData | null }) {
               }
             }
             return (
-              <tr key={c.clause} style={{ backgroundColor: i % 2 === 1 ? "#f9fafb" : "#ffffff" }}>
-                <td style={{ padding: "0.5rem", border: "1px solid #e5e7eb", fontWeight: 600 }}>{c.clause}</td>
-                <td style={{ padding: "0.5rem", border: "1px solid #e5e7eb" }}>{c.title}</td>
-                <td style={{ padding: "0.5rem", border: "1px solid #e5e7eb" }}>
+              <tr key={c.clause} style={{ backgroundColor: i % 2 === 1 ? "var(--muted)" : "var(--background)" }}>
+                <td style={{ padding: "0.5rem", border: "1px solid var(--border)", fontWeight: 600, color: "var(--foreground)" }}>{c.clause}</td>
+                <td style={{ padding: "0.5rem", border: "1px solid var(--border)", color: "var(--foreground)" }}>{c.title}</td>
+                <td style={{ padding: "0.5rem", border: "1px solid var(--border)" }}>
                   <StatusBadge status={status} />
                 </td>
-                <td style={{ padding: "0.5rem", border: "1px solid #e5e7eb", fontSize: "0.9em", color: "#6b7280" }}>
+                <td style={{ padding: "0.5rem", border: "1px solid var(--border)", fontSize: "0.9em", color: "var(--muted-foreground)" }}>
                   {remarks}
                 </td>
               </tr>

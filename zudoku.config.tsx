@@ -117,6 +117,14 @@ const config: ZudokuConfig = {
             "getting-started/quick-start",
             "getting-started/architecture",
             "getting-started/infrastructure",
+          ],
+        },
+        { type: "separator" },
+        {
+          type: "category",
+          label: "Compliance & Policy",
+          icon: "shield-check",
+          items: [
             "getting-started/vpat-2.5-int",
           ],
         },

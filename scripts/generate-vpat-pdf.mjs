@@ -1,25 +1,26 @@
 #!/usr/bin/env node
 /**
- * Generate a VPAT 2.5 INT PDF report from vpat-data.json using pdfkit.
+ * Generate a VPAT 2.5 INT PDF report from vpat-data.json using pdfmake.
+ *
+ * pdfmake uses a declarative JSON document definition with built-in
+ * table support (automatic text wrapping, page breaks, column widths).
+ * This produces a much cleaner PDF than pdfkit's manual drawing.
  *
  * This runs in the Cloudflare build chain AFTER sync-vpat-data.mjs.
  * It reads public/vpat/vpat-data.json and produces public/vpat/vpat-2.5.pdf.
- *
- * The PDF is a formal document with:
- * - Title page (VPAT 2.5 INT, Primebrick, date)
- * - Section 1: WCAG 2.x conformance table (A/AA/AAA)
- * - Section 2: Section 508 conformance table
- * - Section 3: EN 301 549 conformance table
- * - Notes on methodology and limitations
  *
  * Usage: node scripts/generate-vpat-pdf.mjs
  *
  * Output: public/vpat/vpat-2.5.pdf
  */
-import PDFDocument from "pdfkit";
-import { readFileSync, writeFileSync, existsSync, mkdirSync } from "node:fs";
+import { readFileSync, existsSync, mkdirSync, writeFileSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
+import { createRequire } from "node:module";
+
+const require = createRequire(import.meta.url);
+const pdfmake = require("pdfmake");
+const vfs = require("pdfmake/build/vfs_fonts");
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const projectRoot = join(__dirname, "..");
@@ -28,7 +29,7 @@ const DATA_PATH = join(projectRoot, "public", "vpat", "vpat-data.json");
 const OUTPUT_DIR = join(projectRoot, "public", "vpat");
 const OUTPUT_PATH = join(OUTPUT_DIR, "vpat-2.5.pdf");
 
-console.log("=== VPAT 2.5 PDF generation started ===");
+console.log("=== VPAT 2.5 PDF generation started (pdfmake) ===");
 
 if (!existsSync(DATA_PATH)) {
   console.warn(`  Data file not found: ${DATA_PATH}`);
@@ -39,8 +40,6 @@ if (!existsSync(DATA_PATH)) {
 const auditData = JSON.parse(readFileSync(DATA_PATH, "utf-8"));
 
 // WCAG 2.2 success criteria — full list with level and axe rule mapping.
-// Source: WCAG 2.2 Recommendation (2023-10-05).
-// axe-core covers ~50 of 86 SCs automatically; the rest require manual review.
 const WCAG_SC = [
   // Principle 1: Perceivable
   { num: "1.1.1", level: "A", title: "Non-text Content", axeRules: ["image-alt", "image-redundant-alt"] },
@@ -135,62 +134,220 @@ const WCAG_SC = [
   { num: "4.2.2", level: "A", title: "Accessible Description", axeRules: [] },
 ];
 
-/**
- * Determine conformance status for a WCAG SC based on axe results.
- * Returns one of: "Supports", "Partially Supports", "Does Not Support", "Not Evaluated".
- */
+// --- Conformance logic ---
+
 function getConformanceStatus(sc, auditData) {
   const axeRules = sc.axeRules || [];
-  if (axeRules.length === 0) {
-    // No axe rule covers this SC — requires manual review
-    return "Not Evaluated";
-  }
-
-  const violatingRules = new Set(auditData.unique_violating_rules);
-  const passingRules = new Set(auditData.unique_passing_rules);
-
-  const hasViolation = axeRules.some((r) => violatingRules.has(r));
-  const allPass = axeRules.every((r) => passingRules.has(r));
-
-  if (hasViolation) {
-    return "Partially Supports";
-  }
-  if (allPass) {
-    return "Supports";
-  }
-  // Some rules may be incomplete or inapplicable
+  if (axeRules.length === 0) return "Not Evaluated";
+  const violating = new Set(auditData.unique_violating_rules);
+  const passing = new Set(auditData.unique_passing_rules);
+  if (axeRules.some((r) => violating.has(r))) return "Partially Supports";
+  if (axeRules.every((r) => passing.has(r))) return "Supports";
   return "Not Evaluated";
 }
 
-/**
- * Map WCAG SC to Section 508 (2017) chapters.
- * Section 508 Chapter 3 references WCAG 2.0 Level A/AA.
- * Chapter 4: Functional Performance Criteria
- * Chapter 5: Interoperability
- * Chapter 6: Content
- */
-const SECTION_508_CRITERIA = [
+function getRemarks(sc, status, auditData) {
+  if (status === "Supports") return `Axe rules passed: ${sc.axeRules.join(", ")}`;
+  if (status === "Partially Supports") {
+    const v = sc.axeRules.filter((r) => auditData.unique_violating_rules.includes(r));
+    return `Violations in: ${v.join(", ")}`;
+  }
+  if (status === "Not Evaluated" && sc.axeRules.length > 0) return "Some rules incomplete/inapplicable";
+  return "Manual review required";
+}
+
+const STATUS_COLORS = {
+  "Supports": "#16a34a",
+  "Partially Supports": "#d97706",
+  "Does Not Support": "#dc2626",
+  "Not Evaluated": "#6b7280",
+};
+
+// --- Colors ---
+const HEADER_BG = "#1e3a5f";
+const HEADER_FG = "#ffffff";
+const ROW_ALT = "#f3f4f6";
+const BORDER = "#d1d5db";
+
+// --- Build table helper ---
+// pdfmake tables: { table: { widths: [...], body: [[cell, ...], ...] }, layout: {...} }
+function buildTable(headers, rows, widths) {
+  const body = [];
+
+  // Header row
+  body.push(
+    headers.map((h) => ({
+      text: h,
+      style: "tableHeader",
+      color: HEADER_FG,
+    }))
+  );
+
+  // Data rows
+  for (const row of rows) {
+    body.push(
+      row.map((cell) => {
+        if (typeof cell === "object" && cell !== null && cell._isStatus) {
+          return {
+            text: cell.text,
+            color: STATUS_COLORS[cell.text] || "#111827",
+            bold: true,
+            fontSize: 8,
+          };
+        }
+        return { text: String(cell), fontSize: 8, color: "#111827" };
+      })
+    );
+  }
+
+  return {
+    table: {
+      widths: widths,
+      headerRows: 1,
+      body: body,
+    },
+    layout: {
+      hLineColor: (i) => BORDER,
+      vLineColor: () => BORDER,
+      hLineWidth: () => 0.5,
+      vLineWidth: () => 0.5,
+      fillColor: (i) => {
+        if (i === 0) return HEADER_BG;
+        return i % 2 === 0 ? ROW_ALT : null;
+      },
+      paddingLeft: () => 4,
+      paddingRight: () => 4,
+      paddingTop: () => 3,
+      paddingBottom: () => 3,
+    },
+  };
+}
+
+function statusCell(text) {
+  return { _isStatus: true, text };
+}
+
+// --- Build document content ---
+
+const auditDate = new Date(auditData.audit_date).toLocaleDateString("en-US", {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+});
+
+const content = [];
+
+// --- Title Page ---
+content.push(
+  { text: "Voluntary Product Accessibility Template", style: "title", alignment: "center", margin: [0, 120, 0, 10] },
+  { text: "VPAT 2.5 INT Edition", style: "subtitle", alignment: "center", margin: [0, 0, 0, 40] },
+  { text: "Primebrick Frontend (primebrick-fe-v3)", style: "product", alignment: "center", margin: [0, 0, 0, 10] },
+  { text: "Based on WCAG 2.2 (A/AA/AAA), Section 508, EN 301 549", style: "muted", alignment: "center", margin: [0, 0, 0, 30] },
+  { text: `Audit date: ${auditDate}`, style: "info", alignment: "center", margin: [0, 0, 0, 5] },
+  { text: `Axe-core version: ${auditData.axe_version}`, style: "info", alignment: "center", margin: [0, 0, 0, 5] },
+  { text: `Routes audited: ${auditData.routes_audited}`, style: "info", alignment: "center", margin: [0, 0, 0, 40] },
+  {
+    text: "This document is generated from automated axe-core scans and includes manual review notes. Axe-core covers approximately 50 of 86 WCAG 2.2 success criteria automatically; the remainder require manual review and are marked 'Not Evaluated'.",
+    style: "muted",
+    alignment: "center",
+    margin: [40, 0, 40, 0],
+  },
+);
+
+// --- Applicable Standards Table ---
+content.push({ text: "", pageBreak: "before" });
+content.push({ text: "Applicable Standards and Guidelines", style: "sectionTitle", margin: [0, 0, 0, 10] });
+content.push(
+  buildTable(
+    ["Standard / Guideline", "Included In Report"],
+    [
+      ["WCAG 2.0", "Level A (Yes) / AA (Yes) / AAA (Yes)"],
+      ["WCAG 2.1", "Level A (Yes) / AA (Yes) / AAA (Yes)"],
+      ["WCAG 2.2", "Level A (Yes) / AA (Yes) / AAA (Yes)"],
+      ["Section 508 (2017)", "Chapters 3-6 (Yes)"],
+      ["EN 301 549 v3.2.1", "Clauses 4-13 (Yes)"],
+    ],
+    ["auto", "auto"],
+  ),
+);
+
+// --- Section 1: WCAG 2.x Conformance ---
+content.push({ text: "", pageBreak: "before" });
+content.push({ text: "Section 1: WCAG 2.x Conformance", style: "sectionTitle", margin: [0, 0, 0, 6] });
+content.push({
+  text: "The following table lists all WCAG 2.2 success criteria and their conformance status. Criteria marked 'Not Evaluated' require manual review (no automated axe rule covers them).",
+  style: "muted",
+  margin: [0, 0, 0, 10],
+});
+
+const wcagRows = WCAG_SC.map((sc) => {
+  const status = getConformanceStatus(sc, auditData);
+  const remarks = getRemarks(sc, status, auditData);
+  return [sc.num, sc.level, sc.title, statusCell(status), remarks];
+});
+
+content.push(
+  buildTable(
+    ["SC", "Level", "Success Criterion", "Conformance Level", "Remarks and Explanations"],
+    wcagRows,
+    [40, 35, 180, 80, "auto"],
+  ),
+);
+
+// --- Section 2: Section 508 ---
+content.push({ text: "", pageBreak: "before" });
+content.push({ text: "Section 2: Section 508 Conformance", style: "sectionTitle", margin: [0, 0, 0, 6] });
+content.push({
+  text: "Section 508 (2017) Chapter 3 references WCAG 2.0 Level A/AA. Chapters 4, 5, and 6 require manual evaluation.",
+  style: "muted",
+  margin: [0, 0, 0, 10],
+});
+
+const section508Criteria = [
   { chapter: "3", title: "Technical Criteria (WCAG 2.0 A/AA)", scRefs: WCAG_SC.filter((sc) => sc.level === "A" || sc.level === "AA") },
   { chapter: "4", title: "Functional Performance Criteria", scRefs: [] },
   { chapter: "5", title: "Interoperability", scRefs: [] },
   { chapter: "6", title: "Content", scRefs: [] },
 ];
 
-/**
- * Map WCAG SC to EN 301 549 clauses.
- * EN 301 549 v3.2.1 (2021) references WCAG 2.1 Level A/AA.
- * Clause 4: Functional Performance
- * Clause 5: Generic Requirements
- * Clause 6: ICT with Video
- * Clause 7: Hardware
- * Clause 8: Web
- * Clause 9: Non-web documents
- * Clause 10: Software
- * Clause 11: Documentation
- * Clause 12: Support services
- * Clause 13: Conformance
- */
-const EN_301_549_CRITERIA = [
+const s508Rows = section508Criteria.map((c) => {
+  let status = "Not Evaluated";
+  let remarks = "Manual review required";
+  if (c.scRefs.length > 0) {
+    const statuses = c.scRefs.map((sc) => getConformanceStatus(sc, auditData));
+    if (statuses.every((s) => s === "Supports")) {
+      status = "Supports";
+      remarks = `All ${c.scRefs.length} WCAG SCs passed`;
+    } else if (statuses.some((s) => s === "Partially Supports")) {
+      status = "Partially Supports";
+      const partial = c.scRefs.filter((sc) => getConformanceStatus(sc, auditData) === "Partially Supports");
+      remarks = `Violations in ${partial.length} SCs`;
+    } else if (statuses.some((s) => s === "Supports")) {
+      status = "Partially Supports";
+      remarks = "Some SCs passed, others not evaluated";
+    }
+  }
+  return [c.chapter, c.title, statusCell(status), remarks];
+});
+
+content.push(
+  buildTable(
+    ["Chapter", "Criteria", "Conformance Level", "Remarks and Explanations"],
+    s508Rows,
+    [50, 200, 80, "auto"],
+  ),
+);
+
+// --- Section 3: EN 301 549 ---
+content.push({ text: "", pageBreak: "before" });
+content.push({ text: "Section 3: EN 301 549 Conformance", style: "sectionTitle", margin: [0, 0, 0, 6] });
+content.push({
+  text: "EN 301 549 v3.2.1 Clause 5 and 8 reference WCAG 2.1 Level A/AA. Other clauses require manual evaluation.",
+  style: "muted",
+  margin: [0, 0, 0, 10],
+});
+
+const enCriteria = [
   { clause: "4", title: "Functional Performance", scRefs: [] },
   { clause: "5", title: "Generic Requirements (WCAG 2.1 A/AA)", scRefs: WCAG_SC.filter((sc) => sc.level === "A" || sc.level === "AA") },
   { clause: "6", title: "ICT with Video", scRefs: [] },
@@ -203,222 +360,7 @@ const EN_301_549_CRITERIA = [
   { clause: "13", title: "Conformance", scRefs: [] },
 ];
 
-// PDF generation
-const doc = new PDFDocument({
-  size: "A4",
-  margins: { top: 50, bottom: 50, left: 50, right: 50 },
-  bufferPages: true,
-});
-
-// Collect PDF bytes
-const chunks = [];
-doc.on("data", (chunk) => chunks.push(chunk));
-
-const pageWidth = doc.page.width;
-const pageHeight = doc.page.height;
-const contentWidth = pageWidth - 100; // margins
-
-// Colors
-const HEADER_BG = "#1e3a5f";
-const HEADER_FG = "#ffffff";
-const ROW_ALT = "#f3f4f6";
-const BORDER = "#d1d5db";
-const TEXT = "#111827";
-const MUTED = "#6b7280";
-const SUPPORTS = "#16a34a";
-const PARTIAL = "#d97706";
-const NOT_EVAL = "#6b7280";
-const NOT_SUPPORT = "#dc2626";
-
-// Fonts (pdfkit built-in: Helvetica)
-const FONT = "Helvetica";
-const FONT_BOLD = "Helvetica-Bold";
-const FONT_ITALIC = "Helvetica-Oblique";
-
-// --- Title Page ---
-doc
-  .fillColor(TEXT)
-  .font(FONT_BOLD)
-  .fontSize(28)
-  .text("Voluntary Product Accessibility Template", 50, 200, { align: "center", width: contentWidth });
-
-doc
-  .fontSize(20)
-  .fillColor(MUTED)
-  .text("VPAT 2.5 INT Edition", 50, 250, { align: "center", width: contentWidth });
-
-doc
-  .font(FONT)
-  .fontSize(16)
-  .fillColor(TEXT)
-  .text("Primebrick Frontend (primebrick-fe-v3)", 50, 320, { align: "center", width: contentWidth });
-
-doc
-  .fontSize(12)
-  .fillColor(MUTED)
-  .text(`Based on WCAG 2.2 (A/AA/AAA), Section 508, EN 301 549`, 50, 350, { align: "center", width: contentWidth });
-
-const auditDate = new Date(auditData.audit_date).toLocaleDateString("en-US", {
-  year: "numeric",
-  month: "long",
-  day: "numeric",
-});
-doc.text(`Audit date: ${auditDate}`, 50, 375, { align: "center", width: contentWidth });
-doc.text(`Axe-core version: ${auditData.axe_version}`, 50, 395, { align: "center", width: contentWidth });
-doc.text(`Routes audited: ${auditData.routes_audited}`, 50, 415, { align: "center", width: contentWidth });
-
-doc
-  .fontSize(10)
-  .fillColor(MUTED)
-  .text(
-    "This document is generated from automated axe-core scans and includes manual review notes. " +
-      "Axe-core covers approximately 50 of 86 WCAG 2.2 success criteria automatically; " +
-      "the remainder require manual review and are marked 'Not Evaluated'.",
-    50,
-    470,
-    { align: "center", width: contentWidth, lineGap: 4 }
-  );
-
-// --- Helper: draw table ---
-function drawTable(doc, y, columns, rows, options = {}) {
-  const rowHeight = options.rowHeight || 24;
-  const headerHeight = options.headerHeight || 28;
-  const fontSize = options.fontSize || 8;
-  const headerFontSize = options.headerFontSize || 9;
-
-  // Draw header
-  let x = 50;
-  doc.fillColor(HEADER_FG);
-  doc.rect(50, y, contentWidth, headerHeight).fill(HEADER_BG);
-
-  doc.font(FONT_BOLD).fontSize(headerFontSize).fillColor(HEADER_FG);
-  for (const col of columns) {
-    doc.text(col.label, x + 4, y + 8, { width: col.width - 8, align: "left" });
-    x += col.width;
-  }
-
-  y += headerHeight;
-
-  // Draw rows
-  doc.font(FONT).fontSize(fontSize).fillColor(TEXT);
-  for (let i = 0; i < rows.length; i++) {
-    const row = rows[i];
-
-    // Check for page break
-    if (y + rowHeight > pageHeight - 50) {
-      doc.addPage();
-      y = 50;
-      // Redraw header on new page
-      x = 50;
-      doc.fillColor(HEADER_FG);
-      doc.rect(50, y, contentWidth, headerHeight).fill(HEADER_BG);
-      doc.font(FONT_BOLD).fontSize(headerFontSize).fillColor(HEADER_FG);
-      for (const col of columns) {
-        doc.text(col.label, x + 4, y + 8, { width: col.width - 8, align: "left" });
-        x += col.width;
-      }
-      y += headerHeight;
-      doc.font(FONT).fontSize(fontSize).fillColor(TEXT);
-    }
-
-    // Alternating row background
-    if (i % 2 === 1) {
-      doc.rect(50, y, contentWidth, rowHeight).fill(ROW_ALT);
-    }
-
-    // Row borders
-    doc.lineWidth(0.5).strokeColor(BORDER);
-    doc.rect(50, y, contentWidth, rowHeight).stroke();
-
-    // Cell content
-    x = 50;
-    for (let j = 0; j < columns.length; j++) {
-      const col = columns[j];
-      const value = row[j];
-      let color = TEXT;
-      if (col.type === "status") {
-        if (value === "Supports") color = SUPPORTS;
-        else if (value === "Partially Supports") color = PARTIAL;
-        else if (value === "Does Not Support") color = NOT_SUPPORT;
-        else color = NOT_EVAL;
-      }
-      doc.fillColor(color);
-      doc.text(value, x + 4, y + 7, { width: col.width - 8, align: "left" });
-      x += col.width;
-    }
-
-    y += rowHeight;
-  }
-
-  return y;
-}
-
-// --- Section 1: WCAG 2.x Conformance ---
-doc.addPage();
-doc.font(FONT_BOLD).fontSize(16).fillColor(TEXT).text("Section 1: WCAG 2.x Conformance", 50, 50);
-doc
-  .font(FONT)
-  .fontSize(10)
-  .fillColor(MUTED)
-  .text(
-    "The following table lists all WCAG 2.2 success criteria and their conformance status. " +
-      "Criteria marked 'Not Evaluated' require manual review (no automated axe rule covers them).",
-    50,
-    75,
-    { width: contentWidth, lineGap: 3 }
-  );
-
-const wcagColumns = [
-  { label: "SC", width: 50, type: "text" },
-  { label: "Level", width: 40, type: "text" },
-  { label: "Success Criterion", width: 280, type: "text" },
-  { label: "Conformance Level", width: 100, type: "status" },
-  { label: "Remarks", width: 180, type: "text" },
-];
-
-const wcagRows = WCAG_SC.map((sc) => {
-  const status = getConformanceStatus(sc, auditData);
-  let remarks = "";
-  if (status === "Supports") {
-    remarks = `Axe rules passed: ${sc.axeRules.join(", ")}`;
-  } else if (status === "Partially Supports") {
-    const violating = sc.axeRules.filter((r) =>
-      auditData.unique_violating_rules.includes(r)
-    );
-    remarks = `Violations in: ${violating.join(", ")}`;
-  } else if (status === "Not Evaluated" && sc.axeRules.length > 0) {
-    remarks = "Some rules incomplete/inapplicable";
-  } else {
-    remarks = "Manual review required";
-  }
-  return [sc.num, sc.level, sc.title, status, remarks];
-});
-
-drawTable(doc, 110, wcagColumns, wcagRows, { rowHeight: 22, fontSize: 7, headerFontSize: 8 });
-
-// --- Section 2: Section 508 ---
-doc.addPage();
-doc.font(FONT_BOLD).fontSize(16).fillColor(TEXT).text("Section 2: Section 508 Conformance", 50, 50);
-doc
-  .font(FONT)
-  .fontSize(10)
-  .fillColor(MUTED)
-  .text(
-    "Section 508 (2017) Chapter 3 references WCAG 2.0 Level A/AA. " +
-      "Chapters 4, 5, and 6 require manual evaluation.",
-    50,
-    75,
-    { width: contentWidth, lineGap: 3 }
-  );
-
-const s508Columns = [
-  { label: "Chapter", width: 60, type: "text" },
-  { label: "Criteria", width: 250, type: "text" },
-  { label: "Conformance", width: 120, type: "status" },
-  { label: "Remarks", width: 220, type: "text" },
-];
-
-const s508Rows = SECTION_508_CRITERIA.map((c) => {
+const enRows = enCriteria.map((c) => {
   let status = "Not Evaluated";
   let remarks = "Manual review required";
   if (c.scRefs.length > 0) {
@@ -428,133 +370,162 @@ const s508Rows = SECTION_508_CRITERIA.map((c) => {
       remarks = `All ${c.scRefs.length} WCAG SCs passed`;
     } else if (statuses.some((s) => s === "Partially Supports")) {
       status = "Partially Supports";
-      const partial = c.scRefs.filter(
-        (sc) => getConformanceStatus(sc, auditData) === "Partially Supports"
-      );
+      const partial = c.scRefs.filter((sc) => getConformanceStatus(sc, auditData) === "Partially Supports");
       remarks = `Violations in ${partial.length} SCs`;
     } else if (statuses.some((s) => s === "Supports")) {
       status = "Partially Supports";
       remarks = "Some SCs passed, others not evaluated";
     }
   }
-  return [c.chapter, c.title, status, remarks];
+  return [c.clause, c.title, statusCell(status), remarks];
 });
 
-drawTable(doc, 110, s508Columns, s508Rows, { rowHeight: 26, fontSize: 9, headerFontSize: 10 });
+content.push(
+  buildTable(
+    ["Clause", "Requirements", "Conformance Level", "Remarks and Explanations"],
+    enRows,
+    [45, 200, 80, "auto"],
+  ),
+);
 
-// --- Section 3: EN 301 549 ---
-doc.addPage();
-doc.font(FONT_BOLD).fontSize(16).fillColor(TEXT).text("Section 3: EN 301 549 Conformance", 50, 50);
-doc
-  .font(FONT)
-  .fontSize(10)
-  .fillColor(MUTED)
-  .text(
-    "EN 301 549 v3.2.1 (2021) Clause 5 and 8 reference WCAG 2.1 Level A/AA. " +
-      "Other clauses require manual evaluation.",
-    50,
-    75,
-    { width: contentWidth, lineGap: 3 }
-  );
-
-const enColumns = [
-  { label: "Clause", width: 60, type: "text" },
-  { label: "Requirements", width: 250, type: "text" },
-  { label: "Conformance", width: 120, type: "status" },
-  { label: "Remarks", width: 220, type: "text" },
-];
-
-const enRows = EN_301_549_CRITERIA.map((c) => {
-  let status = "Not Evaluated";
-  let remarks = "Manual review required";
-  if (c.scRefs.length > 0) {
-    const statuses = c.scRefs.map((sc) => getConformanceStatus(sc, auditData));
-    if (statuses.every((s) => s === "Supports")) {
-      status = "Supports";
-      remarks = `All ${c.scRefs.length} WCAG SCs passed`;
-    } else if (statuses.some((s) => s === "Partially Supports")) {
-      status = "Partially Supports";
-      const partial = c.scRefs.filter(
-        (sc) => getConformanceStatus(sc, auditData) === "Partially Supports"
-      );
-      remarks = `Violations in ${partial.length} SCs`;
-    } else if (statuses.some((s) => s === "Supports")) {
-      status = "Partially Supports";
-      remarks = "Some SCs passed, others not evaluated";
-    }
-  }
-  return [c.clause, c.title, status, remarks];
+// --- Methodology ---
+content.push({ text: "", pageBreak: "before" });
+content.push({ text: "Methodology and Limitations", style: "sectionTitle", margin: [0, 0, 0, 10] });
+content.push({
+  ol: [
+    {
+      text: [
+        { text: "Automated Testing: ", bold: true },
+        `This report is generated from automated axe-core scans using @axe-core/playwright. Axe-core version ${auditData.axe_version} was used with tags: ${auditData.axe_tags.join(", ")}.`,
+      ],
+    },
+    {
+      text: [
+        { text: "Routes Audited: ", bold: true },
+        `${auditData.routes_audited} routes were scanned including login, welcome, customer management, CRM pipeline, and all system settings pages.`,
+      ],
+    },
+    {
+      text: [
+        { text: "Coverage Limitations: ", bold: true },
+        "Axe-core covers approximately 50 of 86 WCAG 2.2 success criteria automatically. Success criteria not covered by axe rules are marked 'Not Evaluated' and require manual review.",
+      ],
+    },
+    {
+      text: [
+        { text: "Conformance Status Definitions: ", bold: true },
+      ],
+    },
+    {
+      ul: [
+        { text: [{ text: "Supports: ", bold: true }, "All automated axe rules for this criterion passed on all audited routes."] },
+        { text: [{ text: "Partially Supports: ", bold: true }, "At least one axe rule violation was detected on one or more routes."] },
+        { text: [{ text: "Does Not Support: ", bold: true }, "All axe rules failed (no route passed)."] },
+        { text: [{ text: "Not Evaluated: ", bold: true }, "No automated axe rule covers this criterion; manual review required."] },
+      ],
+      margin: [20, 0, 0, 0],
+    },
+    {
+      text: [
+        { text: "Remediation Priority: ", bold: true },
+        "Violations should be remediated in order of impact: critical > serious > moderate > minor. See the downloadable PDF for detailed violation information.",
+      ],
+    },
+    {
+      text: [
+        { text: "Manual Review Required: ", bold: true },
+        "A complete VPAT requires manual review of all 'Not Evaluated' criteria. This includes keyboard navigation testing, screen reader testing, cognitive accessibility review, and verification of content alternatives for media.",
+      ],
+    },
+  ],
+  fontSize: 9,
+  lineHeight: 1.4,
 });
 
-drawTable(doc, 110, enColumns, enRows, { rowHeight: 26, fontSize: 9, headerFontSize: 10 });
+// --- Document definition ---
+const docDefinition = {
+  pageSize: "A4",
+  pageMargins: [40, 50, 40, 50],
+  content: content,
+  styles: {
+    title: {
+      fontSize: 24,
+      bold: true,
+      color: "#111827",
+    },
+    subtitle: {
+      fontSize: 16,
+      color: "#6b7280",
+    },
+    product: {
+      fontSize: 14,
+      color: "#111827",
+    },
+    info: {
+      fontSize: 11,
+      color: "#374151",
+    },
+    muted: {
+      fontSize: 10,
+      color: "#6b7280",
+    },
+    sectionTitle: {
+      fontSize: 15,
+      bold: true,
+      color: "#111827",
+      margin: [0, 0, 0, 8],
+    },
+    tableHeader: {
+      bold: true,
+      fontSize: 9,
+      color: "#ffffff",
+    },
+  },
+  defaultStyle: {
+    fontSize: 10,
+    color: "#111827",
+  },
+  footer: (currentPage, pageCount) => ({
+    text: `"Voluntary Product Accessibility Template" and "VPAT" are registered service marks of the Information Technology Industry Council (ITI)  |  Page ${currentPage} of ${pageCount}`,
+    fontSize: 7,
+    color: "#9ca3af",
+    alignment: "center",
+    margin: [0, 20, 0, 0],
+  }),
+};
 
-// --- Methodology Notes ---
-doc.addPage();
-doc.font(FONT_BOLD).fontSize(16).fillColor(TEXT).text("Methodology and Limitations", 50, 50);
-
-doc.font(FONT).fontSize(10).fillColor(TEXT);
-let notesY = 80;
-const notes = [
-  "1. Automated Testing",
-  "   This report is generated from automated axe-core scans using @axe-core/playwright. " +
-    "Axe-core version " + auditData.axe_version + " was used with the following tags enabled: " +
-    auditData.axe_tags.join(", ") + ".",
-  "",
-  "2. Routes Audited",
-  `   ${auditData.routes_audited} routes were scanned: ${auditData.routes.map((r) => r.route).join(", ")}.`,
-  "",
-  "3. Coverage Limitations",
-  "   Axe-core covers approximately 50 of 86 WCAG 2.2 success criteria automatically. " +
-    "Success criteria not covered by axe rules are marked 'Not Evaluated' and require manual review. " +
-    "These include: most of Principle 2 (Operable) keyboard/timing criteria, Principle 3 (Understandable) " +
-    "language/cognitive criteria, and many AAA-level criteria.",
-  "",
-  "4. Conformance Status Definitions",
-  "   - Supports: All automated axe rules for this criterion passed on all audited routes.",
-  "   - Partially Supports: At least one axe rule violation was detected on one or more routes.",
-  "   - Does Not Support: All axe rules failed (no route passed).",
-  "   - Not Evaluated: No automated axe rule covers this criterion; manual review required.",
-  "",
-  "5. Audit Results Summary",
-  `   Total violations: ${auditData.total_violations}`,
-  `   Total passes: ${auditData.total_passes}`,
-  `   Total incomplete: ${auditData.total_incomplete}`,
-  `   Total inapplicable: ${auditData.total_inapplicable}`,
-  `   Unique violating rules: ${auditData.unique_violating_rules.length}`,
-  `   Unique passing rules: ${auditData.unique_passing_rules.length}`,
-  "",
-  "6. Remediation Priority",
-  "   Violations should be remediated in order of impact: critical > serious > moderate > minor. " +
-    "Axe-core reports impact level per violation. See vpat-data.json for detailed violation information " +
-    "including affected HTML elements and failure summaries.",
-  "",
-  "7. Manual Review Required",
-  "   A complete VPAT requires manual review of all 'Not Evaluated' criteria. " +
-    "This includes keyboard navigation testing, screen reader testing, cognitive accessibility review, " +
-    "and verification of content alternatives for media.",
-];
-
-for (const line of notes) {
-  if (line.startsWith("  ") || line.match(/^\d+\./)) {
-    doc.font(FONT_BOLD);
-  } else {
-    doc.font(FONT);
+// --- Generate PDF ---
+// Register Roboto fonts (pdfmake's default font).
+// The VFS stores base64 strings, but pdfkit expects Buffers, so convert them.
+const fontStorage = {};
+for (const [key, val] of Object.entries(vfs)) {
+  if (key.endsWith(".ttf")) {
+    fontStorage[key] = Buffer.from(val, "base64");
   }
-  doc.text(line, 50, notesY, { width: contentWidth, lineGap: 3 });
-  notesY += 14 + Math.ceil((line.length * 5) / contentWidth) * 12;
 }
-
-// Finalize
-doc.end();
-
-// Write PDF to file
-const pdfBuffer = await new Promise((resolve) => {
-  doc.on("end", () => resolve(Buffer.concat(chunks)));
-});
+pdfmake.virtualfs.storage = fontStorage;
+pdfmake.fonts = {
+  Roboto: {
+    normal: "Roboto-Regular.ttf",
+    bold: "Roboto-Medium.ttf",
+    italics: "Roboto-Italic.ttf",
+    bolditalics: "Roboto-MediumItalic.ttf",
+  },
+};
 
 mkdirSync(OUTPUT_DIR, { recursive: true });
-writeFileSync(OUTPUT_PATH, pdfBuffer);
 
-console.log(`  Written to: ${OUTPUT_PATH}`);
-console.log(`  Size: ${(pdfBuffer.length / 1024).toFixed(1)} KB`);
-console.log("=== VPAT 2.5 PDF generation complete ===");
+const pdfDoc = pdfmake.createPdf(docDefinition);
+pdfDoc
+  .getBuffer()
+  .then((buffer) => {
+    writeFileSync(OUTPUT_PATH, buffer);
+    const sizeKB = (buffer.length / 1024).toFixed(1);
+    console.log(`  Written to: ${OUTPUT_PATH}`);
+    console.log(`  Size: ${sizeKB} KB`);
+    console.log("=== VPAT 2.5 PDF generation complete ===");
+  })
+  .catch((err) => {
+    console.error("PDF generation failed:", err);
+    process.exit(1);
+  });
