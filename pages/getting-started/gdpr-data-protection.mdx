@@ -1,0 +1,93 @@
+---
+title: "GDPR & Data Protection"
+description: "How Primebrick supports GDPR compliance — data minimization, audit trails, soft-delete, multi-tenant isolation, and the right to be forgotten."
+---
+
+## Overview
+
+Primebrick is designed with **data protection by design and by default** (GDPR
+Article 25). The framework provides built-in mechanisms that help organizations
+meet their obligations under the **EU General Data Protection Regulation (GDPR)**
+and similar data protection laws.
+
+## Data minimization
+
+Primebrick's DAL (Data Access Layer) enforces **field-level access control**
+through the RBAC permission system. API responses only include fields the user
+is authorized to see — sensitive fields (e.g., PII) are stripped automatically
+for users without the appropriate clearance.
+
+## Audit trails
+
+Every create, update, delete, and restore operation is recorded in an
+**immutable audit trail**. The audit log captures:
+
+- **Who**: the user ID and organization
+- **What**: the entity, record UUID, and action (create/update/delete/restore)
+- **When**: ISO 8601 timestamp
+- **What changed**: the diff between old and new values (for updates)
+
+Audit trails are retained indefinitely and cannot be modified by application
+users. This supports GDPR Article 30 (records of processing activities) and
+Article 33 (breach notification — the audit trail shows exactly what was
+accessed or modified).
+
+## Soft-delete and the right to be forgotten
+
+Primebrick uses **soft-delete** by default — records are marked as deleted
+(`deleted_at` timestamp) but remain in the database. This supports:
+
+- **GDPR Article 17 (right to erasure)**: A hard-delete operation can be
+  performed to permanently remove a record and its audit history when legally
+  required.
+- **GDPR Article 15 (right of access)**: Soft-deleted records can be retrieved
+  for data subject access requests.
+- **Recovery**: Accidental deletions can be restored via the `restore_record`
+  operation.
+
+## Multi-tenant data isolation
+
+Primebrick enforces **organization-level data isolation** at the DAL layer.
+Every query is automatically scoped to the user's organization — there is no
+way for a user in Organization A to access data from Organization B, even if
+they know the UUID.
+
+This supports **GDPR Article 5(1)(c)** (data minimization) and **Article 32**
+(security of processing) by ensuring data is only accessible to authorized
+tenants.
+
+## Encryption
+
+| Layer | Encryption |
+|-------|-----------|
+| In transit | TLS 1.2+ (HTTPS) for all API traffic |
+| At rest | PostgreSQL TDE or disk-level encryption (deployment-dependent) |
+| Passwords | Never stored — authentication is delegated to Casdoor/OIDC |
+| Tokens | JWT access tokens (short-lived) + refresh tokens (HttpOnly cookies) |
+
+## Data residency
+
+Primebrick can be deployed **on-premises or in any cloud region**. This allows
+organizations to keep personal data within a specific jurisdiction (e.g., EU)
+to meet GDPR data residency requirements. There is no vendor lock-in — you
+control where your data lives.
+
+## GDPR articles supported
+
+| Article | How Primebrick supports it |
+|---------|---------------------------|
+| Art. 5 | Principles — data minimization via field-level RBAC, soft-delete |
+| Art. 15 | Right of access — audit trails, soft-deleted records retrievable |
+| Art. 17 | Right to erasure — hard-delete for permanent removal |
+| Art. 25 | Data protection by design — multi-tenant isolation, RBAC, audit |
+| Art. 30 | Records of processing — immutable audit trail |
+| Art. 32 | Security of processing — TLS, encryption, MFA, step-up auth |
+| Art. 33 | Breach notification — audit trail shows exactly what was accessed |
+
+## Standards & references
+
+| Standard | Relevance |
+|----------|-----------|
+| [GDPR](https://gdpr-info.eu/) | EU General Data Protection Regulation |
+| [ISO/IEC 27701](https://www.iso.org/standard/71670.html) | Privacy Information Management |
+| [ISO/IEC 27001](https://www.iso.org/standard/27001) | Information Security Management Systems |

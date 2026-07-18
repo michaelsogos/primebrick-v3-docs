@@ -1,10 +1,3 @@
----
-title: "README"
-source: guide
-repo: "backend"
----
-
-# AI AGENT INSTRUCTIONS - Primebrick Backend
 
 **IMPORTANT:** Read [AGENTS.md](./AGENTS.md) for complete AI agent instructions, GitFlow rules, and commands.
 

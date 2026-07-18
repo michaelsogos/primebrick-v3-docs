@@ -41,6 +41,9 @@ function addFrontmatter(content, title, repoSlug) {
   if (content.startsWith('---')) {
     return content;
   }
+  // Strip the first H1 heading from the body — Zudoku renders the frontmatter
+  // title as the page title, so an H1 in the body would duplicate it.
+  content = content.replace(/^#\s+.+\r?\n?/, '');
   return `---
 title: "${title}"
 source: guide
@@ -87,6 +90,12 @@ function copyDirRecursive(srcDir, destDir, repoSlug) {
       // MD files get frontmatter added if missing
       const content = readFileSync(srcPath, 'utf-8');
       if (entry.endsWith('.mdx') || content.startsWith('---')) {
+        // Strip the first H1 heading from the body if frontmatter has a title —
+        // Zudoku renders the frontmatter title as the page title, so an H1 in
+        // the body would duplicate it.
+        if (content.startsWith('---')) {
+          content = content.replace(/^(---[\s\S]*?---\s*\n)#\s+.+\r?\n?/, '$1');
+        }
         mkdirSync(dirname(destPath), { recursive: true });
         writeFileSync(destPath, content, 'utf-8');
       } else {
