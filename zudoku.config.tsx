@@ -128,6 +128,7 @@ const config: ZudokuConfig = {
           label: "Compliance & Policy",
           icon: "shield-check",
           items: [
+            "getting-started/compliance-assessment",
             "getting-started/authentication-mfa",
             "getting-started/security-posture",
             "getting-started/gdpr-data-protection",

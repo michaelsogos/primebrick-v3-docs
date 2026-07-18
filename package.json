@@ -17,7 +17,9 @@
     "fetch:openapi": "node scripts/fetch-openapi.mjs",
     "generate:nav": "node scripts/generate-nav.mjs",
     "generate:vpat-pdf": "node scripts/generate-vpat-pdf.mjs",
-    "build:full": "pnpm install && node scripts/sync-repo-docs.mjs && node scripts/sync-vpat-data.mjs && node scripts/fetch-openapi.mjs && node scripts/generate-nav.mjs && node scripts/generate-vpat-pdf.mjs && pnpm run build"
+    "build:full": "pnpm install && node scripts/sync-repo-docs.mjs && node scripts/sync-vpat-data.mjs && node scripts/fetch-openapi.mjs && node scripts/generate-nav.mjs && node scripts/generate-vpat-pdf.mjs && node scripts/compliance-scan.mjs && node scripts/generate-compliance-pdf.mjs && pnpm run build",
+    "scan:compliance": "node scripts/compliance-scan.mjs",
+    "generate:compliance-pdf": "node scripts/generate-compliance-pdf.mjs"
   },
   "dependencies": {
     "mermaid": "11.16.0",
