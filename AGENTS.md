@@ -36,11 +36,22 @@ This repo only handles `docs.primebrick.dev`.
 | Preview (Worker) | `pnpm run preview` (wrangler dev, port 8787) |
 | Deploy | `pnpm run deploy` (build + wrangler deploy) |
 | Lint | `pnpm run lint` |
-| Full sync + build (local) | `pnpm install && node scripts/sync-repo-docs.mjs && node scripts/sync-vpat-data.mjs && node scripts/fetch-openapi.mjs && node scripts/generate-nav.mjs && node scripts/generate-vpat-pdf.mjs && pnpm run build` |
+| Full sync + build | `pnpm run build:full` (wraps the full chain below) |
 
 ## CI build chain (Cloudflare build agent on push to main)
 
-The Cloudflare build agent runs the full chain on every push to `main`:
+The Cloudflare build agent build command is the single wrapped script:
+
+```
+pnpm run build:full
+```
+
+`build:full` is defined in `package.json` and runs the full chain below.
+**Do NOT** paste the concatenated chain into the Cloudflare dashboard — keep the
+build command as `pnpm run build:full` so the chain is maintained in
+`package.json` (editable by dev/AI) rather than in the dashboard.
+
+The chain executed by `build:full` is:
 
 ```
 pnpm install
