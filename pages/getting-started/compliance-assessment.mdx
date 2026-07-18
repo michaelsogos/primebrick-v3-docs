@@ -1,0 +1,26 @@
+---
+title: "Automated Compliance Assessment"
+description: "Automated security and compliance scan of the Primebrick codebase — maps code evidence to ISO 27001, NIS2, GDPR, CCPA, and OWASP controls."
+---
+
+import ComplianceReport from "../../src/components/ComplianceReport.tsx";
+
+The Primebrick codebase is automatically scanned for security-relevant code
+patterns on every build. The scanner reads the actual source code across all
+repositories (Backend, Frontend, Microservices, DAL, SDK) and maps the
+evidence to compliance frameworks:
+
+- **ISO 27001** — Annex A controls (A.5, A.6, A.8)
+- **NIS2** — Article 21(2) security measures
+- **GDPR** — Articles 5, 15, 17, 25, 30, 32, 33
+- **CCPA** — §1798.100, §1798.130, §1798.150
+- **OWASP** — Top 10 mitigation mapping
+
+Each control shows its compliance status (**compliant**, **partially
+compliant**, **not found**, **non-compliant**) with the actual file and line
+numbers where the evidence was found. No manual questionnaires — the scanner
+reads your code.
+
+A downloadable PDF version is available for compliance teams and auditors.
+
+<ComplianceReport />
