@@ -33,3 +33,23 @@ a[aria-current="page"].bg-accent .truncate {
   -webkit-text-fill-color: currentColor;
   background: none;
 }
+
+/* Primary buttons — gradient background matching the FE (sky-400 → indigo-400).
+   Applies to all elements using the bg-primary class (Zudoku/Tailwind buttons)
+   and to the VPAT Download PDF CTA. */
+.bg-primary {
+  background-image: linear-gradient(to bottom right, #38bdf8, #818cf8) !important;
+  color: #ffffff !important;
+}
+
+.bg-primary:hover {
+  background-image: linear-gradient(to bottom right, #0ea5e9, #6366f1) !important;
+}
+
+.dark .bg-primary {
+  background-image: linear-gradient(to bottom right, #38bdf8, #818cf8) !important;
+}
+
+.dark .bg-primary:hover {
+  background-image: linear-gradient(to bottom right, #0ea5e9, #6366f1) !important;
+}
