@@ -27,9 +27,9 @@ export const generatedRepoNav: Navigation = [
     "icon": "boxes",
     "collapsed": true,
     "items": [
+      "microservices/guide/overview",
       "microservices/guide/architecture",
       "microservices/guide/conventions",
-      "microservices/guide/overview",
       {
         "type": "category",
         "label": "Services",
@@ -45,9 +45,9 @@ export const generatedRepoNav: Navigation = [
     "icon": "database",
     "collapsed": true,
     "items": [
-      "dal/guide/api-reference",
       "dal/guide/audit-trail",
       "dal/guide/clone",
+      "dal/guide/api-reference",
       "dal/guide/overview"
     ]
   },
@@ -57,14 +57,14 @@ export const generatedRepoNav: Navigation = [
     "icon": "package",
     "collapsed": true,
     "items": [
-      "sdk/guide/api-reference",
+      "sdk/guide/overview",
+      "sdk/guide/getting-started",
       "sdk/guide/authentication",
       "sdk/guide/ext-json",
-      "sdk/guide/getting-started",
-      "sdk/guide/http-server",
       "sdk/guide/nats-client",
-      "sdk/guide/overview",
-      "sdk/guide/service-registration"
+      "sdk/guide/service-registration",
+      "sdk/guide/http-server",
+      "sdk/guide/api-reference"
     ]
   }
 ];
@@ -95,9 +95,9 @@ export const serviceNav: Navigation = [
     "icon": "boxes",
     "collapsed": true,
     "items": [
+      "microservices/guide/overview",
       "microservices/guide/architecture",
       "microservices/guide/conventions",
-      "microservices/guide/overview",
       {
         "type": "category",
         "label": "Services",
@@ -115,9 +115,9 @@ export const libraryNav: Navigation = [
     "icon": "database",
     "collapsed": true,
     "items": [
-      "dal/guide/api-reference",
       "dal/guide/audit-trail",
       "dal/guide/clone",
+      "dal/guide/api-reference",
       "dal/guide/overview"
     ]
   },
@@ -127,14 +127,14 @@ export const libraryNav: Navigation = [
     "icon": "package",
     "collapsed": true,
     "items": [
-      "sdk/guide/api-reference",
+      "sdk/guide/overview",
+      "sdk/guide/getting-started",
       "sdk/guide/authentication",
       "sdk/guide/ext-json",
-      "sdk/guide/getting-started",
-      "sdk/guide/http-server",
       "sdk/guide/nats-client",
-      "sdk/guide/overview",
-      "sdk/guide/service-registration"
+      "sdk/guide/service-registration",
+      "sdk/guide/http-server",
+      "sdk/guide/api-reference"
     ]
   }
 ];

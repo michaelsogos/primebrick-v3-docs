@@ -1,3 +1,9 @@
+---
+title: "README"
+source: guide
+repo: "dal"
+---
+
 
 Type-driven PostgreSQL Data Access Layer for Primebrick v3.
 

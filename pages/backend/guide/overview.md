@@ -1,3 +1,9 @@
+---
+title: "README"
+source: guide
+repo: "backend"
+---
+
 
 **IMPORTANT:** Read [AGENTS.md](./AGENTS.md) for complete AI agent instructions, GitFlow rules, and commands.
 
