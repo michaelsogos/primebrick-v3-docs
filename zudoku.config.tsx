@@ -146,7 +146,7 @@ const config: ZudokuConfig = {
           ],
         },
         { type: "separator" },
-        "api/mcp-server",
+        { type: "link", label: "MCP Server", to: "/api/mcp-server", icon: "bot" },
         {
           type: "category",
           label: "API Catalog",
