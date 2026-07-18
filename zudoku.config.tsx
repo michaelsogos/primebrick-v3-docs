@@ -5,7 +5,10 @@ import { generatedApis } from "./src/generated-apis";
 import GitHubDropdown from "./src/components/GitHubDropdown";
 import ApiSwitcher from "./src/components/ApiSwitcher";
 import VpatReport from "./src/components/VpatReport";
+import pkg from "./package.json";
 import "./src/styles.css";
+
+const version = pkg.version;
 
 const config: ZudokuConfig = {
   metadata: {
@@ -29,7 +32,7 @@ const config: ZudokuConfig = {
       social: [
         { icon: "github", href: "https://github.com/michaelsogos" },
       ],
-      copyright: `© ${new Date().getFullYear()} PrimeBrick. MIT License.`,
+      copyright: `© ${new Date().getFullYear()} PrimeBrick. MIT License. v${version}`,
       logo: {
         src: { light: "/logo-light.svg", dark: "/logo-dark.svg" },
         alt: "PrimeBrick",
