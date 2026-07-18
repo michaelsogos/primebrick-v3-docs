@@ -9,20 +9,27 @@ body {
   background-attachment: fixed;
 }
 
-/* Gradient text for selected sidebar navigation items — matches PrimeBrick logo.
+/* Selected sidebar navigation items — gradient border only, page background,
+   normal text color (same as unselected items).
    Targets only items that are both selected (aria-current="page") AND have the
-   accent background (bg-accent), so hover states and top-nav are unaffected.
-   The .truncate element holds the visible label text. */
-a[aria-current="page"].bg-accent .truncate {
-  background: linear-gradient(to right, #0ea5e9, #6366f1);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
+   accent background (bg-accent), so hover states and top-nav are unaffected. */
+a[aria-current="page"].bg-accent {
+  background: #ffffff;
+  border: 1px solid transparent;
+  border-image: linear-gradient(to right, #0ea5e9, #6366f1) 1;
+  border-radius: 0.5rem;
+  /* Reset the accent foreground so text matches unselected items */
+  color: inherit;
 }
 
-.dark a[aria-current="page"].bg-accent .truncate {
-  background: linear-gradient(to right, #38bdf8, #818cf8);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
+.dark a[aria-current="page"].bg-accent {
+  background: #020617;
+  border-image: linear-gradient(to right, #38bdf8, #818cf8) 1;
+  color: inherit;
+}
+
+/* Ensure the label text inherits the normal (non-gradient) color */
+a[aria-current="page"].bg-accent .truncate {
+  -webkit-text-fill-color: currentColor;
+  background: none;
 }
