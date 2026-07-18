@@ -85,10 +85,15 @@ function copyDirRecursive(srcDir, destDir, repoSlug) {
       // Skip hidden directories (e.g. .obsidian)
       if (entry.startsWith('.')) continue;
       count += copyDirRecursive(srcPath, destPath, repoSlug);
+    } else if (entry === '_order.json') {
+      // Copy _order.json manifest (needed by generate-nav.mjs)
+      mkdirSync(dirname(destPath), { recursive: true });
+      writeFileSync(destPath, readFileSync(srcPath, 'utf-8'), 'utf-8');
+      count++;
     } else if (entry.match(/\.(md|mdx)$/)) {
       // MDX files with existing frontmatter are copied as-is
       // MD files get frontmatter added if missing
-      const content = readFileSync(srcPath, 'utf-8');
+      let content = readFileSync(srcPath, 'utf-8');
       if (entry.endsWith('.mdx') || content.startsWith('---')) {
         // Strip the first H1 heading from the body if frontmatter has a title —
         // Zudoku renders the frontmatter title as the page title, so an H1 in
@@ -126,18 +131,19 @@ function syncRepo(repo) {
   }
 
   const targetDir = join(projectRoot, repo.dir);
+  const userGuideDir = join(cloneDir, 'docs', 'user-guide');
+
+  if (!existsSync(userGuideDir)) {
+    console.log(`  No docs/user-guide/ directory found in ${repo.slug} — keeping existing synced files`);
+    return;
+  }
+
+  // Only delete and replace if the source repo has docs/user-guide/ content
   rmSync(targetDir, { recursive: true, force: true });
   mkdirSync(targetDir, { recursive: true });
 
-  // Copy docs/user-guide/** → pages/<repo>/guide/**
-  const userGuideDir = join(cloneDir, 'docs', 'user-guide');
-  let guideCount = 0;
-  if (existsSync(userGuideDir)) {
-    guideCount = copyDirRecursive(userGuideDir, targetDir, repo.slug);
-    console.log(`  Copied ${guideCount} files from docs/user-guide/`);
-  } else {
-    console.log(`  No docs/user-guide/ directory found in ${repo.slug}`);
-  }
+  let guideCount = copyDirRecursive(userGuideDir, targetDir, repo.slug);
+  console.log(`  Copied ${guideCount} files from docs/user-guide/`);
 
   // Copy README.md as overview.md (fallback if no overview.mdx in user-guide)
   const overviewExists = existsSync(join(targetDir, 'overview.mdx')) || existsSync(join(targetDir, 'overview.md'));
