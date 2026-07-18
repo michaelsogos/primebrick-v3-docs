@@ -128,6 +128,10 @@ const config: ZudokuConfig = {
           label: "Compliance & Policy",
           icon: "shield-check",
           items: [
+            "getting-started/authentication-mfa",
+            "getting-started/security-posture",
+            "getting-started/gdpr-data-protection",
+            "getting-started/iso-27001-security-standards",
             "getting-started/vpat-2.5-int",
           ],
         },
@@ -162,12 +166,6 @@ const config: ZudokuConfig = {
           ],
         },
       ],
-    },
-    {
-      type: "link",
-      label: "MCP Server",
-      to: "/api/mcp-server",
-      icon: "bot",
     },
     {
       type: "link",

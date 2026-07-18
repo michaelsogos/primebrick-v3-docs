@@ -19,36 +19,39 @@ body {
      border, matching the FE sidebar selected item (border-primary-gradient-soft)
 */
 
-/* HOVER — gradient border only, page background */
+/* HOVER — gradient border only, page background, darker text.
+   !important needed to override Tailwind's hover:bg-accent utility. */
 nav a:not([aria-current="page"]):hover {
-  border: 2px solid transparent;
+  border: 2px solid transparent !important;
   background:
     linear-gradient(#ffffff, #ffffff) padding-box,
-    linear-gradient(to bottom right, #38bdf8, #818cf8) border-box;
+    linear-gradient(to bottom right, #38bdf8, #818cf8) border-box !important;
   border-radius: 0.5rem;
+  color: #0f172a !important;
 }
 
 .dark nav a:not([aria-current="page"]):hover {
   background:
     linear-gradient(#020617, #020617) padding-box,
-    linear-gradient(to bottom right, #38bdf8, #818cf8) border-box;
+    linear-gradient(to bottom right, #38bdf8, #818cf8) border-box !important;
+  color: #e2e8f0 !important;
 }
 
 /* SELECTED — soft gradient background + gradient border (like FE border-primary-gradient-soft) */
 nav a[aria-current="page"].bg-accent {
-  border: 1px solid transparent;
+  border: 1px solid transparent !important;
   background:
     linear-gradient(to bottom right, #bae6fd, #c7d2fe) padding-box,
-    linear-gradient(to bottom right, #38bdf8, #818cf8) border-box;
+    linear-gradient(to bottom right, #38bdf8, #818cf8) border-box !important;
   border-radius: 0.5rem;
-  color: inherit;
+  color: inherit !important;
 }
 
 .dark nav a[aria-current="page"].bg-accent {
   background:
     linear-gradient(to bottom right, rgba(56, 189, 248, 0.15), rgba(129, 140, 248, 0.15)) padding-box,
-    linear-gradient(to bottom right, #38bdf8, #818cf8) border-box;
-  color: inherit;
+    linear-gradient(to bottom right, #38bdf8, #818cf8) border-box !important;
+  color: inherit !important;
 }
 
 /* Ensure the label text inherits the normal (non-gradient) color */
