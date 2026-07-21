@@ -5,7 +5,7 @@ description: "Complete infrastructure map of Primebrick — components, ports, p
 
 ## Infrastructure Overview
 
-Primebrick runs as a set of independent services connected via HTTP and NATS messaging. Everything is Dockerized for local development and deployable to any cloud via Terraform.
+Primebrick runs as a set of independent services connected via HTTP and NATS™ messaging. Everything is Dockerized for local development and deployable to any cloud via Terraform.
 
 <Mermaid chart={`graph TB
     subgraph Clients["External Clients"]
@@ -81,20 +81,20 @@ Primebrick runs as a set of independent services connected via HTTP and NATS mes
 
 | Component | Protocol | Description |
 |-----------|----------|-------------|
-| Browser | HTTP | Admin UI accessed via SvelteKit frontend |
+| Browser | HTTP | Admin UI accessed via SvelteKit™ frontend |
 | API Clients | HTTP | SDK consumers, curl, integrations calling `/api/v1/` |
 
-### Identity Provider — Casdoor
+### Identity Provider — Casdoor™
 
-Casdoor provides OAuth2 / OIDC authentication. The backend validates JWT tokens issued by Casdoor and maps IDP roles to internal RBAC permissions.
+Casdoor™ provides OAuth2 / OIDC authentication. The backend validates JWT tokens issued by Casdoor™ and maps IDP roles to internal RBAC permissions.
 
 - **Port**: `8000`
 - **Protocol**: HTTP (OAuth2 / OIDC)
 - **Role**: Issues JWT tokens, manages users and roles
 
-### Frontend — SvelteKit
+### Frontend — SvelteKit™
 
-The admin frontend is a SvelteKit application. It communicates **only** with the backend API — never directly with microservices.
+The admin frontend is a SvelteKit™ application. It communicates **only** with the backend API — never directly with microservices.
 
 - **Port**: `5173`
 - **Protocol**: HTTP
@@ -107,11 +107,11 @@ The central backend is the "SYSTEM" virtual brick. It handles authentication, RB
 - **Port**: `3001`
 - **Base path**: `/api/v1/`
 - **Modules**: Auth, RBAC, Service Registry, Proxy, OpenAPI
-- **Talks to**: Casdoor (OAuth), PostgreSQL (via DAL), NATS (subscribe), Microservices (HTTP proxy)
+- **Talks to**: Casdoor™ (OAuth), PostgreSQL® (via DAL), NATS™ (subscribe), Microservices (HTTP proxy)
 
-### Messaging — NATS
+### Messaging — NATS™
 
-NATS is the messaging backbone for inter-service communication. Microservices publish lifecycle events (register, heartbeat, unregister) and the backend subscribes to update the service registry.
+NATS™ is the messaging backbone for inter-service communication. Microservices publish lifecycle events (register, heartbeat, unregister) and the backend subscribes to update the service registry.
 
 - **Port**: `4222` (client connections)
 - **Monitoring**: `8222`
@@ -123,18 +123,18 @@ NATS is the messaging backbone for inter-service communication. Microservices pu
 Each microservice is an independent, Dockerized service with its own lifecycle, database schema, and port.
 
 - **Port**: Dynamic (loaded from config)
-- **Protocol**: HTTP for direct calls, NATS for lifecycle events
+- **Protocol**: HTTP for direct calls, NATS™ for lifecycle events
 - **Self-registration**: Via `@primebrick/sdk` `ServiceRegistrar`
 - **OpenAPI spec**: Served at `/api/v1/openapi.json`
 - **Aggregated spec**: Backend merges all online specs at `/api/v1/openapi/aggregated.json` (microservice paths prefixed with `/ws/:serviceCode`)
-- **Talks to**: PostgreSQL (via DAL), NATS (via SDK), Backend (via proxy)
+- **Talks to**: PostgreSQL® (via DAL), NATS™ (via SDK), Backend (via proxy)
 
-### Data Layer — PostgreSQL + pgvector
+### Data Layer — PostgreSQL® + pgvector
 
-PostgreSQL is the single data store for all services. pgvector extension enables vector similarity search for AI features.
+PostgreSQL® is the single data store for all services. pgvector extension enables vector similarity search for AI features.
 
 - **Port**: `5432`
-- **Protocol**: PostgreSQL wire protocol
+- **Protocol**: PostgreSQL® wire protocol
 - **Extensions**: pgvector
 - **Access**: All services connect via `@primebrick/dal-pg`
 
@@ -144,8 +144,8 @@ PostgreSQL is the single data store for all services. pgvector extension enables
 
 The SDK is the shared toolkit used by every microservice. It provides:
 
-- `ServiceRegistrar` — registration + heartbeats via NATS
-- `NatsClient` — NATS connection management
+- `ServiceRegistrar` — registration + heartbeats via NATS™
+- `NatsClient` — NATS™ connection management
 - `createHttpServer` — HTTP server scaffolding
 - `HealthCheck` — liveness/readiness endpoints
 - `ConfigLoader` — config loading from database
@@ -157,7 +157,7 @@ The SDK is the shared toolkit used by every microservice. It provides:
 The DAL is the shared data access library. It provides:
 
 - `Dal` gateway — manages `pg.Pool`, connection lifecycle
-- `Repository` — type-safe CRUD from TypeScript entity metadata
+- `Repository` — type-safe CRUD from TypeScript® entity metadata
 - Type parsers — `INT8` → `bigint`, `NUMERIC` → `number`/`string`
 - Per-connection settings — `search_path`, `statement_timeout`, `application_name`
 - Transaction support — `dal.withClient(fn, options?)`
@@ -228,7 +228,7 @@ The DAL is the shared data access library. It provides:
 
 ## Deployment
 
-### Docker (local development)
+### Docker® (local development)
 
 ```yaml
 # docker-compose.postgres.yml
@@ -257,12 +257,12 @@ Each microservice includes Terraform templates for cloud deployment:
 
 | Component | Default Port | Protocol |
 |-----------|-------------|----------|
-| Frontend (SvelteKit) | 5173 | HTTP |
+| Frontend (SvelteKit™) | 5173 | HTTP |
 | Backend (Express) | 3001 | HTTP |
-| Casdoor (OAuth) | 8000 | HTTP |
-| PostgreSQL | 5432 | PostgreSQL |
-| NATS (client) | 4222 | NATS |
-| NATS (monitoring) | 8222 | HTTP |
+| Casdoor™ (OAuth) | 8000 | HTTP |
+| PostgreSQL® | 5432 | PostgreSQL® |
+| NATS™ (client) | 4222 | NATS™ |
+| NATS™ (monitoring) | 8222 | HTTP |
 | Microservices | Dynamic | HTTP |
 
 ## Next steps

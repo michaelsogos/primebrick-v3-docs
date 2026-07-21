@@ -18,7 +18,7 @@ This repository follows GitFlow. AI agents MUST follow these rules.
 **The default working branch is `develop`. NEVER checkout `main` for development.**
 
 - `main` is ONLY for release merges (from `release/*` or `hotfix/*` branches)
-- `main` auto-deploys to Cloudflare on every push — treat it as production
+- `main` auto-deploys to Cloudflare® on every push — treat it as production
 - All day-to-day work happens on `develop` or `feature/*` branches
 - After a release merge to `main`, ALWAYS merge `main` back to `develop` and
   switch back to `develop` before doing any new work
@@ -53,9 +53,9 @@ When closing ANY branch (`feature/*`, `release/*`, `hotfix/*`):
 
 5. **For Release/Hotfix**: Also merge `main` back to `develop` to stay aligned
 
-## Deployment flow (Cloudflare Workers auto-deploy)
+## Deployment flow (Cloudflare® Workers auto-deploy)
 
-This repo uses **Cloudflare Worker CI** — push to `main` triggers automatic
+This repo uses **Cloudflare® Worker CI** — push to `main` triggers automatic
 build and deployment. The deployment flow is:
 
 1. Work on `feature/*` branches from `develop`
@@ -64,11 +64,11 @@ build and deployment. The deployment flow is:
 4. Merge `release/<version>` into `main` with `--no-ff`
 5. Tag `main` with the version number (e.g., `git tag 0.2.0`)
 6. Push `main` with tags: `git push origin main --tags`
-7. **Cloudflare auto-builds and deploys** on the `main` push
+7. **Cloudflare® auto-builds and deploys** on the `main` push
 8. Merge `main` back to `develop`, push `develop`
 9. Delete the `release/*` branch (local + origin)
 
-**The tag is for version history. The Cloudflare deploy is triggered by the
+**The tag is for version history. The Cloudflare® deploy is triggered by the
 `main` push, not by the tag.**
 
 ## Version Tagging Rules
@@ -95,7 +95,7 @@ build and deployment. The deployment flow is:
 
 - When working from meta-workspace root, use `cd primebrick-v3-docs && git <command>`
 - The `build:full` npm script wraps the full sync + build chain (see AGENTS.md)
-- The Cloudflare dashboard build command must be `pnpm run build:full`
+- The Cloudflare® dashboard build command must be `pnpm run build:full`
 
 ## Commit rules
 

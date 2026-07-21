@@ -66,7 +66,7 @@ Primebrick follows a **layered architecture** with clear separation of concerns.
 
 The central backend is the entry point for all client requests. It handles:
 
-- **Authentication** — JWT validation, Casdoor OIDC integration
+- **Authentication** — JWT validation, Casdoor™ OIDC integration
 - **Authorization** — RBAC permission checks
 - **Service registry** — tracks all registered microservices with heartbeats
 - **Proxy** — routes requests to microservices via a round-robin load balancer
@@ -74,9 +74,9 @@ The central backend is the entry point for all client requests. It handles:
 
 All endpoints are served under `/api/v1/`.
 
-### Frontend (SvelteKit)
+### Frontend (SvelteKit™)
 
-The admin frontend is a SvelteKit application that provides the backoffice UI. It communicates exclusively with the backend API — it never talks to microservices directly.
+The admin frontend is a SvelteKit™ application that provides the backoffice UI. It communicates exclusively with the backend API — it never talks to microservices directly.
 
 ### Microservices (independent repos)
 
@@ -85,7 +85,7 @@ Each microservice is an independent repository with its own lifecycle, database 
 - **Self-register** with the backend on startup via `@primebrick/sdk`
 - **Send heartbeats** to maintain their registry entry
 - **Expose OpenAPI** at `/api/v1/openapi.json`
-- **Communicate** with other services via NATS messaging
+- **Communicate** with other services via NATS™ messaging
 
 ### DAL (Data Access Layer)
 
@@ -96,16 +96,16 @@ Each microservice is an independent repository with its own lifecycle, database 
 `@primebrick/sdk` is the shared toolkit used by every microservice. It provides:
 
 - Service registration and heartbeat management
-- NATS messaging helpers
+- NATS™ messaging helpers
 - OpenAPI scaffolding
 - Standardized error handling (RFC 7807)
 - Middleware for auth and RBAC
 
 ## Communication
 
-### NATS messaging
+### NATS™ messaging
 
-Microservices communicate with each other and with the backend through **NATS**. This decouples services and enables:
+Microservices communicate with each other and with the backend through **NATS™**. This decouples services and enables:
 
 - **Publish/subscribe** for event-driven workflows
 - **Request/reply** for synchronous-style calls without HTTP coupling
