@@ -119,6 +119,7 @@ const config: ZudokuConfig = {
             "getting-started/introduction",
             "getting-started/quick-start",
             "getting-started/architecture",
+            "getting-started/config-modules",
             "getting-started/infrastructure",
           ],
         },

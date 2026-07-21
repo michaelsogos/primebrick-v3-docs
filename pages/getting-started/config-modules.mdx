@@ -1,0 +1,194 @@
+---
+title: Config modules
+description: How Primebrick modules store, read, and surface their runtime configuration — the standard dictionary-style config table pattern shared across the Backend and every microservice.
+---
+
+# Config modules
+
+Primebrick modules (the Backend's `auth` module, the `emailsender`
+microservice, and any future module) store their runtime configuration in
+**dictionary-style config tables**. This page is the cross-cutting
+architectural overview; the API-level reference lives in the
+[SDK guide → Config tables & ConfigLoader](/sdk/guide/config-tables).
+
+## What is a config module?
+
+A "config module" is any module that owns a `config` table and uses the
+SDK's `ConfigLoader<TResult>` to read it. Concretely:
+
+- The module has a DB table named `config` in its own schema
+  (`public.config` for the BE auth module, `emailsender.config` for the
+  emailsender microservice, `billing.config` for a future billing module).
+- The table has the standard column set defined by `ConfigEntityBase`
+  (`key`, `value`, `type`, `enum_values`, `label_key`, `description_key`,
+  plus audit + soft-delete columns).
+- The module declares a typed interface (`TResult`, e.g. `AuthConfig`) whose
+  field names match the DB keys.
+- The module wires a `ConfigLoader<TResult>` at startup, calls `load()`
+  once, and uses `get` / `require` on the hot path.
+- The module exposes the table to the Frontend via the standard entity CRUD
+  path `/api/v1/entities/config_entries/...`.
+- The Frontend renders the table with the reusable `ConfigTable` component —
+  no per-module form code.
+
+## Why a shared standard
+
+Before the standard, the BE auth module used a bespoke
+`auth_configurations` table with a parallel `AuthConfigCache`, and the
+emailsender microservice used a `config` table with manual `parseInt` at
+every call site. Two different patterns for the same problem meant:
+
+- No reusable admin UI — each module's settings page was hand-coded.
+- No shared type coercion — each consumer re-implemented `parseInt`,
+  `=== "true"`, etc.
+- No i18n labels — the FE had to hard-code setting titles.
+- Drift — the two implementations diverged over time.
+
+The standard collapses both into one pattern: any new module gets caching,
+typed access, i18n labels, and an admin UI for free by extending
+`ConfigEntityBase` and using `ConfigLoader<ItsConfig>`.
+
+## The three layers
+
+<Mermaid chart={`flowchart TB
+  subgraph DAL["DAL (@primebrick/dal-pg)"]
+    Base["ConfigEntityBase<br/>standard columns + decorators"]
+  end
+  subgraph SDK["SDK (@primebrick/sdk)"]
+    ICE["IConfigEntity<br/>row shape"]
+    Port["ConfigRepositoryPort<br/>DB-agnostic read port"]
+    Loader["ConfigLoader&lt;TResult&gt;<br/>load + coerce + cache"]
+    Coerce["coerceConfigValue<br/>string → typed by 'type' column"]
+  end
+  subgraph Consumer["Consumer module (BE / US)"]
+    Entity["ConfigEntryEntity<br/>extends ConfigEntityBase"]
+    Adapter["ConfigRepositoryPort adapter<br/>uses DAL to read rows"]
+    TResult["TResult interface<br/>e.g. AuthConfig, EmailSenderConfig"]
+    Validate["validate(config)<br/>mandatory-field checks"]
+  end
+  subgraph FE["Frontend"]
+    Table["ConfigTable component<br/>renders widgets from 'type'"]
+  end
+  Base --> Entity
+  ICE --> Loader
+  Port --> Loader
+  Coerce --> Loader
+  Entity --> Adapter
+  Adapter --> Port
+  TResult --> Loader
+  Loader --> Validate
+  Table -->|GET /entities/config_entries/list| Adapter
+`} />
+
+### Layer 1 — DAL: `ConfigEntityBase`
+
+`@primebrick/dal-pg` provides a base entity class with the standard column
+set. A module's entity extends it and only declares the table + schema:
+
+```ts
+@Entity("config", "emailsender")
+export class ConfigEntryEntity extends ConfigEntityBase {}
+```
+
+### Layer 2 — SDK: `IConfigEntity`, `ConfigRepositoryPort`, `ConfigLoader<TResult>`
+
+The SDK defines the row shape (`IConfigEntity`), the DB-agnostic read port
+(`ConfigRepositoryPort`), and the generic typed loader
+(`ConfigLoader<TResult>`). The loader reads all rows once, coerces each
+value by its `type` column, and builds the consumer's `TResult`. See
+[SDK guide → Config tables & ConfigLoader](/sdk/guide/config-tables) for
+the full API.
+
+### Layer 3 — Consumer: `TResult` + adapter + validate
+
+The consumer module owns:
+
+- The `TResult` interface (e.g. `AuthConfig`) with field names matching the
+  DB keys.
+- A `ConfigRepositoryPort` adapter that uses its DAL to read rows.
+- A `validate()` function for mandatory-field checks (the SDK does not
+  enforce these — they are module-specific).
+
+### Frontend: reusable `ConfigTable`
+
+The FE has one `ConfigTable` component that renders any config table as a
+two-column layout (label + description on the left, widget on the right).
+The widget is chosen from the row's `type` column. A new module's settings
+page is just a route that fetches the list endpoint and renders
+`<ConfigTable />`.
+
+## Type vocabulary
+
+The `type` column is the single source of truth for both SDK coercion and
+FE widget selection. The vocabulary is fixed and shared:
+
+| `type` | SDK coercion | FE widget |
+|--------|--------------|-----------|
+| `string` | as-is | `Input` |
+| `text` | as-is | `Textarea` |
+| `boolean` | `=== "true"` | `Switch` |
+| `integer` | `parseInt` | `Input type="number"` |
+| `number` | `parseFloat` | `Input type="number"` |
+| `enum` | validated against `enum_values` | `ComboSelect` |
+| `url` | as-is | `Input type="url"` |
+| `secret` | as-is | `Password` (masked, write-only) |
+| `json` | `JSON.parse` | `Textarea` |
+
+See the [SDK guide](/sdk/guide/config-tables) for the full rules.
+
+## Caching
+
+There are two complementary caches:
+
+1. **`ConfigLoader` in-memory `Map`** — the typed dictionary, loaded once at
+   startup. Hot path (`get` / `require`) never touches the DB. Invalidated
+   by `invalidate()` + `load()` after a config update.
+2. **Redis `withCache` layer** (optional) — caches single-row DAL reads
+   (`findByUUID`, `findById`) for entities marked `@Cached()`. Invalidated
+   automatically on DAL writes.
+
+A config update must invalidate both: the DAL write triggers Redis
+invalidation (if `@Cached()` is set), and the route handler explicitly
+calls `configLoader.invalidate()` + `configLoader.load()` to refresh the
+typed dictionary.
+
+## Reference implementations
+
+| Module | Table | `TResult` | Schema |
+|--------|-------|-----------|--------|
+| BE auth | `config` | `AuthConfig` | `public` |
+| emailsender | `config` | `EmailSenderConfig` | `emailsender` |
+
+New modules should mirror one of these. The BE auth module is the
+canonical reference for a monolithic-module config table; the emailsender
+microservice is the canonical reference for a microservice config table.
+
+## Adding a new config module
+
+1. Create a schema-qualified `config` table (extend `ConfigEntityBase`).
+2. Seed the rows with `key`, `value`, `type`, `enum_values` (if `enum`),
+   `label_key`, `description_key`.
+3. Declare the module's `TResult` interface with field names matching the
+   DB keys.
+4. Implement `ConfigRepositoryPort` with the module's DAL.
+5. Wire `ConfigLoader<TResult>` at startup, call `load()`, then
+   `validate()`.
+6. Expose `/api/v1/entities/config_entries/...` (meta, list, get, update)
+   with secret masking on reads.
+7. Add a Frontend route that renders `<ConfigTable />` against the list
+   endpoint.
+8. Add the `label_key` / `description_key` translations to the FE i18n
+   files.
+
+No SDK, DAL, or FE component changes are needed for a new module — the
+standard handles it.
+
+## Next steps
+
+- [SDK → Config tables & ConfigLoader](/sdk/guide/config-tables) — full API
+  reference for `IConfigEntity`, `ConfigRepositoryPort`, `ConfigLoader<TResult>`.
+- [SDK → Redis cache layer](/sdk/guide/cache-layer) — the complementary
+  single-row cache.
+- [Microservices → Architecture](/microservices/guide/architecture) — how
+  microservice config tables are proxied through the BE.
+- [Architecture](./architecture) — the overall layered architecture.
