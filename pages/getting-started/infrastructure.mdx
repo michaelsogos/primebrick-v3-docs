@@ -40,6 +40,7 @@ Primebrick runs as a set of independent services connected via HTTP and NATS™ 
 
     subgraph Data["Data Layer"]
         Postgres["PostgreSQL<br/>port 5432<br/>+ pgvector (planned)"]
+        Redis["Redis<br/>port 6379<br/>Cache + Presence + WebAuthn"]
     end
 
     subgraph Libs["Shared Libraries"]
@@ -57,6 +58,9 @@ Primebrick runs as a set of independent services connected via HTTP and NATS™ 
     Express -->|SQL| Postgres
     EmailSender -->|SQL via DAL| Postgres
     MS2 -->|SQL via DAL| Postgres
+
+    Express <-->|Redis| Redis
+    EmailSender <-->|Redis cache| Redis
 
     Express <-->|NATS subscribe| NATS
     EmailSender <-->|NATS publish| NATS
@@ -137,6 +141,21 @@ PostgreSQL® is the single data store for all services. pgvector extension enabl
 - **Protocol**: PostgreSQL® wire protocol
 - **Extensions**: pgvector
 - **Access**: All services connect via `@primebrick/dal-pg`
+
+### Cache & Presence — Redis™
+
+Redis™ is a **mandatory** infrastructure component. It is not optional or best-effort — the `/health` endpoint returns 503 when Redis is down, and Redis-dependent features hard-fail with `REDIS_UNAVAILABLE` (503).
+
+- **Port**: `6379`
+- **Protocol**: RESP (Redis protocol)
+- **Used by**: Backend (cache, presence, WebAuthn session relay, keyspace listener), Microservices (entity cache via `@Cached()` decorator)
+- **Mandatory for**:
+  - **WebAuthn passkey signin** — session cookie relay between begin/finish calls (hard-fail without Redis)
+  - **Entity caching** — `@Cached()` decorator + `withCache()` wrapper (DB-only fallback, but performance degradation at scale)
+  - **Real-time presence** — collaboration SSE presence store (presence disabled without Redis)
+  - **Cache invalidation** — cross-pod config/role-mapping/api-key cache sharing (stale data without Redis)
+- **Health check**: `/health` includes `redis: { ok, version }` — actual `PING` command on every probe
+- **Startup**: BE retries Redis connection every 5s if unreachable (same pattern as DB/role mappings)
 
 ### Shared Libraries
 
@@ -242,6 +261,9 @@ services:
   nats:
     image: nats:latest  # JetStream enabled
     ports: ["4222:4222", "8222:8222"]
+  redis:
+    image: redis:8-alpine
+    ports: ["6379:6379"]
 ```
 
 ### Terraform (production)

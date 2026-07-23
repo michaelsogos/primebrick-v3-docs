@@ -152,29 +152,27 @@ const config: ZudokuConfig = {
             "api/error-handling",
           ],
         },
-        { type: "separator" },
-        { type: "link", label: "MCP Server", to: "/api/mcp-server", icon: "bot" },
-        {
-          type: "category",
-          label: "API Catalog",
-          icon: "square-library",
-          items: [
-            { type: "link", label: "Overview", to: "/catalog", icon: "layout-grid" },
-            ...generatedApis.map((api) => ({
-              type: "link" as const,
-              label: api.label ?? api.path,
-              to: api.path,
-              icon: "plug",
-            })),
-          ],
-        },
       ],
     },
     {
       type: "link",
+      label: "MCP Server",
+      to: "/api/mcp-server",
+      icon: "bot",
+    },
+    {
+      type: "category",
       label: "API Catalog",
-      to: "/catalog",
       icon: "square-library",
+      items: [
+        { type: "link", label: "Overview", to: "/catalog", icon: "layout-grid" },
+        ...generatedApis.map((api) => ({
+          type: "link" as const,
+          label: api.label ?? api.path,
+          to: api.path,
+          icon: "plug",
+        })),
+      ],
     },
     {
       type: "category",
