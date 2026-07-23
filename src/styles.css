@@ -20,8 +20,12 @@ body {
 */
 
 /* HOVER — gradient border only, page background, darker text.
-   !important needed to override Tailwind's hover:bg-accent utility. */
-nav a:not([aria-current="page"]):hover {
+   !important needed to override Tailwind's hover:bg-accent utility.
+   Covers:
+   - Leaf items & category links (<a>): nav a:not([aria-current="page"]):hover
+   - Category headers without link (<div>): :has() excludes categories with active children */
+nav a:not([aria-current="page"]):hover,
+nav div.flex.flex-col:not(:has(a[aria-current="page"])) > div:first-child:hover {
   border: 2px solid transparent !important;
   background:
     linear-gradient(#ffffff, #ffffff) padding-box,
@@ -30,15 +34,20 @@ nav a:not([aria-current="page"]):hover {
   color: #0f172a !important;
 }
 
-.dark nav a:not([aria-current="page"]):hover {
+.dark nav a:not([aria-current="page"]):hover,
+.dark nav div.flex.flex-col:not(:has(a[aria-current="page"])) > div:first-child:hover {
   background:
     linear-gradient(#020617, #020617) padding-box,
     linear-gradient(to bottom right, #38bdf8, #818cf8) border-box !important;
   color: #e2e8f0 !important;
 }
 
-/* SELECTED — soft gradient background + gradient border (like FE border-primary-gradient-soft) */
-nav a[aria-current="page"].bg-accent {
+/* SELECTED — soft gradient background + gradient border (like FE border-primary-gradient-soft).
+   Covers:
+   - Leaf items: nav a[aria-current="page"].bg-accent
+   - Category headers containing active children: :has() on Collapsible.Root */
+nav a[aria-current="page"].bg-accent,
+nav div.flex.flex-col:has(a[aria-current="page"]) > :first-child {
   border: 1px solid transparent !important;
   background:
     linear-gradient(to bottom right, #bae6fd, #c7d2fe) padding-box,
@@ -47,7 +56,8 @@ nav a[aria-current="page"].bg-accent {
   color: inherit !important;
 }
 
-.dark nav a[aria-current="page"].bg-accent {
+.dark nav a[aria-current="page"].bg-accent,
+.dark nav div.flex.flex-col:has(a[aria-current="page"]) > :first-child {
   background:
     linear-gradient(to bottom right, rgba(56, 189, 248, 0.15), rgba(129, 140, 248, 0.15)) padding-box,
     linear-gradient(to bottom right, #38bdf8, #818cf8) border-box !important;
@@ -55,9 +65,16 @@ nav a[aria-current="page"].bg-accent {
 }
 
 /* Ensure the label text inherits the normal (non-gradient) color */
-nav a[aria-current="page"].bg-accent .truncate {
+nav a[aria-current="page"].bg-accent .truncate,
+nav div.flex.flex-col:has(a[aria-current="page"]) > :first-child .truncate {
   -webkit-text-fill-color: currentColor;
   background: none;
+}
+
+/* Override text-primary on category link inner divs when selected,
+   so the label color matches the leaf item treatment */
+nav div.flex.flex-col:has(a[aria-current="page"]) > :first-child > div {
+  color: inherit !important;
 }
 
 /* Primary buttons — gradient background matching the FE (sky-400 → indigo-400).
