@@ -174,8 +174,7 @@ User-facing MDX files are written into `pages/<repo>/guide/` by sync scripts
 that run in GitHub™ Actions CI (NOT on the Worker). The sync flow is:
 
 1. **`scripts/sync-repo-docs.mjs`** — shallow-clones each Primebrick repo,
-   copies `docs/user-guide/**` → `pages/<repo>/guide/`. README.md is used as
-   `overview.md` fallback if no `overview.mdx` exists in `docs/user-guide/`.
+   copies `docs/user-guide/**` → `pages/<repo>/guide/`.
 2. **`scripts/generate-nav.mjs`** — reads `_order.json` from each
    `pages/<repo>/guide/` directory and generates `src/generated-nav.ts` with
    the sidebar navigation in logical reading order (not alphabetical).
