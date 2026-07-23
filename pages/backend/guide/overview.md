@@ -19,7 +19,7 @@ repo: "backend"
 
 - Read [AGENTS.md](./AGENTS.md) for repository overview, commands, and GitFlow rules
 - See [docs/ai/](./docs/ai/) for skills selection and suggested workflows
-- See [docs/skills/](./docs/skills/) for operational guides (port conflicts, terminal errors, PostgreSQL migrations)
+- See [docs/skills/](./docs/skills/) for operational guides (port conflicts, terminal errors, PostgreSQL® migrations)
 
 ## Repository Overview
 

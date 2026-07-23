@@ -1,13 +1,13 @@
 ---
 title: "Authentication"
-description: "Casdoor IDP, JWT tokens, and the three credential types supported by Primebrick."
+description: "Casdoor™ IDP, JWT tokens, and the three credential types supported by Primebrick."
 ---
 
 ## Overview
 
-Primebrick uses **Casdoor** as its identity provider (IDP). Casdoor implements **OIDC** (OpenID Connect) and **OAuth2**, giving Primebrick a standards-based authentication layer.
+Primebrick uses **Casdoor™** as its identity provider (IDP). Casdoor™ implements **OIDC** (OpenID Connect) and **OAuth2**, giving Primebrick a standards-based authentication layer.
 
-The backend validates JWT access tokens issued by Casdoor and manages refresh tokens via HTTP-only cookies.
+The backend validates JWT access tokens issued by Casdoor™ and manages refresh tokens via HTTP-only cookies.
 
 ## Credential types
 
@@ -52,7 +52,7 @@ curl http://localhost:3001/api/v1/customers \
 
 ### 2. Client access tokens (OAuth2 client credentials)
 
-For server-to-server communication where no user is involved. The client uses the **OAuth2 client credentials flow** to obtain a token directly from Casdoor:
+For server-to-server communication where no user is involved. The client uses the **OAuth2 client credentials flow** to obtain a token directly from Casdoor™:
 
 ```bash
 curl -X POST http://localhost:3001/api/v1/auth/token \
@@ -77,7 +77,7 @@ API keys are the simplest credential type — no token exchange, no refresh logi
 
 The [API Catalog](/catalog) on this site uses **API keys** for simplicity. This keeps the explorer straightforward: paste a key and start making requests.
 
-> **Note:** User tokens (username/password → JWT) and OAuth2 client credentials are fully supported by the Primebrick platform, but they are **not exposed in the API Explorer REPL yet**. The explorer's auth UI supports bearer tokens and API keys. For full OAuth2 flows, use Casdoor directly or your own client.
+> **Note:** User tokens (username/password → JWT) and OAuth2 client credentials are fully supported by the Primebrick platform, but they are **not exposed in the API Explorer REPL yet**. The explorer's auth UI supports bearer tokens and API keys. For full OAuth2 flows, use Casdoor™ directly or your own client.
 
 ## Token lifecycle
 

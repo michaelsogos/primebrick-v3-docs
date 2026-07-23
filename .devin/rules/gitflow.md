@@ -9,7 +9,7 @@
 **The default working branch is `develop`. NEVER checkout `main` for development.**
 
 - `main` is ONLY for release merges (from `release/*` or `hotfix/*` branches)
-- `main` auto-deploys to Cloudflare on every push — treat it as PRODUCTION
+- `main` auto-deploys to Cloudflare® on every push — treat it as PRODUCTION
 - All day-to-day work happens on `develop` or `feature/*` branches
 
 ## Mandatory Pre-Action Checklist
@@ -32,13 +32,13 @@ Before ANY git operation, the AI agent MUST:
 
 ## Release / New Build Procedure
 
-**A new build = a new release.** To deploy to Cloudflare:
+**A new build = a new release.** To deploy to Cloudflare®:
 
 1. Create `release/<version>` from `develop`
 2. Merge `release/<version>` into `main` with `--no-ff`
 3. Tag `main` with the version: `git tag <version>`
 4. Push `main` with tags: `git push origin main --tags`
-5. Cloudflare auto-builds and deploys on the `main` push
+5. Cloudflare® auto-builds and deploys on the `main` push
 6. Merge `main` back to `develop`: `git checkout develop && git merge main --no-ff && git push`
 7. Delete the `release/*` branch (local + origin)
 

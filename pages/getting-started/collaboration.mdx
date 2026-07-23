@@ -1,0 +1,253 @@
+---
+title: "Collaboration & Visual Merge"
+description: "Real-time co-editing with field-level merge, conflict resolution, and live presence — automatic for all auditable entities."
+---
+
+## Overview
+
+Primebrick includes a built-in **visual collaboration** system that lets
+multiple users work on the same record simultaneously — safely. When two
+colleagues open the same entity, they see each other's presence in real
+time. When one saves, the other's form updates **field by field**, not
+whole-entity. If both edited the same field, a **conflict resolution panel**
+helps them pick which value wins.
+
+The entire system is **automatic** for any entity decorated with
+`@AuditTrail()`. No per-entity configuration, no manual SSE wiring, no
+custom merge logic. The framework handles presence, change propagation,
+diffing, and conflict detection.
+
+<Mermaid chart={`flowchart LR
+    subgraph Browser A
+        UA["User A<br/>editing phone"]
+    end
+    subgraph Browser B
+        UB["User B<br/>editing email"]
+    end
+    subgraph Primebrick
+        BE["Backend<br/>SSE + Audit Hook"]
+        Redis["Redis<br/>Presence + Marker"]
+        NATS["NATS<br/>Fanout"]
+        PG["PostgreSQL<br/>Audit Log"]
+    end
+    UA -->|"SSE"| BE
+    UB -->|"SSE"| BE
+    UA -->|"PUT /version=N"| BE
+    BE --> PG
+    BE --> Redis
+    BE --> NATS
+    NATS --> BE
+    BE -.->|"entity-changed"| UB
+    BE -.->|"entity-changed"| UA
+`} />
+
+## How it works
+
+### 1. Live presence
+
+When a user opens an entity form, the frontend opens an SSE connection to
+`GET /api/v1/entities/:entity/:uuid/presence/events` and sends a `JOIN`
+signal via `POST /api/v1/entities/:entity/:uuid/presence`. The backend
+stores the user in a Redis presence hash with a 30-second TTL. The
+frontend sends a heartbeat every 20 seconds to keep the entry alive.
+
+Other users on the same entity see the new user's avatar appear in real
+time via the SSE stream. Avatars are split into two groups:
+
+- **Editors** (left, warning-colored ring) — users who are actively
+  editing a field. The tooltip shows which field and the in-progress value.
+- **Readers** (right, plain avatar) — users who have the form open but
+  are not editing.
+
+### 2. Entity-changed awareness
+
+When any user saves an auditable entity, the backend's audit port adapter
+fires a hook **after** the audit log row is committed. The hook builds an
+`EntityChangedMarker` containing:
+
+| Field | Description |
+|-------|-------------|
+| `entity_type` | The table name (e.g. `customers`) |
+| `entity_uuid` | The entity UUID |
+| `version` | The new version number after the save |
+| `audit_log_id` | The audit log row ID (for the diff endpoint) |
+| `changed_by` | The user UUID of the writer |
+| `changed_at` | Epoch milliseconds of the save |
+
+The marker is published two ways:
+
+1. **Redis** — stored with a 5-minute TTL so late-joining clients can
+   see the most recent change without scanning the audit log.
+2. **NATS** — published on `entity.{entityType}.{entityUuid}.changed` so
+   connected SSE clients on **any** backend instance receive the event
+   in real time.
+
+### 3. Field-level merge
+
+When the frontend receives an `entity-changed` SSE event, it:
+
+1. Fetches the field-level diff: `GET /api/v1/entities/:entity/:uuid/audit/:auditLogId`
+2. For each field in the diff:
+   - If the user **has not touched** the field → **silent merge**: the
+     field updates with a transient green badge (3 seconds).
+   - If the user **is currently editing** the field → **conflict**: the
+     field is marked with a conflict indicator and the resolution panel
+     opens.
+3. Sets `is_stale = true` (a persistent banner until the user reloads).
+4. Updates the internal `loaded_version` to the new version (aligning
+   the optimistic lock for the next save).
+
+### 4. Conflict resolution
+
+When two users edit the **same field** and one saves, the other user sees
+a conflict panel showing:
+
+- **Your value** — what the user has in their form
+- **Their value** — what the other user saved
+- **Original value** — what was there before either started editing
+
+The user picks per field:
+
+- **Keep DB value** — accept the other user's change
+- **Keep my value** — discard the other user's change for this field
+- **Overwrite** — force my value (starts a new version chain)
+
+### 5. Optimistic locking (the safety net)
+
+Every auditable entity has an integer `version` column that
+auto-increments on each write. When a user saves, the backend checks
+that the `version` in their request matches the current `version` in the
+database. If another user saved in between, the versions don't match and
+PostgreSQL raises `ERR01` → HTTP **409 Conflict**.
+
+This prevents **lost updates** — the last-writer-wins problem. The
+frontend catches the 409, fetches the latest diff, and opens the
+conflict resolution panel.
+
+See [Optimistic Locking & Concurrency](/dal/guide/optimistic-lock) for
+the DAL-level implementation details.
+
+## Technology
+
+| Component | Technology | Required? |
+|-----------|-----------|-----------|
+| Real-time push | SSE (Server-Sent Events) | Yes (HTTP/1.1 or HTTP/2) |
+| Presence store | Redis | Best-effort (system works without it) |
+| Cross-instance fanout | NATS | Best-effort (system works without it) |
+| Audit log | PostgreSQL | Yes (required for `@AuditTrail`) |
+
+### Does collaboration require HTTP/2?
+
+**No.** SSE (Server-Sent Events) works over both HTTP/1.1 and HTTP/2.
+HTTP/2 is recommended for high-concurrency scenarios (many simultaneous
+SSE connections) because it multiplexes streams over a single TCP
+connection, avoiding the per-connection limit of HTTP/1.1. But the
+feature is fully functional on HTTP/1.1 — no protocol upgrade is
+required.
+
+### Why SSE instead of WebSockets?
+
+SSE is simpler, works through proxies and CDNs without special
+configuration, and is sufficient for the collaboration use case (server
+→ client push of presence and entity-changed events). The client →
+server signals (JOIN, LEAVE, HEARTBEAT, FIELD_FOCUS) use standard HTTP
+POST requests. No bidirectional full-duplex channel is needed.
+
+## Automatic enablement
+
+Collaboration is **automatic** for any entity decorated with
+`@AuditTrail()`:
+
+```typescript
+import { Entity, AuditTrail } from "@primebrick/dal-pg";
+
+@Entity("customers")
+@AuditTrail()
+export class CustomerEntity {
+  // ... fields
+}
+```
+
+The backend's `assembleMeta()` utility auto-injects a `collaboration`
+fragment into the entity meta response:
+
+```json
+{
+  "entity": "customer",
+  "collaboration": {
+    "enabled": true,
+    "expose_editing_value": true
+  }
+}
+```
+
+The frontend reads `collaboration.enabled` from the meta to decide
+whether to activate the presence channel and merge logic for that entity.
+
+## What the user sees
+
+| Scenario | What happens |
+|----------|-------------|
+| Open a form alone | No avatars, normal editing |
+| Another user opens the same form | Their avatar appears (reader) |
+| Another user clicks a field | Avatar ring turns warning color, tooltip shows field + value |
+| Another user saves | Your untouched fields update silently (green badge 3s) |
+| You both edited the same field | Conflict panel opens — pick which value wins |
+| You save after someone else saved | If versions don't match → 409 → conflict panel |
+| Someone closes their tab | Their avatar disappears (LEAVE on key expiry) |
+
+## Infrastructure requirements
+
+### Redis (best-effort)
+
+Redis stores the presence hashes and entity-changed markers. If Redis is
+unavailable, the system continues to function — presence is simply not
+tracked, and entity-changed events are not published. The audit log
+remains the source of truth.
+
+Enable Redis keyspace notifications for automatic LEAVE on expiry:
+
+```
+redis-server --appendonly yes --notify-keyspace-events Exg
+```
+
+### NATS (best-effort)
+
+NATS provides cross-instance fanout — when user A on backend instance #1
+saves, user B on backend instance #2 receives the entity-changed event.
+If NATS is unavailable, SSE events only propagate within the same
+backend instance.
+
+### PostgreSQL
+
+PostgreSQL is required — the audit tables (`{entity}_audit`) store the
+field-level diffs that power the merge logic. The `@AuditTrail()`
+decorator triggers automatic audit table creation during database patch
+generation.
+
+## API endpoints
+
+| Method | Path | Description |
+|--------|------|-------------|
+| `POST` | `/api/v1/entities/:entity/:uuid/presence` | Send a presence signal (JOIN/LEAVE/HEARTBEAT/FIELD_FOCUS/FIELD_BLUR) |
+| `GET` | `/api/v1/entities/:entity/:uuid/presence` | Get the current presence snapshot |
+| `GET` | `/api/v1/entities/:entity/:uuid/presence/events` | SSE stream (real-time presence + entity-changed events) |
+| `GET` | `/api/v1/entities/:entity/:uuid/audit/:auditLogId` | Field-level diff for merge/conflict resolution |
+
+## Error codes
+
+| Code | HTTP | Description |
+|------|------|-------------|
+| `ERR01` | 409 | Optimistic concurrency violation — version mismatch |
+| `ERR02` | 400 | Missing `version` field on an auditable-entity write |
+| `ERR03` | 404 | Record vanished — hard-deleted by another writer |
+
+See [Error Handling](/api/error-handling) for the full RFC 7807 error
+format.
+
+## Next steps
+
+- [Optimistic Locking & Concurrency](/dal/guide/optimistic-lock) — how the DAL prevents lost updates
+- [Audit Trail](/dal/guide/audit-trail) — how audit tables store field-level diffs
+- [Backend Collaboration Module](/backend/guide/collaboration) — BE-side implementation details
+- [Error Handling](/api/error-handling) — RFC 7807 error format and codes

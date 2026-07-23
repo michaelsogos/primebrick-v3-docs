@@ -9,11 +9,11 @@ Before you begin, make sure you have the following installed:
 
 | Tool | Minimum version | Check |
 |------|----------------|-------|
-| Node.js | 20+ | `node --version` |
+| Node.js® | 20+ | `node --version` |
 | pnpm | latest | `pnpm --version` |
-| Docker | latest | `docker --version` |
+| Docker® | latest | `docker --version` |
 
-You also need access to the Primebrick GitHub repositories.
+You also need access to the Primebrick GitHub™ repositories.
 
 ## 1. Clone the repositories
 
@@ -32,9 +32,9 @@ git clone https://github.com/michaelsogos/primebrick-v3-dal.git  # DAL library
 git clone https://github.com/michaelsogos/primebrick-v3-sdk.git  # SDK
 ```
 
-## 2. Start infrastructure with Docker
+## 2. Start infrastructure with Docker®
 
-The backend repo includes a `docker-compose.yml` that spins up PostgreSQL, Casdoor, and NATS:
+The backend repo includes a `docker-compose.yml` that spins up PostgreSQL®, Casdoor™, and NATS™:
 
 ```bash
 cd primebrick-v3-backend
@@ -43,9 +43,9 @@ docker compose up -d
 
 This starts:
 
-- **PostgreSQL** — primary database
-- **Casdoor** — identity provider (OIDC / OAuth2)
-- **NATS** — messaging bus for microservice communication
+- **PostgreSQL®** — primary database
+- **Casdoor™** — identity provider (OIDC / OAuth2)
+- **NATS™** — messaging bus for microservice communication
 
 ## 3. Install dependencies
 
@@ -59,9 +59,9 @@ cd ../primebrick-v3-frontend
 pnpm install
 ```
 
-## 4. Set up Casdoor
+## 4. Set up Casdoor™
 
-Primebrick includes a setup script that configures Casdoor with the default application, organizations, and roles:
+Primebrick includes a setup script that configures Casdoor™ with the default application, organizations, and roles:
 
 ```bash
 cd primebrick-v3-backend
@@ -99,9 +99,9 @@ pnpm run dev
 | Service | URL |
 |---------|-----|
 | Backend API | `http://localhost:3001` |
-| Frontend (SvelteKit) | `http://localhost:5173` |
-| Casdoor console | `http://localhost:8000` |
-| NATS | `nats://localhost:4222` |
+| Frontend (SvelteKit™) | `http://localhost:5173` |
+| Casdoor™ console | `http://localhost:8000` |
+| NATS™ | `nats://localhost:4222` |
 
 ## Verify it works
 
@@ -114,19 +114,19 @@ pnpm run dev
 <details>
 <summary>Docker containers won't start</summary>
 
-Make sure ports 5432 (PostgreSQL), 8000 (Casdoor), and 4222 (NATS) are not already in use. Stop any conflicting services or adjust the port mappings in `docker-compose.yml`.
+Make sure ports 5432 (PostgreSQL®), 8000 (Casdoor™), and 4222 (NATS™) are not already in use. Stop any conflicting services or adjust the port mappings in `docker-compose.yml`.
 </details>
 
 <details>
-<summary>Casdoor setup script fails</summary>
+<summary>Casdoor™ setup script fails</summary>
 
-Ensure the Casdoor container is fully up before running `pnpm run setup:casdoor`. Check with `docker compose ps` and wait until the Casdoor service shows a healthy state.
+Ensure the Casdoor™ container is fully up before running `pnpm run setup:casdoor`. Check with `docker compose ps` and wait until the Casdoor™ service shows a healthy state.
 </details>
 
 <details>
 <summary>Database migration errors</summary>
 
-Confirm PostgreSQL is running and the connection string in your `.env` file points to the Dockerized instance. Run `pnpm run db:migrate` again after fixing the connection.
+Confirm PostgreSQL® is running and the connection string in your `.env` file points to the Dockerized instance. Run `pnpm run db:migrate` again after fixing the connection.
 </details>
 
 ## Next steps

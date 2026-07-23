@@ -6,7 +6,7 @@
  * Also generates src/generated-apis.ts with Zudoku API Catalog config.
  *
  * MUST run AFTER sync-repo-docs.mjs (which clones repos to .tmp-repo-sync/).
- * This script cleans up .tmp-repo-sync/ when done.
+ * This script leaves .tmp-repo-sync/ intact for downstream scripts (compliance scanner).
  *
  * Usage: node scripts/fetch-openapi.mjs
  *
@@ -303,8 +303,11 @@ mkdirSync(generatedDir, { recursive: true });
 writeFileSync(join(generatedDir, 'generated-apis.ts'), apisCode, 'utf-8');
 console.log(`  Wrote src/generated-apis.ts (${extractedApis.length} API entries)`);
 
-// ── 5. Clean up .tmp-repo-sync/ ──
-rmSync(tmpDir, { recursive: true, force: true });
-console.log('Cleaned up .tmp-repo-sync/');
+// ── 5. Leave .tmp-repo-sync/ for the compliance scanner ──
+// Previously cleaned up here, but the compliance scanner runs after this
+// script and needs the shallow-cloned repos. Cleanup is handled by the
+// CI workflow's final step or by sync-repo-docs.mjs on its next run
+// (it does a fresh clone anyway).
+console.log('Left .tmp-repo-sync/ for downstream scripts (compliance scanner)');
 
 console.log(`=== OpenAPI spec extraction complete (${extractedApis.length} specs) ===`);

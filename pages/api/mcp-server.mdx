@@ -1,6 +1,6 @@
 ---
 title: "MCP Server"
-description: "Primebrick exposes an MCP (Model Context Protocol) server that lets AI clients like Claude, ChatGPT, Cursor, and VS Code interact with your Primebrick entities directly."
+description: "Primebrick exposes an MCP (Model Context Protocol) server that lets AI clients like Claude™, ChatGPT®, Cursor™, and VS Code™ interact with your Primebrick entities directly."
 ---
 
 import { Mermaid } from "zudoku/mermaid";
@@ -8,7 +8,7 @@ import { Mermaid } from "zudoku/mermaid";
 ## Overview
 
 Primebrick includes a built-in **MCP (Model Context Protocol) server** that allows AI
-clients — such as Claude, ChatGPT, Cursor, and VS Code Copilot — to interact with
+clients — such as Claude™, ChatGPT®, Cursor™, and VS Code™ Copilot — to interact with
 your Primebrick entities, microservices, and service registry through a standardized
 tool interface.
 
@@ -42,7 +42,7 @@ providers from the emailsender microservice.
 
 ## Dynamic entity discovery
 
-When a microservice registers with the backend (via NATS), the MCP server
+When a microservice registers with the backend (via NATS™), the MCP server
 automatically:
 
 1. Fetches the microservice's OpenAPI spec from `/api/v1/openapi.json`
@@ -95,17 +95,17 @@ Primebrick frontend consent screen at `/mcp/consent`. This screen shows:
 - **Approve** and **Deny** buttons
 
 If the user denies consent, the AI client receives an `access_denied` error.
-If the user approves, the flow continues to Casdoor for authentication.
+If the user approves, the flow continues to Casdoor™ for authentication.
 
 ## Connecting your AI client
 
 The easiest way to connect is through the interactive MCP card on the
 [API Catalog](/catalog/system/mcp) page, which provides copy-paste
-configuration for Claude, ChatGPT, Cursor, VS Code, and generic MCP clients.
+configuration for Claude™, ChatGPT®, Cursor™, VS Code™, and generic MCP clients.
 
-### Claude (Desktop)
+### Claude™ (Desktop)
 
-Add the MCP server via the Claude desktop app:
+Add the MCP server via the Claude™ desktop app:
 
 ```json
 {
@@ -124,7 +124,7 @@ Or via CLI:
 claude mcp add primebrick --transport http http://localhost:3001/mcp
 ```
 
-### Cursor
+### Cursor™
 
 Add to `.cursor/mcp.json` in your project:
 
@@ -139,7 +139,7 @@ Add to `.cursor/mcp.json` in your project:
 }
 ```
 
-### VS Code (Copilot)
+### VS Code™ (Copilot)
 
 Add to `.vscode/mcp.json`:
 
@@ -178,13 +178,13 @@ The MCP server exposes the following OAuth 2.1 discovery endpoints:
 | `GET /.well-known/oauth-protected-resource/mcp` | RFC 9728 | Protected Resource Metadata — tells AI clients where the AS is |
 | `GET /.well-known/oauth-authorization-server` | RFC 8414 | Authorization Server Metadata — endpoints, scopes, grant types |
 | `POST /mcp/oauth/register` | RFC 7591 | Dynamic Client Registration — AI clients register themselves |
-| `GET /mcp/oauth/authorize` | — | Authorization endpoint (proxies to Casdoor via FE consent screen) |
-| `POST /mcp/oauth/token` | — | Token endpoint (proxies to Casdoor token exchange) |
+| `GET /mcp/oauth/authorize` | — | Authorization endpoint (proxies to Casdoor™ via FE consent screen) |
+| `POST /mcp/oauth/token` | — | Token endpoint (proxies to Casdoor™ token exchange) |
 
 ## RBAC enforcement
 
 All MCP tool calls are subject to the same RBAC permission system as the
-regular API. The user's OAuth access token contains their Casdoor roles,
+regular API. The user's OAuth access token contains their Casdoor™ roles,
 which are mapped to Primebrick permissions via the `role_mappings` table.
 
 For example, calling `list_records` with `entity="customers"` requires the
