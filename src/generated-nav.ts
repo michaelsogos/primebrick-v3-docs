@@ -5,15 +5,6 @@ import type { Navigation } from "zudoku";
 export const generatedRepoNav: Navigation = [
   {
     "type": "category",
-    "label": "Backend",
-    "icon": "server",
-    "collapsed": true,
-    "items": [
-      "backend/guide/overview"
-    ]
-  },
-  {
-    "type": "category",
     "label": "Frontend",
     "icon": "monitor",
     "collapsed": true,
@@ -103,8 +94,7 @@ export const generatedRepoNav: Navigation = [
     "items": [
       "dal/guide/audit-trail",
       "dal/guide/clone",
-      "dal/guide/api-reference",
-      "dal/guide/overview"
+      "dal/guide/api-reference"
     ]
   },
   {
@@ -129,15 +119,6 @@ export const generatedRepoNav: Navigation = [
 export const serviceNav: Navigation = [
   {
     "type": "category",
-    "label": "Backend",
-    "icon": "server",
-    "collapsed": true,
-    "items": [
-      "backend/guide/overview"
-    ]
-  },
-  {
-    "type": "category",
     "label": "Frontend",
     "icon": "monitor",
     "collapsed": true,
@@ -218,9 +199,7 @@ export const serviceNav: Navigation = [
         ]
       }
     ]
-  }
-];
-export const libraryNav: Navigation = [
+  },
   {
     "type": "category",
     "label": "DAL Library",
@@ -229,10 +208,11 @@ export const libraryNav: Navigation = [
     "items": [
       "dal/guide/audit-trail",
       "dal/guide/clone",
-      "dal/guide/api-reference",
-      "dal/guide/overview"
+      "dal/guide/api-reference"
     ]
-  },
+  }
+];
+export const libraryNav: Navigation = [
   {
     "type": "category",
     "label": "SDK Library",
