@@ -1,6 +1,6 @@
 ---
 title: "Microservice Standard"
-description: "The contract every Primebrick microservice must follow: registration, heartbeats, proxy, NATS, and OpenAPI."
+description: "The contract every Primebrick microservice must follow: registration, heartbeats, proxy, NATS™, and OpenAPI."
 ---
 
 ## Overview
@@ -14,7 +14,7 @@ A compliant microservice must:
 1. **Self-register** with the backend on startup
 2. **Send heartbeats** at a regular interval
 3. **Expose OpenAPI** at `/api/v1/openapi.json`
-4. **Use NATS** for inter-service messaging
+4. **Use NATS™** for inter-service messaging
 5. **Return RFC 7807 Problem Details** for all errors
 
 ## Self-registration
@@ -67,9 +67,9 @@ POST /ws/inventory/items         → proxied to inventory microservice
 
 When multiple instances of a service are online, the proxy distributes requests using **round-robin** load balancing. Clients do not need to know how many instances exist or where they are — they always hit the backend and the proxy handles routing.
 
-## NATS messaging
+## NATS™ messaging
 
-Microservices communicate with each other and with the backend through **NATS**. The SDK provides helpers for common patterns:
+Microservices communicate with each other and with the backend through **NATS™**. The SDK provides helpers for common patterns:
 
 ```typescript
 // Publish an event

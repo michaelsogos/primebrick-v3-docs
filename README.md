@@ -1,6 +1,6 @@
 # Primebrick Docs
 
-Documentation site for [Primebrick](https://primebrick.dev) — built with [Zudoku](https://zudoku.dev) and deployed to Cloudflare Workers as a static site.
+Documentation site for [Primebrick](https://primebrick.dev) — built with [Zudoku](https://zudoku.dev) and deployed to Cloudflare® Workers as a static site.
 
 ## Getting Started
 
@@ -27,7 +27,7 @@ Output is written to `dist/`. The build runs sync scripts to fetch OpenAPI specs
 pnpm deploy
 ```
 
-Deploys to Cloudflare Workers using `wrangler`.
+Deploys to Cloudflare® Workers using `wrangler`.
 
 ## Structure
 
@@ -44,4 +44,4 @@ wrangler.jsonc      Cloudflare Workers config
 
 - [Zudoku documentation](https://zudoku.dev/docs)
 - [Primebrick](https://primebrick.dev)
-- [GitHub](https://github.com/michaelsogos)
+- [GitHub™](https://github.com/michaelsogos)
