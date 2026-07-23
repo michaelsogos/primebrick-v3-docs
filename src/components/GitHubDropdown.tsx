@@ -77,7 +77,7 @@ export default function GitHubDropdown() {
           color: "inherit",
           transition: "color 0.2s",
         }}
-        onMouseEnter={(e) => (e.currentTarget.style.color = "var(--zk-primary, #38bdf8)")}
+        onMouseEnter={(e) => (e.currentTarget.style.color = "var(--primary, #0ea5e9)")}
         onMouseLeave={(e) => (e.currentTarget.style.color = "inherit")}
       >
         <GithubIcon />
@@ -93,9 +93,9 @@ export default function GitHubDropdown() {
             marginTop: "0.5rem",
             minWidth: "14rem",
             borderRadius: "0.5rem",
-            border: "1px solid var(--zk-border, #334155)",
-            background: "var(--zk-card, #0f172a)",
-            boxShadow: "0 10px 25px rgba(0, 0, 0, 0.3)",
+            border: "1px solid var(--border, #e5e7eb)",
+            background: "var(--card, #ffffff)",
+            boxShadow: "0 10px 25px rgba(0, 0, 0, 0.15)",
             padding: "0.375rem",
             zIndex: 100,
           }}
@@ -114,16 +114,16 @@ export default function GitHubDropdown() {
                 fontSize: "0.8125rem",
                 textDecoration: "none",
                 borderRadius: "0.375rem",
-                color: "inherit",
+                color: "var(--foreground, #1f2937)",
                 transition: "background 0.15s, color 0.15s",
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.background = "var(--zk-muted, #1e293b)";
-                e.currentTarget.style.color = "var(--zk-primary, #38bdf8)";
+                e.currentTarget.style.background = "var(--accent, #0ea5e9)";
+                e.currentTarget.style.color = "var(--accent-foreground, #ffffff)";
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.background = "transparent";
-                e.currentTarget.style.color = "inherit";
+                e.currentTarget.style.color = "var(--foreground, #1f2937)";
               }}
             >
               {repo.isOrg ? <GithubIcon /> : <RepoIcon />}
