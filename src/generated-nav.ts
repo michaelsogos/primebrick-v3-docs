@@ -5,6 +5,18 @@ import type { Navigation } from "zudoku";
 export const generatedRepoNav: Navigation = [
   {
     "type": "category",
+    "label": "Backend",
+    "icon": "server",
+    "collapsed": true,
+    "items": [
+      "backend/guide/overview",
+      "backend/guide/architecture",
+      "backend/guide/authentication",
+      "backend/guide/rbac"
+    ]
+  },
+  {
+    "type": "category",
     "label": "Frontend",
     "icon": "monitor",
     "collapsed": true,
@@ -115,8 +127,22 @@ export const generatedRepoNav: Navigation = [
   }
 ];
 
-// Split for stacked navigation: Services (BE, FE, Microservices) + Libraries (DAL, SDK)
+// Split for stacked navigation by explicit group tag (service vs library).
+// Position-independent: a filtered-out repo can never shift another repo
+// into the wrong sidebar group.
 export const serviceNav: Navigation = [
+  {
+    "type": "category",
+    "label": "Backend",
+    "icon": "server",
+    "collapsed": true,
+    "items": [
+      "backend/guide/overview",
+      "backend/guide/architecture",
+      "backend/guide/authentication",
+      "backend/guide/rbac"
+    ]
+  },
   {
     "type": "category",
     "label": "Frontend",
@@ -199,7 +225,9 @@ export const serviceNav: Navigation = [
         ]
       }
     ]
-  },
+  }
+];
+export const libraryNav: Navigation = [
   {
     "type": "category",
     "label": "DAL Library",
@@ -210,9 +238,7 @@ export const serviceNav: Navigation = [
       "dal/guide/clone",
       "dal/guide/api-reference"
     ]
-  }
-];
-export const libraryNav: Navigation = [
+  },
   {
     "type": "category",
     "label": "SDK Library",
