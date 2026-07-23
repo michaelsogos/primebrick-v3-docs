@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * Sync user-facing documentation from each Primebrick repo to Zudoku docs pages.
- * Shallow-clones each repo (depth 1), copies docs/user-guide/** and README.md.
+ * Shallow-clones each repo (depth 1), copies docs/user-guide/**.
  *
  * Usage: node scripts/sync-repo-docs.mjs
  *
@@ -9,7 +9,6 @@
  *
  * Strategy:
  * - docs/user-guide/** → pages/<repo>/guide/**  (user-facing MDX docs)
- * - README.md → pages/<repo>/guide/overview.md  (fallback if no overview.mdx)
  */
 import { execSync } from 'node:child_process';
 import {
@@ -144,16 +143,6 @@ function syncRepo(repo) {
 
   let guideCount = copyDirRecursive(userGuideDir, targetDir, repo.slug);
   console.log(`  Copied ${guideCount} files from docs/user-guide/`);
-
-  // Copy README.md as overview.md (fallback if no overview.mdx in user-guide)
-  const overviewExists = existsSync(join(targetDir, 'overview.mdx')) || existsSync(join(targetDir, 'overview.md'));
-  if (!overviewExists) {
-    const readme = join(cloneDir, 'README.md');
-    if (existsSync(readme)) {
-      processMarkdownFile(readme, join(targetDir, 'overview.md'), repo.slug);
-      console.log(`  Copied README.md as overview.md (fallback)`);
-    }
-  }
 }
 
 // Main
