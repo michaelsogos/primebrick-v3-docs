@@ -121,6 +121,7 @@ const config: ZudokuConfig = {
             "getting-started/architecture",
             "getting-started/config-modules",
             "getting-started/infrastructure",
+            "getting-started/collaboration",
           ],
         },
         { type: "separator" },
