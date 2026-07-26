@@ -189,6 +189,38 @@ that run in GitHub™ Actions CI (NOT on the Worker). The sync flow is:
 - **Internal AI docs** (`docs/ai/`, `docs/skills/`, `docs/gitflow.md`) stay
   in each repo and are NOT synced to the docs site.
 
+### Cross-repo release ordering (MANDATORY)
+
+The sync script (`sync-repo-docs.mjs`) shallow-clones the **`main` branch**
+of each upstream repo (FE, BE, US, DAL, SDK) — NOT `develop` and NOT the
+repo's default branch. The clone is deterministic: `--branch main` is
+explicit, so it does not matter what GitHub exposes as default.
+
+This creates a **hard dependency**: a new/updated MDX file must be merged
+to `main` of the upstream repo **before** a docs release is cut. If the
+file exists only on `develop` or a feature branch, the sync will not pick
+it up and the page will be missing from the docs site.
+
+**Release order when a feature touches both an upstream repo and the docs:**
+
+1. **Release the upstream repo first** (e.g. FE):
+   - Merge feature → `develop`
+   - Create `release/<version>` from `develop`
+   - Merge `release/<version>` → `main` + tag
+   - Push `main` with tags
+   - Merge `main` back to `develop`
+2. **Then release the docs repo**:
+   - Create `release/<version>` from `develop`
+   - Merge `release/<version>` → `main` + tag
+   - Push `main` with tags → Cloudflare® auto-deploys
+   - The sync script clones `main` of the upstream repo, finds the new
+     MDX file, copies it to `pages/<repo>/guide/`, and the build includes it.
+
+**Never invert this order.** A docs release before the upstream release
+will build a docs site without the new content, and the next scheduled
+sync (every 6 hours via GitHub™ Actions cron) will only pick it up after
+the upstream repo's `main` is updated — potentially hours later.
+
 ### _order.json manifest
 
 Each repo's `docs/user-guide/_order.json` defines the logical reading order
