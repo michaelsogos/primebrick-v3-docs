@@ -120,12 +120,15 @@ function syncRepo(repo) {
   mkdirSync(cloneDir, { recursive: true });
 
   try {
-    execSync(`git clone --depth 1 ${repo.git} ${cloneDir}`, {
+    // Always clone `main` explicitly — never rely on the repo's default branch.
+    // The docs site must reflect what is released on `main` of each upstream
+    // repo, not whatever branch GitHub happens to expose as default.
+    execSync(`git clone --depth 1 --branch main ${repo.git} ${cloneDir}`, {
       stdio: 'pipe',
       timeout: 60000,
     });
   } catch (err) {
-    console.error(`  Failed to clone ${repo.git}: ${err.message}`);
+    console.error(`  Failed to clone ${repo.git} (branch main): ${err.message}`);
     return;
   }
 
