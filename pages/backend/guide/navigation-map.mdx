@@ -1,0 +1,53 @@
+---
+title: "Navigation Map"
+description: "Frontend route map with entity associations — auto-generated from FE source"
+source: guide
+repo: "backend"
+---
+
+# Navigation Map
+
+<!-- AUTO-GENERATED:navigation-map — DO NOT EDIT MANUALLY. Run generate-reference-docs.mjs to regenerate. -->
+
+This document maps every frontend route to its associated backend entity
+(when detectable from the page source). The AI assistant uses this to answer
+"where do I find X?" questions and to emit navigation events.
+
+| Route | Entity | Source file |
+|-------|--------|-------------|
+| `/` | — | `src/routes/(app)/+page.svelte` |
+| `/crm/pipeline` | — | `src/routes/(app)/crm/pipeline/+page.svelte` |
+| `/customers` | customer | `src/routes/(app)/customers/+page.svelte` |
+| `/customers/new` | — | `src/routes/(app)/customers/new/+page.svelte` |
+| `/system/settings` | — | `src/routes/(app)/system/settings/+page.svelte` |
+| `/system/settings/email-providers` | — | `src/routes/(app)/system/settings/email-providers/+page.svelte` |
+| `/system/settings/modules` | — | `src/routes/(app)/system/settings/modules/+page.svelte` |
+| `/system/settings/modules/[code]` | — | `src/routes/(app)/system/settings/modules/[code]/+page.svelte` |
+| `/system/settings/organizations` | organization | `src/routes/(app)/system/settings/organizations/+page.svelte` |
+| `/system/settings/organizations/[uuid]` | organization | `src/routes/(app)/system/settings/organizations/[uuid]/+page.svelte` |
+| `/system/settings/organizations/create` | — | `src/routes/(app)/system/settings/organizations/create/+page.svelte` |
+| `/system/settings/profile` | — | `src/routes/(app)/system/settings/profile/+page.svelte` |
+| `/system/settings/security` | security_settings | `src/routes/(app)/system/settings/security/+page.svelte` |
+| `/system/settings/templates` | — | `src/routes/(app)/system/settings/templates/+page.svelte` |
+| `/system/settings/users` | user_profiles | `src/routes/(app)/system/settings/users/+page.svelte` |
+| `/system/settings/users/[uuid]` | user_profiles | `src/routes/(app)/system/settings/users/[uuid]/+page.svelte` |
+| `/system/settings/users/create` | user_profiles | `src/routes/(app)/system/settings/users/create/+page.svelte` |
+
+## Routes grouped by entity
+
+### customer
+- `/customers`
+
+### organization
+- `/system/settings/organizations`
+- `/system/settings/organizations/[uuid]`
+
+### security_settings
+- `/system/settings/security`
+
+### user_profiles
+- `/system/settings/users`
+- `/system/settings/users/[uuid]`
+- `/system/settings/users/create`
+
+<!-- END -->
