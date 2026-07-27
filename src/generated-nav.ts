@@ -12,7 +12,11 @@ export const generatedRepoNav: Navigation = [
       "backend/guide/overview",
       "backend/guide/architecture",
       "backend/guide/authentication",
-      "backend/guide/rbac"
+      "backend/guide/rbac",
+      "backend/guide/entity-field-reference",
+      "backend/guide/filter-operator-reference",
+      "backend/guide/filter-syntax-guide",
+      "backend/guide/navigation-map"
     ]
   },
   {
@@ -140,7 +144,11 @@ export const serviceNav: Navigation = [
       "backend/guide/overview",
       "backend/guide/architecture",
       "backend/guide/authentication",
-      "backend/guide/rbac"
+      "backend/guide/rbac",
+      "backend/guide/entity-field-reference",
+      "backend/guide/filter-operator-reference",
+      "backend/guide/filter-syntax-guide",
+      "backend/guide/navigation-map"
     ]
   },
   {

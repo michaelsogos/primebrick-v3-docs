@@ -1,0 +1,110 @@
+---
+title: "Entity Field Reference"
+description: "Complete field reference for all Primebrick entities — auto-generated from BE metadata"
+source: guide
+repo: "backend"
+---
+
+# Entity Field Reference
+
+<!-- AUTO-GENERATED:entity-fields — DO NOT EDIT MANUALLY. Run generate-reference-docs.mjs to regenerate. -->
+
+This document lists every field exposed by each Primebrick entity, including
+type, filterability, sortability, and the i18n label key. It is the canonical
+reference for the AI assistant when answering questions about entity fields.
+
+## organization
+
+**Title key:** `entities.organization.title`
+**UID field:** `uuid`
+
+| Field | Type | Sortable | Filterable | Searchable | Label Key |
+|-------|------|----------|------------|------------|-----------|
+| `uuid` | text | yes | yes | yes | `entities.organization.fields.uuid` |
+| `idp_code` | text | yes | yes | yes | `entities.organization.fields.idp_code` |
+| `display_name` | text | yes | yes | yes | `entities.organization.fields.display_name` |
+| `website_url` | text | yes | yes | yes | `entities.organization.fields.website_url` |
+| `user_count` | number | no | no | yes | `entities.organization.fields.user_count` |
+| `created_at` | datetime | yes | yes | yes | `entities.organization.fields.created_at` |
+| `created_by` | text | no | no | no | `entities.organization.fields.created_by` |
+| `updated_at` | datetime | yes | yes | yes | `entities.organization.fields.updated_at` |
+| `updated_by` | text | no | no | no | `entities.organization.fields.updated_by` |
+| `last_synced_at` | datetime | yes | yes | yes | `entities.organization.fields.last_synced_at` |
+| `version` | text | no | no | no | `entities.organization.fields.version` |
+| `deleted_at` | datetime | yes | no | no | `entities.organization.fields.deleted_at` |
+| `deleted_by` | text | no | no | no | `entities.organization.fields.deleted_by` |
+
+**Default sort:** `created_at` desc
+
+**Row actions:** delete, edit, preview
+
+## user_profiles
+
+**Title key:** `entities.userProfile.title`
+**UID field:** `uuid`
+
+| Field | Type | Sortable | Filterable | Searchable | Label Key |
+|-------|------|----------|------------|------------|-----------|
+| `uuid` | text | yes | yes | yes | `entities.userProfile.fields.uuid` |
+| `idp_code` | text | yes | yes | yes | `entities.userProfile.fields.idp_code` |
+| `display_name` | text | yes | yes | yes | `entities.userProfile.fields.display_name` |
+| `email` | text | yes | yes | yes | `entities.userProfile.fields.email` |
+| `avatar_color` | color | no | no | yes | `entities.userProfile.fields.avatar_color` |
+| `avatar_initials` | text | yes | yes | yes | `entities.userProfile.fields.avatar_initials` |
+| `idp_org` | text | yes | yes | yes | `entities.userProfile.fields.idp_org` |
+| `idp_username` | text | yes | yes | yes | `entities.userProfile.fields.idp_username` |
+| `is_active` | boolean | yes | yes | yes | `entities.userProfile.fields.is_active` |
+| `is_admin` | boolean | yes | yes | yes | `entities.userProfile.fields.is_admin` |
+| `is_verified` | boolean | yes | yes | yes | `entities.userProfile.fields.is_verified` |
+| `email_verified` | boolean | yes | yes | yes | `entities.userProfile.fields.email_verified` |
+| `roles` | text | no | no | yes | `entities.userProfile.fields.roles` |
+| `issuer` | text | no | yes | yes | `entities.userProfile.fields.issuer` |
+| `last_synced_at` | datetime | yes | yes | yes | `entities.userProfile.fields.last_synced_at` |
+| `created_at` | datetime | yes | yes | yes | `entities.userProfile.fields.created_at` |
+| `created_by` | text | no | no | no | `entities.userProfile.fields.created_by` |
+| `updated_at` | datetime | yes | yes | yes | `entities.userProfile.fields.updated_at` |
+| `updated_by` | text | no | no | no | `entities.userProfile.fields.updated_by` |
+| `version` | text | no | no | no | `entities.userProfile.fields.version` |
+| `deleted_at` | datetime | yes | no | no | `entities.userProfile.fields.deleted_at` |
+| `deleted_by` | text | no | no | no | `entities.userProfile.fields.deleted_by` |
+
+**Default sort:** `created_at` desc
+
+**Row actions:** delete, edit, preview, customActions
+
+## customer
+
+**Title key:** `entities.customer.title`
+**UID field:** `uuid`
+
+| Field | Type | Sortable | Filterable | Searchable | Label Key |
+|-------|------|----------|------------|------------|-----------|
+| `code` | text | yes | yes | yes | `entities.customer.fields.code` |
+| `first_name` | text | yes | yes | yes | `entities.customer.fields.first_name` |
+| `last_name` | text | yes | yes | yes | `entities.customer.fields.last_name` |
+| `company_name` | text | yes | yes | yes | `entities.customer.fields.company_name` |
+| `email` | text | yes | yes | yes | `entities.customer.fields.email` |
+| `phone` | text | no | no | yes | `entities.customer.fields.phone` |
+| `status` | badge | yes | yes | no | `entities.customer.fields.status` |
+| `onboarding_at` | datetime | yes | yes | no | `entities.customer.fields.onboarding_at` |
+| `uuid` | text | yes | no | yes | `entities.customer.fields.uuid` |
+| `status_reason` | text | no | no | yes | `entities.customer.fields.status_reason` |
+| `local_address` | text | no | no | yes | `entities.customer.fields.local_address` |
+| `local_city` | text | yes | yes | yes | `entities.customer.fields.local_city` |
+| `local_state` | text | yes | yes | yes | `entities.customer.fields.local_state` |
+| `local_country` | text | yes | yes | yes | `entities.customer.fields.local_country` |
+| `local_zip` | text | no | no | yes | `entities.customer.fields.local_zip` |
+| `onboarding_time_zone` | text | yes | no | no | `entities.customer.fields.onboarding_time_zone` |
+| `created_at` | datetime | yes | no | no | `entities.customer.fields.created_at` |
+| `updated_at` | datetime | yes | no | no | `entities.customer.fields.updated_at` |
+| `created_by` | text | no | no | no | `entities.customer.fields.created_by` |
+| `updated_by` | text | no | no | no | `entities.customer.fields.updated_by` |
+| `version` | text | no | no | no | `entities.customer.fields.version` |
+| `deleted_at` | datetime | yes | no | no | `entities.customer.fields.deleted_at` |
+| `deleted_by` | text | no | no | no | `entities.customer.fields.deleted_by` |
+
+**Default sort:** `updated_at` desc
+
+**Row actions:** duplicate, delete, edit
+
+<!-- END -->
