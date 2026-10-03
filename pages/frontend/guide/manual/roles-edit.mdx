@@ -1,0 +1,33 @@
+---
+title: Edit Role Mapping
+description: Update role permissions and display label.
+---
+
+Update role permissions and display label.
+
+## Pages routes
+
+- `/system/settings/roles` — List, search and manage all roles.
+- `/system/settings/roles/create` — Create a new role.
+- `/system/settings/roles/{uuid}` — View and edit an existing role. *(this page)*
+
+## Fields
+
+| Field | Required | Notes |
+|-------|----------|-------|
+| **Label Key** | required | text input |
+| **Admin** | optional | checkbox |
+| **Permissions** | required | button |
+
+## Actions
+
+- **Save** — validates the form and saves changes to the role.
+- **Cancel** — discards changes and returns to the previous page.
+
+## Doc references
+
+- [Roles](/docs/user-guide/manual/roles)
+- [Roles Create](/docs/user-guide/manual/roles-create)
+- [Organizations](/docs/user-guide/manual/organizations)
+- [Entities Crud](/docs/user-guide/manual/entities-crud)
+

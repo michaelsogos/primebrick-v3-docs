@@ -1,0 +1,69 @@
+---
+title: Organizations List
+description: List, search and manage all organizations.
+---
+
+List, search and manage all organizations.
+
+## Pages routes
+
+- `/system/settings/organizations` — List, search and manage all organizations. *(this page)*
+- `/system/settings/organizations/create` — Create a new organization.
+- `/system/settings/organizations/{uuid}` — View and edit an existing organization.
+
+## Columns
+
+| Column | Visible | Sortable | Filterable | Notes |
+|--------|---------|----------|------------|-------|
+| **Display Name** | yes | yes | yes |  |
+| **UUID** | no | yes | yes |  |
+| **IDP Code** | no | yes | yes |  |
+| **Website URL** | yes | yes | yes |  |
+| **User Count** | yes | no | no |  |
+
+- The Display Name column is shown by default and can be sorted and filtered.
+- The UUID column is hidden by default and can be sorted and filtered.
+- The IDP Code column is hidden by default and can be sorted and filtered.
+- The Website URL column is shown by default and can be sorted and filtered.
+- The User Count column is shown by default and cannot be sorted or filtered.
+
+## Actions
+
+### Row actions
+
+| Action | Status | Permission | What it does | Require Step-Up Auth |
+|--------|--------|------------|--------------|----------------------|
+| **create** | ENABLED | `organization.create.single` | Creates a new organization | no |
+| **update** | ENABLED | `organization.update.single` | Opens the organization for editing | no |
+| **delete** | NOT OFFERED | `organization.delete.single` | Marks the organization as deleted but keeps it so it can be restored | yes |
+| **restore** | NOT OFFERED | `organization.restore.single` | Brings a soft-deleted organization back | no |
+| **purge** | DISABLED | — | Removes the organization forever | no |
+| **audit history** | ENABLED | `organization.read.audit` | Shows the change history of the organization | no |
+
+- Creating a new organization is available on this page — the create action opens the create form in a new browser tab and it requires the `organization.create.single` permission.
+- Editing an organization is available on this page — the row action opens the record in a new browser tab and it requires the `organization.update.single` permission.
+- Soft-deleting an organization is not available on this page — if enabled, it would require the `organization.delete.single` permission.
+- Restoring a soft-deleted organization is not available on this page — if enabled, it would require the `organization.restore.single` permission.
+- Permanently deleting an organization is not available on this page — no permission is declared for it on organizations.
+- Viewing the change history of an organization is available on this page — every organization keeps a full version history and it requires the `organization.read.audit` permission.
+
+### Bulk actions
+
+| Action | Status | Permission | What it does | Require Step-Up Auth |
+|--------|--------|------------|--------------|----------------------|
+| **delete** | DISABLED | `organization.delete.bulk` | Marks the selected organizations as deleted | no |
+| **restore** | DISABLED | `organization.restore.bulk` | Restores the selected organizations | no |
+| **duplicate** | DISABLED | `organization.duplicate.bulk` | Duplicates the selected organizations | no |
+| **export** | DISABLED | `organization.export` | Exports the list | no |
+
+- Soft-deleting the selected organizations is not available on this page — if enabled, it would require the `organization.delete.bulk` permission.
+- Restoring the selected organizations is not available on this page — if enabled, it would require the `organization.restore.bulk` permission.
+- Duplicating the selected organizations is not available on this page — if enabled, it would require the `organization.duplicate.bulk` permission.
+- Exporting the list is not available on this page — if enabled, it would require the `organization.export` permission.
+
+## Doc references
+
+- [Organizations Create](/docs/user-guide/manual/organizations-create)
+- [Organizations Edit](/docs/user-guide/manual/organizations-edit)
+- [Entities Crud](/docs/user-guide/manual/entities-crud)
+

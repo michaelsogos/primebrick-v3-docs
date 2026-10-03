@@ -1,0 +1,36 @@
+---
+title: Edit Organization
+description: View and edit an existing organization.
+---
+
+View and edit an existing organization.
+
+## Pages routes
+
+- `/system/settings/organizations` — List, search and manage all organizations.
+- `/system/settings/organizations/create` — Create a new organization.
+- `/system/settings/organizations/{uuid}` — View and edit an existing organization. *(this page)*
+
+Editable fields are listed below. Saving calls `PUT /api/v1/entities/organization/${uuid}`.
+
+## Fields
+
+| Field | Required | Notes |
+|-------|----------|-------|
+| **Identity ID** | optional | text input |
+| **Display name** | required | text input |
+| **Website URL** | optional | text input — max 2048; must be a valid URL |
+| **Identity Owner** | required | text input — max 255; min 1 |
+| **Identity Name** | required | text input |
+
+## Actions
+
+- **Save** — validates the form and saves changes to the organization (`PUT /api/v1/entities/organization/${uuid}`).
+- **Cancel** — discards changes and returns to the previous page.
+
+## Doc references
+
+- [Organizations](/docs/user-guide/manual/organizations)
+- [Organizations Create](/docs/user-guide/manual/organizations-create)
+- [Entities Crud](/docs/user-guide/manual/entities-crud)
+

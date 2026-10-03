@@ -1,0 +1,43 @@
+---
+title: Create Role Mapping
+description: Define a new role mapping with IDP role and permissions.
+---
+
+Define a new role mapping with IDP role and permissions.
+
+## Pages routes
+
+- `/system/settings/roles` — List, search and manage all roles.
+- `/system/settings/roles/create` — Create a new role. *(this page)*
+- `/system/settings/roles/{uuid}` — View and edit an existing role.
+
+Submitting the form saves the new record and then opens the new role's detail page.
+
+## How to create
+
+1. Go to **Roles** (`/system/settings/roles`) and use the create action — the create page opens in the same tab.
+2. Fill the form. Start from **role** — required fields are marked below.
+3. Click **Save**. You are redirected to the record's detail page.
+
+## Fields
+
+| Field | Required | Notes |
+|-------|----------|-------|
+| **IDP Role** | required | text input |
+| **Organization** | required | text input — only organizations backed by a real identity-provider organization are listed |
+| **Label Key** | required | text input |
+| **Admin** | optional | checkbox |
+| **Permissions** | required | text input |
+
+## Actions
+
+- **Save** — validates the form and creates the role.
+- **Cancel** — discards changes and returns to the previous page.
+
+## Doc references
+
+- [Roles](/docs/user-guide/manual/roles)
+- [Roles Edit](/docs/user-guide/manual/roles-edit)
+- [Organizations](/docs/user-guide/manual/organizations)
+- [Entities Crud](/docs/user-guide/manual/entities-crud)
+

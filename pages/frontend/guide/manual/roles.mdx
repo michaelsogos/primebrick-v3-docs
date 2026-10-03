@@ -1,0 +1,72 @@
+---
+title: Role Mappings List
+description: Manage role-to-permission mappings. Each role maps an IDP role to a set of Primebrick permissions.
+---
+
+Manage role-to-permission mappings. Each role maps an IDP role to a set of Primebrick permissions.
+
+## Pages routes
+
+- `/system/settings/roles` — List, search and manage all role mappings. *(this page)*
+- `/system/settings/roles/create` — Create a new role.
+- `/system/settings/roles/{uuid}` — View and edit an existing role.
+
+## Columns
+
+| Column | Visible | Sortable | Filterable | Notes |
+|--------|---------|----------|------------|-------|
+| **IDP Role** | yes | yes | yes |  |
+| **UUID** | no | yes | yes |  |
+| **Organization** | yes | yes | yes |  |
+| **Label Key** | yes | yes | yes |  |
+| **Admin** | yes | yes | yes |  |
+| **Permissions** | yes | no | no |  |
+
+- The IDP Role column is shown by default and can be sorted and filtered.
+- The UUID column is hidden by default and can be sorted and filtered.
+- The Organization column is shown by default and can be sorted and filtered.
+- The Label Key column is shown by default and can be sorted and filtered.
+- The Admin column is shown by default and can be sorted and filtered.
+- The Permissions column is shown by default and cannot be sorted or filtered.
+
+## Actions
+
+### Row actions
+
+| Action | Status | Permission | What it does | Require Step-Up Auth |
+|--------|--------|------------|--------------|----------------------|
+| **create** | ENABLED | `role_mapping.create.single` | Creates a new role mapping | no |
+| **update** | ENABLED | `role_mapping.update.single` | Opens the role mapping for editing | no |
+| **delete** | DISABLED | `role_mapping.delete.single` | Marks the role mapping as deleted but keeps it so it can be restored | no |
+| **restore** | DISABLED | `role_mapping.restore.single` | Brings a soft-deleted role mapping back | no |
+| **purge** | NOT OFFERED | `role_mapping.delete.single` | Removes the role mapping forever | yes |
+| **audit history** | ENABLED | `role_mapping.read.audit` | Shows the change history of the role mapping | no |
+
+- Creating a new role mapping is available on this page — the create action opens the create form in the same tab and it requires the `role_mapping.create.single` permission.
+- Editing a role mapping is available on this page — the row action opens the record in the same tab and it requires the `role_mapping.update.single` permission.
+- Soft-deleting a role mapping is not available on this page — if enabled, it would require the `role_mapping.delete.single` permission.
+- Restoring a soft-deleted role mapping is not available on this page — if enabled, it would require the `role_mapping.restore.single` permission.
+- Permanently deleting a role mapping is not available on this page — if enabled, it would require the `role_mapping.delete.single` permission.
+- Viewing the change history of a role mapping is available on this page — every role mapping keeps a full version history and it requires the `role_mapping.read.audit` permission.
+
+### Bulk actions
+
+| Action | Status | Permission | What it does | Require Step-Up Auth |
+|--------|--------|------------|--------------|----------------------|
+| **delete** | DISABLED | `role_mapping.delete.bulk` | Marks the selected role mappings as deleted | no |
+| **restore** | DISABLED | `role_mapping.restore.bulk` | Restores the selected role mappings | no |
+| **duplicate** | DISABLED | `role_mapping.duplicate.bulk` | Duplicates the selected role mappings | no |
+| **export** | DISABLED | `role_mapping.export` | Exports the list | no |
+
+- Soft-deleting the selected role mappings is not available on this page — if enabled, it would require the `role_mapping.delete.bulk` permission.
+- Restoring the selected role mappings is not available on this page — if enabled, it would require the `role_mapping.restore.bulk` permission.
+- Duplicating the selected role mappings is not available on this page — if enabled, it would require the `role_mapping.duplicate.bulk` permission.
+- Exporting the list is not available on this page — if enabled, it would require the `role_mapping.export` permission.
+
+## Doc references
+
+- [Roles Create](/docs/user-guide/manual/roles-create)
+- [Roles Edit](/docs/user-guide/manual/roles-edit)
+- [Organizations](/docs/user-guide/manual/organizations)
+- [Entities Crud](/docs/user-guide/manual/entities-crud)
+

@@ -1,0 +1,37 @@
+---
+title: Edit User
+description: View and edit an existing user.
+---
+
+View and edit an existing user.
+
+## Pages routes
+
+- `/system/settings/users` — List, search and manage all user profiles.
+- `/system/settings/users/create` — Create a new user.
+- `/system/settings/users/{uuid}` — View and edit an existing user. *(this page)*
+
+Editable fields are listed below. Saving calls `PUT /api/v1/auth/users/${uuid}`.
+
+## Fields
+
+| Field | Required | Notes |
+|-------|----------|-------|
+| **Display Name** | required | text input |
+| **Email** | optional | text input — max 320; must be a valid email |
+| **Application Roles** | optional | select — administrator roles show a System Administrator badge; min 1 |
+| **Avatar Color** | optional | text input — shown when no avatar image is set; hex color |
+
+## Actions
+
+- **Save** — validates the form and saves changes to the user (`PUT /api/v1/auth/users/${uuid}`).
+- **Cancel** — discards changes and returns to the previous page.
+
+## Doc references
+
+- [Users](/docs/user-guide/manual/users)
+- [Users Create](/docs/user-guide/manual/users-create)
+- [Roles](/docs/user-guide/manual/roles)
+- [Organizations](/docs/user-guide/manual/organizations)
+- [Entities Crud](/docs/user-guide/manual/entities-crud)
+

@@ -1,0 +1,41 @@
+---
+title: Create Organization
+description: Fill out the form to create a new organization
+---
+
+Fill out the form to create a new organization
+
+## Pages routes
+
+- `/system/settings/organizations` — List, search and manage all organizations.
+- `/system/settings/organizations/create` — Create a new organization. *(this page)*
+- `/system/settings/organizations/{uuid}` — View and edit an existing organization.
+
+Submitting the form calls `POST /api/v1/entities/organization` and then opens the new organization's detail page.
+
+## How to create
+
+1. Go to **Organizations** (`/system/settings/organizations`) and use the create action — the create page opens in a new browser tab.
+2. Fill the form. Start from **Display name** — required fields are marked below.
+3. Click **Save**. You are redirected to the record's detail page.
+
+## Fields
+
+| Field | Required | Notes |
+|-------|----------|-------|
+| **Display name** | required | text input |
+| **Website URL** | optional | text input — max 2048; must be a valid URL |
+| **Identity Owner** | optional | text input — max 255; min 1 |
+| **Identity Name** | required | validated input |
+
+## Actions
+
+- **Save** — validates the form and creates the organization (`POST /api/v1/entities/organization`).
+- **Cancel** — discards changes and returns to the previous page.
+
+## Doc references
+
+- [Organizations](/docs/user-guide/manual/organizations)
+- [Organizations Edit](/docs/user-guide/manual/organizations-edit)
+- [Entities Crud](/docs/user-guide/manual/entities-crud)
+
