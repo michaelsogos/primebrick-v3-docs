@@ -1,0 +1,37 @@
+---
+title: Permissions and RBAC
+description: How role-based access control works — permissions, role mappings, wildcards, and the admin flag.
+entity: role_mapping
+---
+
+How Primebrick decides what each user can see and do: permissions are grouped into roles, and roles are assigned to users.
+
+## Pages routes
+
+- `/system/settings/roles` — List, search and manage all role mappings.
+- `/system/settings/roles/create` — Create a new role mapping.
+- `/system/settings/roles/{uuid}` — View and edit an existing role mapping.
+- `/system/settings/users/{uuid}` — Assign application roles to a user.
+
+## What you can do here
+
+### How permissions work
+1. Every action in the application is guarded by a **permission** written as `module.action.scope` — for example `customers.read.all` means "read all customers".
+2. A **wildcard** (`*`) covers a whole segment: `customers.*` grants every customer permission, `customers.read.*` grants all read levels, and `*` alone grants everything.
+3. Permissions are bundled into **role mappings**: each mapping links an identity-provider role to a set of permission patterns.
+4. A role mapping with the **Admin** flag bypasses every permission check — its holders can do anything.
+
+### How to grant permissions to users
+1. Open the **Role Mappings** page (`/system/settings/roles`) and create or edit a mapping: pick the **IDP Role**, the **Organization**, a **Label Key** and the **Permissions** patterns to grant.
+2. Open the user from **Users** (`/system/settings/users`), and in **Application Roles** select the role — administrator roles show a **System Administrator** badge.
+3. Click **Save** — the user immediately gets the permissions granted by the assigned roles.
+
+## Concepts
+
+| Concept | What it means |
+|---------|---------------|
+| **Permission pattern** | `module.action.scope` triple, e.g. `customers.update.single` — supports `*` wildcards in each segment |
+| **Role mapping** | The link between an identity-provider role (IDP Role column) and the permission patterns it grants |
+| **Admin flag** | On a role mapping: bypasses all permission checks — equivalent to `*` |
+| **System Administrator badge** | Shown next to administrator roles in the Application Roles picker when editing a user |
+| **Application Roles** | The roles assigned to a single user, edited from the user form |
