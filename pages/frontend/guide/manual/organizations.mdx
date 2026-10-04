@@ -1,6 +1,7 @@
 ---
 title: Organizations List
 description: List, search and manage all organizations.
+entity: organization
 ---
 
 List, search and manage all organizations.
@@ -10,6 +11,31 @@ List, search and manage all organizations.
 - `/system/settings/organizations` — List, search and manage all organizations. *(this page)*
 - `/system/settings/organizations/create` — Create a new organization.
 - `/system/settings/organizations/{uuid}` — View and edit an existing organization.
+
+## What you can do here
+
+### How to create a new organization
+1. Click **New** in the toolbar.
+2. Fill in the form — required: **Display name**, **Identity Name**.
+3. Click **Save** — the new organization is created.
+
+### How to edit an organization
+1. Open the row actions menu on the organization and click **Edit**.
+2. Update the fields — required: **Display name**, **Identity Owner**, **Identity Name**.
+3. Click **Save** — the changes to the organization are saved.
+
+### How to delete an organization
+1. Open the row actions menu on the organization and click **Delete** (step-up authentication is required).
+2. Confirm the deletion in the dialog — the organization is soft-deleted and can be restored.
+
+### How to restore a deleted organization
+1. Set the deleted-records filter to **Deleted only** or **All records** to show recoverable records.
+2. Open the row actions menu on the organization and click **Restore**.
+3. Confirm in the dialog — the organization is active again.
+
+### How to view the change history of an organization
+1. Open the row actions menu on the organization and click **Audit history**.
+2. The version history of the organization will appear on the right sheet panel.
 
 ## Columns
 
@@ -35,15 +61,15 @@ List, search and manage all organizations.
 |--------|--------|------------|--------------|----------------------|
 | **create** | ENABLED | `organization.create.single` | Creates a new organization | no |
 | **update** | ENABLED | `organization.update.single` | Opens the organization for editing | no |
-| **delete** | NOT OFFERED | `organization.delete.single` | Marks the organization as deleted but keeps it so it can be restored | yes |
-| **restore** | NOT OFFERED | `organization.restore.single` | Brings a soft-deleted organization back | no |
+| **delete** | ENABLED | `organization.delete.single` | Marks the organization as deleted but keeps it so it can be restored | yes |
+| **restore** | ENABLED | `organization.restore.single` | Brings a soft-deleted organization back | no |
 | **purge** | DISABLED | — | Removes the organization forever | no |
 | **audit history** | ENABLED | `organization.read.audit` | Shows the change history of the organization | no |
 
 - Creating a new organization is available on this page — the create action opens the create form in a new browser tab and it requires the `organization.create.single` permission.
 - Editing an organization is available on this page — the row action opens the record in a new browser tab and it requires the `organization.update.single` permission.
-- Soft-deleting an organization is not available on this page — if enabled, it would require the `organization.delete.single` permission.
-- Restoring a soft-deleted organization is not available on this page — if enabled, it would require the `organization.restore.single` permission.
+- Soft-deleting an organization is available on this page — marks the organization as deleted but keeps it so it can be restored and it requires the `organization.delete.single` permission, and step-up authentication is required.
+- Restoring a soft-deleted organization is available on this page — brings a soft-deleted organization back and it requires the `organization.restore.single` permission.
 - Permanently deleting an organization is not available on this page — no permission is declared for it on organizations.
 - Viewing the change history of an organization is available on this page — every organization keeps a full version history and it requires the `organization.read.audit` permission.
 

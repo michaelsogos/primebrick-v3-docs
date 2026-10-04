@@ -1,6 +1,7 @@
 ---
 title: Create Role Mapping
 description: Define a new role mapping with IDP role and permissions.
+entity: role_mapping
 ---
 
 Define a new role mapping with IDP role and permissions.
@@ -11,13 +12,12 @@ Define a new role mapping with IDP role and permissions.
 - `/system/settings/roles/create` — Create a new role. *(this page)*
 - `/system/settings/roles/{uuid}` — View and edit an existing role.
 
-Submitting the form saves the new record and then opens the new role's detail page.
+## What you can do here
 
-## How to create
-
-1. Go to **Roles** (`/system/settings/roles`) and use the create action — the create page opens in the same tab.
-2. Fill the form. Start from **role** — required fields are marked below.
-3. Click **Save**. You are redirected to the record's detail page.
+### How to create a new role mapping
+1. On the **Roles** list page, click **New** in the toolbar.
+2. Fill in the fields below — required: **role**, **org**, **label key**, **selected permissions**.
+3. Click **Save** — the new role mapping is created.
 
 ## Fields
 
@@ -29,10 +29,21 @@ Submitting the form saves the new record and then opens the new role's detail pa
 | **Admin** | optional | checkbox |
 | **Permissions** | required | text input |
 
+- The **IDP Role** field is a required text input.
+- The **Organization** field is a required text input — only organizations backed by a real identity-provider organization are listed.
+- The **Label Key** field is a required text input.
+- The **Admin** field is an optional checkbox.
+- The **Permissions** field is a required text input.
+
 ## Actions
 
-- **Save** — validates the form and creates the role.
-- **Cancel** — discards changes and returns to the previous page.
+| Action | Status | Permission | What it does | Require Step-Up Auth |
+|--------|--------|------------|--------------|----------------------|
+| **Save** | ENABLED | `role_mapping.create.single` | Validates the form and creates the role mapping | no |
+| **Cancel** | ENABLED | — | Discards changes and returns to the previous page | no |
+
+- The **Save** action is available on this page — validates the form and creates the role mapping and it requires the `role_mapping.create.single` permission.
+- The **Cancel** action is available on this page — discards changes and returns to the previous page.
 
 ## Doc references
 
