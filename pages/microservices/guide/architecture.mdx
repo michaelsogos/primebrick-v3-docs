@@ -62,8 +62,12 @@ them with `verifyNatsMessage()`.
 
 Every microservice uses `@primebrick/sdk` for its lifecycle:
 
-1. **Environment validation** — `requireEnv()` validates required env vars
-   at startup
+1. **Environment validation** — `requireEnv()` validates the env at startup.
+   **Policy: the only allowed env var is the database connection string**
+   (`DATABASE_URL`). Everything else — URLs, ports, secrets, keys — is module
+   config read from the config table by `ConfigLoader` (e.g. `client_key`,
+   `nats_url`, `http_port`). Never add `process.env` reads for configurable
+   values.
 2. **Config loading** — `ConfigLoader` reads the `config` table for
    service-specific settings (NATS™ URL, HTTP port, service code)
 3. **Auth config** — `initAuthConfig()` + `loadAuthConfig()` set up
