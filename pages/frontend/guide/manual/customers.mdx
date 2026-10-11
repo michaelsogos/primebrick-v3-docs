@@ -6,6 +6,8 @@ entity: customer
 
 List, search and manage all customers.
 
+Each row shows the Onboarded At.
+
 ## Pages routes
 
 - `/system/customers` — List, search and manage all customers. *(this page)*
@@ -30,6 +32,44 @@ List, search and manage all customers.
 ### How to view the change history of a customer
 1. Open the row actions menu on the customer and click **Audit history**.
 2. The version history of the customer will appear on the right sheet panel.
+
+## Columns
+
+| Column | Visible | Sortable | Filterable | Notes |
+|--------|---------|----------|------------|-------|
+| **UUID** | no | yes | no |  |
+| **Code** | no | yes | yes |  |
+| **First name** | no | yes | yes |  |
+| **Last name** | no | yes | yes |  |
+| **Company** | no | yes | yes |  |
+| **Email** | no | yes | yes |  |
+| **Phone** | no | no | no |  |
+| **Status** | no | yes | yes |  |
+| **Onboarded At** | yes | yes | yes |  |
+| **Status reason** | no | no | no |  |
+| **Address** | no | no | no |  |
+| **City** | no | yes | yes |  |
+| **State/Region** | no | yes | yes |  |
+| **Country** | no | yes | yes |  |
+| **ZIP** | no | no | no |  |
+| **Onboarding time zone** | no | yes | no |  |
+
+- The UUID column is hidden by default and can be sorted but not filtered.
+- The Code column is hidden by default and can be sorted and filtered.
+- The First name column is hidden by default and can be sorted and filtered.
+- The Last name column is hidden by default and can be sorted and filtered.
+- The Company column is hidden by default and can be sorted and filtered.
+- The Email column is hidden by default and can be sorted and filtered.
+- The Phone column is hidden by default and cannot be sorted or filtered.
+- The Status column is hidden by default and can be sorted and filtered.
+- The Onboarded At column is shown by default and can be sorted and filtered.
+- The Status reason column is hidden by default and cannot be sorted or filtered.
+- The Address column is hidden by default and cannot be sorted or filtered.
+- The City column is hidden by default and can be sorted and filtered.
+- The State/Region column is hidden by default and can be sorted and filtered.
+- The Country column is hidden by default and can be sorted and filtered.
+- The ZIP column is hidden by default and cannot be sorted or filtered.
+- The Onboarding time zone column is hidden by default and can be sorted but not filtered.
 
 ## Actions
 

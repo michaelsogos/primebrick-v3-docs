@@ -6,9 +6,13 @@ entity: user_profile
 
 List, search and manage all users.
 
+Each row shows the Display Name, the Email, the IDP Owner, the IDP Username, plus the status flags Enable, Admin, and Email Verified.
+
+This user is backed by the identity provider (Casdoor) — its identity fields are managed there.
+
 ## Pages routes
 
-- `/system/settings/users` — List, search and manage all user profiles. *(this page)*
+- `/system/settings/users` — List, search and manage all users. *(this page)*
 - `/system/settings/users/create` — Create a new user.
 - `/system/settings/users/{uuid}` — View and edit an existing user.
 
@@ -79,6 +83,11 @@ List, search and manage all users.
 - The Email Verified column is shown by default and can be sorted and filtered — indicates whether the email has been verified, typically via a link sent to the email inbox that is presumed to be readable only by the user whose profile we are configuring.
 - The Roles column is hidden by default and cannot be sorted or filtered.
 - The IDP Issuer column is hidden by default and can be filtered but not sorted.
+
+## Related entities
+
+- A **User** is linked to **Organizations** through the **IDP Owner** field — see [Organizations](/docs/user-guide/manual/organizations).
+- A **User** is linked to **Roles** through the **Roles** field — see [Roles](/docs/user-guide/manual/roles).
 
 ## Actions
 

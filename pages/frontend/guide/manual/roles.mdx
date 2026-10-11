@@ -6,6 +6,10 @@ entity: role_mapping
 
 Manage role-to-permission mappings. Each role maps an IDP role to a set of Primebrick permissions.
 
+Each row shows the IDP Role, the Organization, the Label Key, the Admin, the Permissions.
+
+This role mapping is backed by the identity provider (Casdoor) — its identity fields are managed there.
+
 ## Pages routes
 
 - `/system/settings/roles` — List, search and manage all role mappings. *(this page)*
@@ -45,6 +49,11 @@ Manage role-to-permission mappings. Each role maps an IDP role to a set of Prime
 - The Label Key column is shown by default and can be sorted and filtered.
 - The Admin column is shown by default and can be sorted and filtered.
 - The Permissions column is shown by default and cannot be sorted or filtered.
+
+## Related entities
+
+- A **Role Mapping** is linked to **Organizations** through the **Organization** field — see [Organizations](/docs/user-guide/manual/organizations).
+- A **Role Mapping** is linked to **Roles** through the **Permissions** field — see [Roles](/docs/user-guide/manual/roles).
 
 ## Actions
 

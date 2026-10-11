@@ -8,7 +8,7 @@ View and edit an existing user.
 
 ## Pages routes
 
-- `/system/settings/users` — List, search and manage all user profiles.
+- `/system/settings/users` — List, search and manage all users.
 - `/system/settings/users/create` — Create a new user.
 - `/system/settings/users/{uuid}` — View and edit an existing user. *(this page)*
 
@@ -20,9 +20,8 @@ View and edit an existing user.
 3. Click **Save** — the changes to the user are saved.
 
 ### How to grant admin rights to a user
-1. On the **Users** list page, open the row actions menu on the user and click **Edit**.
-2. In the **Application Roles** field, select a role whose **Admin** flag is enabled; administrator roles are marked with a **System Administrator** badge — the flag is configured on the role via **Edit Role**.
-3. Click **Save** — the user now has the permissions granted by the assigned roles.
+1. In **Application Roles**, select a role whose **Admin** flag is enabled; administrator roles are marked with a **System Administrator** badge — the flag is configured on the role via **Edit Role**.
+2. Click **Save** — the user now has the permissions granted by the assigned roles.
 
 
 ## Fields
@@ -38,6 +37,11 @@ View and edit an existing user.
 - The **Email** field is an optional text input that allows up to 320 characters and must be a valid email.
 - The **Application Roles** field is an optional select that requires at least 1 selection — administrator roles show a System Administrator badge.
 - The **Avatar Color** field is an optional text input that must be a hex color — shown when no avatar image is set.
+
+## Related entities
+
+- A **User** is linked to **Organizations** through the **IDP Owner** field — see [Organizations](/docs/user-guide/manual/organizations).
+- A **User** is linked to **Roles** through the **Roles** field — see [Roles](/docs/user-guide/manual/roles).
 
 ## Actions
 
