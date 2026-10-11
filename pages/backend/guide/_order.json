@@ -1,12 +1,3 @@
 {
-  "pages": [
-    "overview",
-    "architecture",
-    "authentication",
-    "rbac",
-    "entity-field-reference",
-    "filter-operator-reference",
-    "filter-syntax-guide",
-    "navigation-map"
-  ]
+  "pages": ["overview", "architecture", "authentication", "rbac", "environment-configuration", "collaboration"]
 }

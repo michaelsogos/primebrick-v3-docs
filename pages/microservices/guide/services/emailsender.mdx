@@ -6,7 +6,7 @@ description: Email provider configuration, template rendering, and email sending
 
 The EmailSender microservice handles email provider configuration, template
 rendering with Handlebars, and email dispatch via the Brevo™ provider. It
-receives send requests over NATS™ (not HTTP) and exposes provider/config
+receives send requests over NATS (not HTTP) and exposes provider/config
 management via HTTP entity CRUD routes proxied through the Backend.
 
 - **Package:** `primebrick-emailsender`
@@ -192,7 +192,7 @@ statuses:
 
 ### `EmailService.sendEmail(request, actorId)`
 
-Called by the NATS™ `emailsender.send` handler. Flow:
+Called by the NATS `emailsender.send` handler. Flow:
 1. Load Brevo™ provider config from `providers` table (filter by `provider = 'brevo'`)
 2. Load email template from `email_templates` by `code` + `language_iso`
 3. Render subject/HTML/text with Handlebars using `request.variables`
@@ -252,12 +252,12 @@ The service uses the SDK's `ServiceRegistrar` to register itself via NATS™:
   endpoints (`webhook`, `health`), version, and metadata (name, description,
   icon)
 - **Heartbeat:** periodic health checks published via NATS™; checks DB
-  connectivity and NATS™ connection status
+  connectivity and NATS connection status
 - **Graceful shutdown:** on SIGTERM/SIGINT, the SDK `GracefulShutdown`
   coordinator runs cleanup in order: stop heartbeat → unregister service →
-  close NATS™ → close DB pool → close HTTP server
+  close NATS → close DB pool → close HTTP server
 
 ## Next steps
 
-- [Architecture](/user-guide/microservices/architecture) — NATS™ bus, BE proxy, SDK lifecycle
+- [Architecture](/user-guide/microservices/architecture) — NATS bus, BE proxy, SDK lifecycle
 - [Conventions](/user-guide/microservices/conventions) — API path conventions, data model rules

@@ -12,11 +12,7 @@ export const generatedRepoNav: Navigation = [
       "backend/guide/overview",
       "backend/guide/architecture",
       "backend/guide/authentication",
-      "backend/guide/rbac",
-      "backend/guide/entity-field-reference",
-      "backend/guide/filter-operator-reference",
-      "backend/guide/filter-syntax-guide",
-      "backend/guide/navigation-map"
+      "backend/guide/rbac"
     ]
   },
   {
@@ -81,7 +77,30 @@ export const generatedRepoNav: Navigation = [
           "frontend/guide/components/form"
         ]
       },
-      "frontend/guide/api-reference"
+      "frontend/guide/api-reference",
+      {
+        "type": "category",
+        "label": "Manual",
+        "items": [
+          "frontend/guide/manual/configurations",
+          "frontend/guide/manual/configurations-create",
+          "frontend/guide/manual/customers",
+          "frontend/guide/manual/entities-crud",
+          "frontend/guide/manual/modules",
+          "frontend/guide/manual/modules-edit",
+          "frontend/guide/manual/organizations",
+          "frontend/guide/manual/organizations-create",
+          "frontend/guide/manual/organizations-edit",
+          "frontend/guide/manual/permissions-rbac",
+          "frontend/guide/manual/profile",
+          "frontend/guide/manual/roles",
+          "frontend/guide/manual/roles-create",
+          "frontend/guide/manual/roles-edit",
+          "frontend/guide/manual/users",
+          "frontend/guide/manual/users-create",
+          "frontend/guide/manual/users-edit"
+        ]
+      }
     ]
   },
   {
@@ -144,11 +163,7 @@ export const serviceNav: Navigation = [
       "backend/guide/overview",
       "backend/guide/architecture",
       "backend/guide/authentication",
-      "backend/guide/rbac",
-      "backend/guide/entity-field-reference",
-      "backend/guide/filter-operator-reference",
-      "backend/guide/filter-syntax-guide",
-      "backend/guide/navigation-map"
+      "backend/guide/rbac"
     ]
   },
   {
@@ -213,7 +228,30 @@ export const serviceNav: Navigation = [
           "frontend/guide/components/form"
         ]
       },
-      "frontend/guide/api-reference"
+      "frontend/guide/api-reference",
+      {
+        "type": "category",
+        "label": "Manual",
+        "items": [
+          "frontend/guide/manual/configurations",
+          "frontend/guide/manual/configurations-create",
+          "frontend/guide/manual/customers",
+          "frontend/guide/manual/entities-crud",
+          "frontend/guide/manual/modules",
+          "frontend/guide/manual/modules-edit",
+          "frontend/guide/manual/organizations",
+          "frontend/guide/manual/organizations-create",
+          "frontend/guide/manual/organizations-edit",
+          "frontend/guide/manual/permissions-rbac",
+          "frontend/guide/manual/profile",
+          "frontend/guide/manual/roles",
+          "frontend/guide/manual/roles-create",
+          "frontend/guide/manual/roles-edit",
+          "frontend/guide/manual/users",
+          "frontend/guide/manual/users-create",
+          "frontend/guide/manual/users-edit"
+        ]
+      }
     ]
   },
   {

@@ -22,6 +22,17 @@ Frontend (FE) never calls microservices directly.
   request to `GET /ws/emailsender/api/v1/entities/providers/list` is
   forwarded to the EmailSender microservice at
   `GET /api/v1/entities/providers/list`.
+
+  ```bash
+  # From the FE (or any JWT-authenticated client) through the BE proxy:
+  curl -H "Authorization: Bearer <jwt>" \
+    http://localhost:3001/ws/emailsender/api/v1/entities/providers/list
+  # → { "rows": [...], "total": 0, "page": 1, "page_size": 20 }
+
+  # Direct to the microservice (bypassing the BE, for debugging):
+  curl http://localhost:3003/api/v1/entities/providers/list
+  ```
+
 - **OpenAPI aggregation:** The BE fetches each microservice's
   `GET /api/v1/openapi.json` and merges the specs into a unified API
   catalog. This powers the Zudoku API explorer on the docs site.
@@ -62,12 +73,8 @@ them with `verifyNatsMessage()`.
 
 Every microservice uses `@primebrick/sdk` for its lifecycle:
 
-1. **Environment validation** — `requireEnv()` validates the env at startup.
-   **Policy: the only allowed env var is the database connection string**
-   (`DATABASE_URL`). Everything else — URLs, ports, secrets, keys — is module
-   config read from the config table by `ConfigLoader` (e.g. `client_key`,
-   `nats_url`, `http_port`). Never add `process.env` reads for configurable
-   values.
+1. **Environment validation** — `requireEnv()` validates required env vars
+   at startup
 2. **Config loading** — `ConfigLoader` reads the `config` table for
    service-specific settings (NATS™ URL, HTTP port, service code)
 3. **Auth config** — `initAuthConfig()` + `loadAuthConfig()` set up
