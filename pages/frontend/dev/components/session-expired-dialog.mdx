@@ -9,7 +9,7 @@ description: Modal that re-authenticates an expired session inline via LoginForm
 ## Purpose
 
 A modal that appears when the user's session expires mid-task. It embeds
-a [LoginForm](/docs/dev-guide/components/login-form) so the user can
+a [LoginForm](/frontend/dev/components/login-form) so the user can
 re-authenticate without leaving the page; on success it closes the
 dialog, drains the queue of pending API requests, and retries each one
 with a `_sessionRetry` flag. On repeated failure it offers a "go to
@@ -65,12 +65,12 @@ which surfaces a destructive alert and a "go to login" button.
 
 ## Props
 
-Full prop table: see [API reference — sessionexpireddialog](/docs/dev-guide/api-reference#sessionexpireddialog).
+Full prop table: see [API reference — sessionexpireddialog](/frontend/dev/api-reference#sessionexpireddialog).
 
 This component takes no props.
 
 ## Next steps
 
-- [Component catalog](/docs/dev-guide/components)
-- [UI stack](/docs/dev-guide/ui-stack)
-- [API reference](/docs/dev-guide/api-reference#sessionexpireddialog)
+- [Component catalog](/frontend/dev/components)
+- [UI stack](/frontend/dev/ui-stack)
+- [API reference](/frontend/dev/api-reference#sessionexpireddialog)
