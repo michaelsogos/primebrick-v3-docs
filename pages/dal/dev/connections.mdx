@@ -3,7 +3,6 @@ title: Connections & transactions
 description: The Dal gateway, getDal singleton, pool config, dal.transaction transactions, per-call timeouts, type parsers, and graceful shutdown.
 ---
 
-# Connections & transactions
 
 The Dal gateway (`getDal()`) is the recommended entry point. It owns the
 `pg.Pool`, registers type parsers once per process, and sets `search_path`,
