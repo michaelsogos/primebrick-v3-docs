@@ -28,17 +28,10 @@ import {
 } from 'node:fs';
 import { join, dirname, basename, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { REPOS } from './repos.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const projectRoot = join(__dirname, '..');
-
-const REPOS = [
-  { git: 'https://github.com/michaelsogos/primebrick-v3-backend.git', slug: 'backend' },
-  { git: 'https://github.com/michaelsogos/primebrick-v3-frontend.git', slug: 'frontend' },
-  { git: 'https://github.com/michaelsogos/primebrick-v3-microservices.git', slug: 'microservices' },
-  { git: 'https://github.com/michaelsogos/primebrick-v3-dal.git', slug: 'dal' },
-  { git: 'https://github.com/michaelsogos/primebrick-v3-sdk.git', slug: 'sdk' },
-];
 
 /** doc tier: source dir inside the repo → pages subdir */
 const TIERS = [
