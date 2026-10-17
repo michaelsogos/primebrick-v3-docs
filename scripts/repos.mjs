@@ -12,4 +12,7 @@ export const REPOS = [
   { git: 'https://github.com/michaelsogos/primebrick-v3-microservices.git', slug: 'microservices' },
   { git: 'https://github.com/michaelsogos/primebrick-v3-dal.git', slug: 'dal' },
   { git: 'https://github.com/michaelsogos/primebrick-v3-sdk.git', slug: 'sdk' },
+  // Dev-guide only — decimal is a developer library; no user-guide tier exists,
+  // so it publishes to pages/decimal/dev/** and never enters the product KB.
+  { git: 'https://github.com/michaelsogos/primebrick-decimal.git', slug: 'decimal' },
 ];
