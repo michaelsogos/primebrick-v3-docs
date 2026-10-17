@@ -1,0 +1,89 @@
+---
+title: Working Together on the Same Record
+description: What happens when two people open the same record at the same time — live presence, conflict protection, and automatic merging.
+---
+
+
+Picture this: you are editing a customer's address while, at the very same
+moment, a colleague (Mr Brown) in another office updates that customer's phone number.
+In most software this ends badly — whoever saves *last* silently overwrites
+whoever saved *first*, and nobody even notices the lost change until a
+delivery goes to the wrong address. Primebrick is built so that this simply
+cannot happen.
+
+## What you see while someone else is there
+
+Open a record that a colleague is already viewing or editing and you will
+know it: the interface shows you **who else is on the record** and, as they
+work, **which field they are focused on**. You are never typing blind into
+a shared document — presence is always visible.
+
+<Mermaid chart={`
+flowchart LR
+    subgraph R["📄 Record: Customer — Acme Spa"]
+        F1["address<br/>you"]
+        F2["phone<br/>Mr Brown"]
+        F3["notes<br/>nobody"]
+    end
+    U1["👤 You"] -. "editing" .-> F1
+    U2["👤 Mr Brown"] -. "editing" .-> F2
+`} />
+
+## What happens when you both save
+
+This is where the protection actually kicks in. When Mr Brown saves
+while you still have the record open, you are told immediately — and what
+happens next depends on *what* they changed:
+
+| Scenario | What Primebrick does | What you see |
+|---|---|---|
+| They changed a **different field** than yours | The change is merged in automatically — nothing is lost, nothing to decide | A notification that the record was updated; the new value appears |
+| They changed the **same field** you are editing | A genuine conflict — both versions are kept and presented side by side | A comparison of *their value* vs *your value*, and you choose which survives |
+
+The rule is simple: **overlapping edits are never auto-resolved for you** —
+a human always decides a real conflict — but **non-overlapping edits never
+need your attention at all**.
+
+<Mermaid chart={`
+flowchart TD
+    S["Mr Brown saves"] --> Q{"Did they touch<br/>a field you are editing?"}
+    Q -- "No" --> M["Merged silently —<br/>you see a notification"]
+    Q -- "Yes" --> C["Conflict dialog —<br/>their value vs your value"]
+    C --> W["You pick the value to keep"]
+`} />
+
+## When does this apply?
+
+Everywhere it matters. The protection is automatic on any record type that
+keeps a change history — customers, users, organisations, roles, and every
+other auditable entity. You do not enable it, configure it, or opt in: it
+is part of how records work.
+
+## Why it exists
+
+- **It removes a whole class of silent data loss.** "Last save wins" is the
+  default behaviour of most software and the root cause of an enormous
+  amount of real-world errors.
+- **It makes simultaneous work safe.** Two people no longer need to
+  coordinate ("are you done in that customer yet?") before opening the
+  same record.
+- **It keeps a record of who did what.** Because every change is tracked,
+  the merge always knows exactly which fields each person touched — that
+  same history powers the *Audit history* action you find on every record.
+
+## Do you need to do anything?
+
+No. There is nothing to switch on and nothing to learn beyond two habits:
+
+1. **Glance at the presence indicators** when you open a busy record —
+  you will immediately know whether someone else is in there with you.
+2. **When a conflict appears, read it before choosing.** The dialog shows
+  you both values precisely so you can make an informed decision instead
+  of guessing.
+
+## Where to go next
+
+- [Users](/docs/user-guide/generated/users) — user records are fully
+  collaboration-aware, try it there
+- [Customers](/docs/user-guide/generated/customers) — a good place to see
+  live merging in action

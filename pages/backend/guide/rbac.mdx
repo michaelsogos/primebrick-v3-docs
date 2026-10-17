@@ -1,93 +1,201 @@
 ---
-title: RBAC
-description: "Wildcard-based RBAC permission system with role mappings and admin bypass."
+title: Roles and Permissions
+description: How access control works in Primebrick — what roles are, where they come from, how they reach a user, and how to shape them around your organisation.
 ---
 
-# RBAC Permission System
 
-The backend uses a wildcard-based RBAC (Role-Based Access Control) system
-with pattern matching. Permissions are defined in code and mapped to
-Casdoor roles via the `role_mappings` table.
+Every screen in Primebrick answers one silent question for you: *"is this
+person allowed to do this?"* You never see the question being asked — you
+simply notice that a colleague can open a page you cannot, or that a button
+is greyed out for some users and not for others. This page explains, in
+plain terms, how that decision is made and who controls it.
 
-## Permission format
+## The idea in one picture
 
-Permissions follow the pattern: `module.action.granularity`
+A user never holds a permission directly. Permissions are bundled into
+**roles**, and roles are assigned to users — the same way a job title in a
+company bundles a set of responsibilities:
 
-| Permission | Description |
-|-----------|-------------|
-| `customers.read.all` | List all customers |
-| `customers.read.single` | Read a single customer |
-| `customers.read.audit` | Read customer audit trail |
-| `customers.create.single` | Create a single customer |
-| `customers.create.bulk` | Bulk create customers |
-| `customers.update.single` | Update a single customer |
-| `customers.update.bulk` | Bulk update customers |
-| `customers.delete.single` | Delete a single customer |
-| `customers.delete.bulk` | Bulk delete customers |
-| `customers.restore.single` | Restore a soft-deleted customer |
-| `customers.restore.bulk` | Bulk restore customers |
-| `customers.duplicate.bulk` | Bulk duplicate customers |
-| `customers.export` | Export customers |
-| `modules.read.all` | List all registered modules |
+<Mermaid chart={`
+flowchart LR
+    U["👤 User<br/>(Jane Doe)"] --> R1["🎖️ Role<br/>Sales Manager"]
+    U --> R2["🎖️ Role<br/>Employee"]
+    R1 --> P1["✔️ view customers"]
+    R1 --> P2["✔️ edit customers"]
+    R1 --> P3["✔️ export lists"]
+    R2 --> P4["✔️ view profile"]
+    R2 --> P5["✔️ edit own profile"]
+`} />
 
-## Wildcard support
+Jane Doe holds two roles. Everything she can do is the **union** of what those
+two roles allow — nothing more, nothing less.
 
-Wildcards use `*` to match any segment:
+## The three building blocks
 
-| Pattern | Matches |
-|---------|---------|
-| `customers.*` | All customer permissions |
-| `customers.read.*` | All customer read permissions |
-| `*` | Everything (equivalent to admin) |
+| Building block | What it is | Who defines it |
+|---|---|---|
+| **Permission** | A single allowed action — e.g. *"edit a customer"*, *"view audit history"*. The catalogue is fixed by the product; you cannot invent new permissions. | Primebrick (the system) |
+| **Role** | A named bundle of permissions, meaningful in *your* organisation — e.g. *"Sales Manager"*, *"Payroll & HR"*. | Your administrators |
+| **Assignment** | The link between a user and a role. One user can hold several roles; one role can be given to many users. | Your administrators |
 
-The wildcard matching converts the pattern to a regex at runtime
-(`matchesWildcard(pattern, permission)` in `permissions.ts`).
+The key insight: **the system ships the permissions, but your organisation
+decides how to group them**. That is what makes the model flexible — it
+adapts to how your company is actually organised instead of forcing you
+into a fixed hierarchy.
 
-## Role mappings
+## How a permission is written
 
-Role mappings link Casdoor roles to Primebrick permissions. They are
-stored in the `role_mappings` table:
+Every permission in the catalogue follows one grammar:
 
-| Column | Type | Description |
-|--------|------|-------------|
-| `idp_role` | `text` | Casdoor role name (snake_case) |
-| `permissions` | `text[]` | Array of permission patterns |
-| `is_admin` | `boolean` | If true, bypasses all permission checks |
+```
+{scope}.{action}.{cardinality}
+```
 
-### Default roles
+- **scope** — the entity the permission acts on, in *singular* snake_case:
+  `customer`, `organization`, `user_profile`, `role_mapping`,
+  `auth_event` (the audit log). Entities that live in a module carry the
+  module prefix: `modules.config.read.single`.
+- **action** — what is allowed: `read`, `create`, `update`, `delete`,
+  `restore`, `duplicate`, plus `audit` (history) and `export`.
+- **cardinality** — how much of the scope it covers:
+  - `.single` — one record at a time (open a customer, edit a user)
+  - `.all` — the whole list (the grid itself)
+  - `.bulk` — many records in one shot (bulk delete, bulk restore)
+  - read-audit and export have no cardinality: `customer.read.audit`,
+    `customer.export`
 
-| Role | Permissions | Admin |
-|------|------------|-------|
-| `administrators` | (bypass) | `true` |
-| `collaborator` | `["customers.*"]` | `false` |
-| `guest` | `["customers.read.*"]` | `false` |
+Real examples from the catalogue:
 
-## Implementation
+| Permission | Meaning |
+|---|---|
+| `customer.read.all` | see the customers list |
+| `customer.read.single` | open a single customer |
+| `customer.create.single` | create a customer |
+| `customer.delete.bulk` | bulk-delete customers |
+| `role_mapping.update.single` | edit a role mapping |
+| `auth_event.read.audit` | view the audit history |
+| `customer.export` | export the customers list |
 
-**Key files:**
+Every CRUD entity owns the same canonical set of fourteen permissions —
+the four read flavours, and the five write actions in both `.single` and
+`.bulk` cardinality. You will recognise the pattern everywhere.
 
-| File | Purpose |
-|------|---------|
-| `src/modules/auth/permissions.ts` | `Permission` enum and wildcard matching |
-| `src/modules/auth/rbac.middleware.ts` | RBAC middleware with admin bypass |
-| `src/modules/auth/auth.middleware.ts` | Auth middleware with permission expansion |
-| `src/modules/auth/role-mapping-repo.ts` | Role mapping repository |
-| `src/modules/auth/types.ts` | `AuthUser` type with `isAdmin` field |
+### Wildcards
 
-**Key functions:**
+You do not have to list permissions one by one. In a role's permission
+list, `*` matches **any sequence of segments**:
 
-- `expandPermissions(roles, getRoleMappingFn)` — returns `{ patterns, isAdmin }`
-- `isPermissionGranted(userPermissions, requiredPermission)` — pattern matching
-- `matchesWildcard(pattern, permission)` — converts wildcard to regex
+| Pattern | Grants |
+|---|---|
+| `customer.*` | every customer permission — all actions, all cardinalities |
+| `customer.read.*` | all three read flavours (`single`, `all`, `audit`) |
+| `*.read.all` | list access to every entity |
+| `*` | everything — equivalent to an administrator role |
 
-## Adding a new permission
+Start broad when a role genuinely owns a whole entity (`finance` gets
+`invoice.*`), narrow when it should only look (`auditor` gets
+`*.read.single`).
 
-1. Add the permission constant to the `Permission` enum in `permissions.ts`
-2. Use it in route handlers: `rbacHandler([Permission.NEW_PERMISSION])`
-3. Update role mappings in the database to grant the permission (or use a wildcard)
-4. The `Permission` enum is the source of truth — no need to update `getAllPermissions`
+### Where roles come from
 
-## Testing RBAC changes
+A *role mapping* links a **role defined in your identity provider** to the
+permission patterns it grants inside Primebrick. When a user signs in,
+their identity token carries the IDP roles they hold; the platform looks
+each one up in the role mappings table and unfolds the union of the
+permission patterns. Nothing is stored on the user record itself —
+the mapping *is* the bridge between the outside identity world and the
+application's permission catalogue.
 
-After updating role mappings in the database, restart the backend server
-to reload the role mapping cache.
+## Shaping roles around your organisation
+
+There is no single "right" way to carve up roles. Two common approaches —
+often combined:
+
+**By job title** — one role per position in the org chart:
+
+| Role | Typical permissions |
+|---|---|
+| Sales Manager | view + edit customers, export lists, view orders |
+| Sales Director | everything a Sales Manager can do, plus reports |
+| Payroll & HR Manager | view + edit users, manage organisations |
+| CFO | read-only access to nearly everything, financial entities in full |
+
+**By company function** — roles mirror departments rather than titles, and
+several people share the same role regardless of seniority:
+
+| Role | Typical permissions |
+|---|---|
+| Sales | customers and orders |
+| Operations | configurations and modules |
+| Finance & Control | invoices, audit history, read access everywhere |
+
+You can go as fine-grained as you need — a single permission for a
+*power-user* role, or broad bundles for *department* roles. The
+granularity is a business decision, not a technical constraint.
+
+## Who decides what
+
+<Mermaid chart={`
+flowchart TD
+    A["Your organisation decides<br/>which roles exist and what<br/>permissions each bundles"] --> B["An administrator creates<br/>the role in Settings"]
+    B --> C["The role is assigned<br/>to a user"]
+    C --> D["From then on, every screen<br/>and action checks the user's<br/>roles automatically"]
+`} />
+
+- **Where roles are created:** in the *Roles* administration screen — see
+  [Roles](/docs/user-guide/generated/roles) for the step-by-step procedure.
+- **Where assignments happen:** on the user's profile — see
+  [Users](/docs/user-guide/generated/users).
+- **Where permissions come from:** they are part of the product itself.
+  Each area of the application declares what can be done there (view,
+  create, edit, delete, restore, audit…). Administrators compose them
+  into roles; they never edit the permission list itself.
+
+## How to grant permissions to a user
+
+1. Open the **Roles** page and create or edit a role mapping: pick the
+   **IDP Role**, the **Organization**, a **Label** and the **Permissions**
+   patterns to grant (e.g. `customer.*`, `customer.read.single`). See
+   [Create a role](/docs/user-guide/generated/roles-create) and
+   [Edit a role](/docs/user-guide/generated/roles-edit).
+2. Open the user from **Users** and, in the edit form, select the role in
+   **Application Roles** — administrator roles show a
+   **System Administrator** badge next to their name. See
+   [Edit a user](/docs/user-guide/generated/users-edit).
+3. Click **Save** — the user now holds the union of all permissions
+   granted by the assigned roles.
+
+## A word on administrator roles
+
+Some roles are marked with the **Administrator** flag. This flag does not
+merely add permissions — it **bypasses every permission check entirely**:
+a user holding an administrator role can perform any action in the
+application, equivalent to granting `*`. That is why administrator roles
+show the *System Administrator* badge in the Application Roles picker.
+
+Assign them deliberately: an administrator role is not "a role with more
+permissions", it is the keys to the control room. Regular users should
+receive task-oriented roles instead.
+
+> **Do not confuse the two admin flags.** The *Administrator* flag lives
+> on the **role mapping** and grants application administration. The
+> separate *Admin / Identity Administrator* flag on the **user record**
+> grants administration of the identity-provider system itself — it does
+> not make the user an application administrator.
+
+## A worked example
+
+> *Jane Doe joins the finance team. The administrator creates her user,
+> then assigns two roles: **Finance & Control** (can view every entity,
+> read-only) and **Employee** (can manage her own profile). Three months
+> later she is promoted to team lead: the administrator adds **Payroll &
+> HR Manager**, and — without touching her account in any other way —
+> she can now manage users too. Nothing about Jane Doe changed; only the
+> bundle of permissions she carries did.*
+
+## Where to go next
+
+- [Roles](/docs/user-guide/generated/roles) — create, edit and delete roles
+- [Users](/docs/user-guide/generated/users) — assign roles to a person
+- [Organizations](/docs/user-guide/generated/organizations) — roles can be
+  scoped per organisation

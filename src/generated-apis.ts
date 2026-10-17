@@ -54,29 +54,4 @@ export const generatedApis: ZudokuConfig["apis"] = [
           }
     ],
   },
-  {
-    type: "file",
-    input: "./apis/emailsender.json",
-    path: "/catalog/emailsender",
-    label: "EmailSender Catalog",
-    options: {
-      disableSecurity: false,
-      expandAllTags: true,
-      showInfoPage: true,
-      examplesLanguage: "js",
-      schemaDownload: {
-        enabled: true,
-        fileName: "primebrick-emailsender",
-      },
-    },
-    categories: [
-          {
-                "label": "Microservices",
-                "tags": [
-                      "EmailSender Catalog",
-                      "Brick"
-                ]
-          }
-    ],
-  },
 ];

@@ -1,14 +1,20 @@
 #!/usr/bin/env node
 /**
- * Sync user-facing documentation from each Primebrick repo to Zudoku docs pages.
- * Shallow-clones each repo (depth 1), copies docs/user-guide/**.
+ * Sync documentation from each Primebrick repo to Zudoku docs pages.
+ * Shallow-clones each repo (depth 1), copies docs/user-guide/** and
+ * docs/dev-guide/**.
  *
  * Usage: node scripts/sync-repo-docs.mjs
  *
- * Output: pages/<repo>/guide/*.md(x)
+ * Output:
+ *   pages/<repo>/guide/*.md(x)  — user-facing docs (docs/user-guide)
+ *   pages/<repo>/dev/*.md(x)    — developer docs (docs/dev-guide)
  *
  * Strategy:
  * - docs/user-guide/** → pages/<repo>/guide/**  (user-facing MDX docs)
+ * - docs/dev-guide/**  → pages/<repo>/dev/**    (dev-facing MDX docs)
+ * - If a synced source dir is absent after a successful clone, the
+ *   corresponding pages dir is removed (repo no longer owns that tier).
  */
 import { execSync } from 'node:child_process';
 import {
@@ -27,11 +33,17 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const projectRoot = join(__dirname, '..');
 
 const REPOS = [
-  { git: 'https://github.com/michaelsogos/primebrick-v3-backend.git', slug: 'backend', dir: 'pages/backend/guide' },
-  { git: 'https://github.com/michaelsogos/primebrick-v3-frontend.git', slug: 'frontend', dir: 'pages/frontend/guide' },
-  { git: 'https://github.com/michaelsogos/primebrick-v3-microservices.git', slug: 'microservices', dir: 'pages/microservices/guide' },
-  { git: 'https://github.com/michaelsogos/primebrick-v3-dal.git', slug: 'dal', dir: 'pages/dal/guide' },
-  { git: 'https://github.com/michaelsogos/primebrick-v3-sdk.git', slug: 'sdk', dir: 'pages/sdk/guide' },
+  { git: 'https://github.com/michaelsogos/primebrick-v3-backend.git', slug: 'backend' },
+  { git: 'https://github.com/michaelsogos/primebrick-v3-frontend.git', slug: 'frontend' },
+  { git: 'https://github.com/michaelsogos/primebrick-v3-microservices.git', slug: 'microservices' },
+  { git: 'https://github.com/michaelsogos/primebrick-v3-dal.git', slug: 'dal' },
+  { git: 'https://github.com/michaelsogos/primebrick-v3-sdk.git', slug: 'sdk' },
+];
+
+/** doc tier: source dir inside the repo → pages subdir */
+const TIERS = [
+  { src: 'docs/user-guide', dest: 'guide' },
+  { src: 'docs/dev-guide', dest: 'dev' },
 ];
 
 const TMP_DIR = join(projectRoot, '.tmp-repo-sync');
@@ -132,20 +144,27 @@ function syncRepo(repo) {
     return;
   }
 
-  const targetDir = join(projectRoot, repo.dir);
-  const userGuideDir = join(cloneDir, 'docs', 'user-guide');
+  for (const tier of TIERS) {
+    const srcDir = join(cloneDir, tier.src);
+    const targetDir = join(projectRoot, 'pages', repo.slug, tier.dest);
 
-  if (!existsSync(userGuideDir)) {
-    console.log(`  No docs/user-guide/ directory found in ${repo.slug} — keeping existing synced files`);
-    return;
+    if (!existsSync(srcDir)) {
+      // Clone succeeded — the tier genuinely does not exist in this repo
+      // (e.g. dev-only repos have no user-guide). Remove stale synced pages.
+      if (existsSync(targetDir)) {
+        rmSync(targetDir, { recursive: true, force: true });
+        console.log(`  No ${tier.src}/ in ${repo.slug} — removed stale pages/${repo.slug}/${tier.dest}/`);
+      } else {
+        console.log(`  No ${tier.src}/ in ${repo.slug} — nothing to sync for ${tier.dest}`);
+      }
+      continue;
+    }
+
+    rmSync(targetDir, { recursive: true, force: true });
+    mkdirSync(targetDir, { recursive: true });
+    const count = copyDirRecursive(srcDir, targetDir, repo.slug);
+    console.log(`  Copied ${count} files from ${tier.src}/ → pages/${repo.slug}/${tier.dest}/`);
   }
-
-  // Only delete and replace if the source repo has docs/user-guide/ content
-  rmSync(targetDir, { recursive: true, force: true });
-  mkdirSync(targetDir, { recursive: true });
-
-  let guideCount = copyDirRecursive(userGuideDir, targetDir, repo.slug);
-  console.log(`  Copied ${guideCount} files from docs/user-guide/`);
 }
 
 // Main

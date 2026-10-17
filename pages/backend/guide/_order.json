@@ -1,12 +1,29 @@
 {
   "pages": [
-    "overview",
-    "architecture",
-    "authentication",
     "rbac",
-    "entity-field-reference",
-    "filter-operator-reference",
-    "filter-syntax-guide",
-    "navigation-map"
+    "collaboration",
+    "modules",
+    "security-and-mfa",
+    "generated/users",
+    "generated/users-create",
+    "generated/users-edit",
+    "generated/roles",
+    "generated/roles-create",
+    "generated/roles-edit",
+    "generated/organizations",
+    "generated/organizations-create",
+    "generated/organizations-edit",
+    "generated/customers",
+    "generated/configurations",
+    "generated/configurations-create",
+    "generated/modules",
+    "generated/modules-edit",
+    "generated/profile",
+    "manual/entities-crud",
+    "manual/migrations",
+    "generated/entity-field-reference",
+    "generated/filter-operator-reference",
+    "generated/filter-syntax-guide",
+    "generated/navigation-map"
   ]
 }

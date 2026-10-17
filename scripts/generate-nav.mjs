@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 /**
  * Generate navigation fragment from pages/ directory structure.
- * Scans pages/<repo>/guide/ for .md/.mdx files and generates
- * src/generated-nav.ts with a navigation array.
+ * Scans pages/<repo>/guide/ and pages/<repo>/dev/ for .md/.mdx files
+ * and generates src/generated-nav.ts with a navigation array.
  *
- * Page order is determined by docs/user-guide/_order.json (copied to
- * pages/<repo>/guide/_order.json by sync-repo-docs.mjs). Pages listed
+ * Page order is determined by each synced _order.json (copied next to
+ * the pages by sync-repo-docs.mjs). Pages listed
  * in _order.json appear in the specified order; unlisted pages are
  * appended alphabetically. If _order.json is missing, all pages are
  * sorted alphabetically.
@@ -35,7 +35,13 @@ const REPOS = [
   { slug: 'sdk',          label: 'SDK Library',  icon: 'package',  group: 'library' },
 ];
 
-const SUBDIRS = ['guide'];
+// Each tier maps a synced pages subdir to its sidebar grouping:
+//   guide — user-facing docs, flat in the repo category
+//   dev   — developer docs, wrapped in a nested "Developer Guide" category
+const SUBDIRS = [
+  { dir: 'guide', wrap: null },
+  { dir: 'dev', wrap: 'Developer Guide' },
+];
 
 function extractTitle(filePath) {
   try {
@@ -188,7 +194,7 @@ function groupOrderedDocs(orderedDocs) {
 function buildRepoNav(repo) {
   const items = [];
 
-  for (const subdir of SUBDIRS) {
+  for (const { dir: subdir, wrap } of SUBDIRS) {
     const dir = join(pagesDir, repo.slug, subdir);
     const docs = scanDir(dir, dir);
 
@@ -206,14 +212,18 @@ function buildRepoNav(repo) {
     const ordered = orderPages(docs, manifest);
 
     if (manifest) {
-      console.log(`  ${repo.slug}/guide: using _order.json (${manifest.length} pages in manifest)`);
+      console.log(`  ${repo.slug}/${subdir}: using _order.json (${manifest.length} pages in manifest)`);
     } else {
-      console.log(`  ${repo.slug}/guide: no _order.json, alphabetical fallback`);
+      console.log(`  ${repo.slug}/${subdir}: no _order.json, alphabetical fallback`);
     }
 
     // Group ordered docs into nav items (with nested categories for subdirs)
     const navItems = groupOrderedDocs(ordered);
-    items.push(...navItems);
+    if (wrap) {
+      items.push({ type: 'category', label: wrap, collapsed: true, items: navItems });
+    } else {
+      items.push(...navItems);
+    }
   }
 
   if (items.length === 0) {
