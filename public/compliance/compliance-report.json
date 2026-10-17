@@ -1,5 +1,5 @@
 {
-  "scanDate": "2026-07-18T17:24:02.861Z",
+  "scanDate": "2026-10-17T13:01:37.446Z",
   "scannerVersion": "1.0.0",
   "reposScanned": [
     "backend",
@@ -64,7 +64,7 @@
         "CCPA": "§1798.150(a)(1)"
       },
       "status": "compliant",
-      "evidenceCount": 304,
+      "evidenceCount": 872,
       "violationCount": 0,
       "reposScanned": [
         "backend",
@@ -74,123 +74,123 @@
       "evidence": [
         {
           "repo": "backend",
-          "file": "src/domain/entities/registry.ts",
-          "line": 10,
-          "snippet": "import { RoleMappingEntity } from \"../../modules/auth/role_mapping_entity.js\";"
+          "file": "src/controllers/http/auth/auth-check.router.ts",
+          "line": 18,
+          "snippet": "import { rbacHandler } from \"../../../modules/auth/rbac.middleware.js\";"
         },
         {
           "repo": "backend",
-          "file": "src/http/api-errors.ts",
-          "line": 170,
-          "snippet": "* Authentication ok, but the user lacks the required permissions."
+          "file": "src/controllers/http/auth/auth-check.router.ts",
+          "line": 19,
+          "snippet": "import { Permission } from \"@primebrick/sdk\";"
         },
         {
           "repo": "backend",
-          "file": "src/http/api-errors.ts",
-          "line": 171,
-          "snippet": "* `extra.issues` SHOULD contain the missing permissions for the caller to inspect."
-        },
-        {
-          "repo": "backend",
-          "file": "src/http/define-route.ts",
-          "line": 7,
-          "snippet": "* every route MUST carry a permission declaration produced by `rbacHandler(...)`"
-        },
-        {
-          "repo": "backend",
-          "file": "src/http/define-route.ts",
-          "line": 17,
-          "snippet": "*       permission: rbacHandler([Permission.CUSTOMERS_READ_ALL, Permission.CUSTOMERS_READ_SINGLE]),"
-        },
-        {
-          "repo": "backend",
-          "file": "src/http/define-route.ts",
-          "line": 23,
-          "snippet": "*       permission: rbacHandler([Permission.USERS_CREATE_SINGLE]),"
-        },
-        {
-          "repo": "backend",
-          "file": "src/http/define-route.ts",
-          "line": 31,
-          "snippet": "import type { DeclaredHandler } from \"../modules/auth/rbac.middleware.js\";"
-        },
-        {
-          "repo": "backend",
-          "file": "src/http/define-route.ts",
-          "line": 40,
-          "snippet": "/** Permission declaration from `rbacHandler([...])` or `rbacHandler.all([...])`. */"
-        },
-        {
-          "repo": "backend",
-          "file": "src/http/define-route.ts",
-          "line": 41,
-          "snippet": "permission: DeclaredHandler;"
-        },
-        {
-          "repo": "backend",
-          "file": "src/http/define-route.ts",
-          "line": 43,
-          "snippet": "*  permission declaration and the handler. */"
-        },
-        {
-          "repo": "backend",
-          "file": "src/http/define-route.ts",
-          "line": 56,
-          "snippet": "const chain: RequestHandler[] = [def.permission, ...(def.middlewares ?? []), def.handler];"
-        },
-        {
-          "repo": "backend",
-          "file": "src/http/protected-router.ts",
-          "line": 5,
-          "snippet": "* permission declaration is automatically prepended with a `defaultDeny`"
-        },
-        {
-          "repo": "backend",
-          "file": "src/http/protected-router.ts",
-          "line": 7,
-          "snippet": "* permission is always served as 403 with a stable RFC 7807 error code,"
-        },
-        {
-          "repo": "backend",
-          "file": "src/http/protected-router.ts",
-          "line": 13,
-          "snippet": "*   `PERMISSION_DECLARED` symbol. The factory walks the registered handlers"
-        },
-        {
-          "repo": "backend",
-          "file": "src/http/protected-router.ts",
-          "line": 21,
-          "snippet": "*     rbacHandler([Permission.PUBLIC]),     // declaration"
-        },
-        {
-          "repo": "backend",
-          "file": "src/http/protected-router.ts",
-          "line": 31,
-          "snippet": "import { PERMISSION_DECLARED } from \"../modules/auth/rbac.middleware.js\";"
-        },
-        {
-          "repo": "backend",
-          "file": "src/http/protected-router.ts",
-          "line": 34,
-          "snippet": "* Handler attached automatically when no permission was declared on a route."
-        },
-        {
-          "repo": "backend",
-          "file": "src/http/protected-router.ts",
-          "line": 41,
-          "snippet": "\"This endpoint exists but no permission was registered. \" +"
-        },
-        {
-          "repo": "backend",
-          "file": "src/http/protected-router.ts",
+          "file": "src/controllers/http/auth/auth-check.router.ts",
           "line": 62,
-          "snippet": "(handler as unknown as Record<symbol, unknown>)[PERMISSION_DECLARED]"
+          "snippet": "permission: rbacHandler([Permission.USER_PROFILE_READ_ALL]),"
         },
         {
           "repo": "backend",
-          "file": "src/index.ts",
-          "line": 4,
-          "snippet": "import { extJsonMiddleware, Permission, NatsClient } from \"@primebrick/sdk\";"
+          "file": "src/controllers/http/auth/auth-check.router.ts",
+          "line": 68,
+          "snippet": "permission: rbacHandler([Permission.USER_PROFILE_READ_ALL]),"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/auth/auth-invitation.router.ts",
+          "line": 32,
+          "snippet": "import { rbacHandler } from \"../../../modules/auth/rbac.middleware.js\";"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/auth/auth-invitation.router.ts",
+          "line": 33,
+          "snippet": "import { Permission } from \"@primebrick/sdk\";"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/auth/auth-invitation.router.ts",
+          "line": 155,
+          "snippet": "permission: rbacHandler([Permission.PUBLIC]),"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/auth/auth-invitation.router.ts",
+          "line": 162,
+          "snippet": "permission: rbacHandler([Permission.PUBLIC]),"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/auth/auth-invitation.router.ts",
+          "line": 169,
+          "snippet": "permission: rbacHandler([Permission.PUBLIC]),"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/auth/auth-invitation.router.ts",
+          "line": 176,
+          "snippet": "permission: rbacHandler([Permission.PUBLIC]),"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/auth/auth-invitation.router.ts",
+          "line": 183,
+          "snippet": "permission: rbacHandler([Permission.USER_PROFILE_UPDATE_SINGLE]),"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/auth/auth-invitation.router.ts",
+          "line": 189,
+          "snippet": "permission: rbacHandler([Permission.USER_PROFILE_UPDATE_SINGLE]),"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/auth/auth-invitation.router.ts",
+          "line": 195,
+          "snippet": "permission: rbacHandler([Permission.PUBLIC]),"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/auth/auth-mfa.router.ts",
+          "line": 21,
+          "snippet": "import { rbacHandler } from \"../../../modules/auth/rbac.middleware.js\";"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/auth/auth-mfa.router.ts",
+          "line": 22,
+          "snippet": "import { Permission } from \"@primebrick/sdk\";"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/auth/auth-mfa.router.ts",
+          "line": 166,
+          "snippet": "permission: rbacHandler([Permission.AUTHENTICATED_USER]),"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/auth/auth-mfa.router.ts",
+          "line": 172,
+          "snippet": "permission: rbacHandler([Permission.AUTHENTICATED_USER]),"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/auth/auth-mfa.router.ts",
+          "line": 179,
+          "snippet": "permission: rbacHandler([Permission.AUTHENTICATED_USER]),"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/auth/auth-mfa.router.ts",
+          "line": 185,
+          "snippet": "permission: rbacHandler([Permission.AUTHENTICATED_USER]),"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/auth/auth-mfa.router.ts",
+          "line": 191,
+          "snippet": "permission: rbacHandler([Permission.PUBLIC]),"
         }
       ],
       "violations": []
@@ -207,7 +207,7 @@
         "CCPA": "§1798.150(a)(1)"
       },
       "status": "compliant",
-      "evidenceCount": 3,
+      "evidenceCount": 1045,
       "violationCount": 0,
       "reposScanned": [
         "backend",
@@ -216,22 +216,124 @@
       ],
       "evidence": [
         {
-          "repo": "sdk",
-          "file": "src/auth/types.ts",
-          "line": 106,
-          "snippet": "* Whether WebAuthn / passkey passwordless authentication is enabled."
+          "repo": "backend",
+          "file": "src/controllers/http/auth/auth-mfa.router.ts",
+          "line": 2,
+          "snippet": "* auth-mfa.router — thin controller for MFA / 2FA (TOTP) endpoints."
         },
         {
-          "repo": "sdk",
-          "file": "src/auth/types.ts",
+          "repo": "backend",
+          "file": "src/controllers/http/auth/auth-mfa.router.ts",
+          "line": 5,
+          "snippet": "*   POST   /api/v1/auth/mfa/enroll/begin    → start TOTP enrollment (AUTHENTICATED_USER)"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/auth/auth-mfa.router.ts",
+          "line": 6,
+          "snippet": "*   POST   /api/v1/auth/mfa/enroll/finish   → complete TOTP enrollment (AUTHENTICATED_USER)"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/auth/auth-mfa.router.ts",
+          "line": 7,
+          "snippet": "*   GET    /api/v1/auth/mfa/factors         → list enrolled MFA factors (AUTHENTICATED_USER)"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/auth/auth-mfa.router.ts",
+          "line": 8,
+          "snippet": "*   DELETE /api/v1/auth/mfa/factors/:uuid   → remove an MFA factor (AUTHENTICATED_USER)"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/auth/auth-mfa.router.ts",
+          "line": 27,
+          "snippet": "MfaLoginVerifySchema,"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/auth/auth-mfa.router.ts",
+          "line": 29,
+          "snippet": "MfaStepUpVerifySchema,"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/auth/auth-mfa.router.ts",
+          "line": 86,
+          "snippet": "* POST /api/v1/auth/mfa/verify — complete login MFA challenge."
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/auth/auth-mfa.router.ts",
+          "line": 92,
+          "snippet": "const body = req.body as z.infer<typeof MfaLoginVerifySchema>;"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/auth/auth-mfa.router.ts",
           "line": 107,
-          "snippet": "* When false, the BE WebAuthn endpoints return 503 and the FE hides the"
+          "snippet": "* POST /api/v1/auth/mfa/challenge/refresh — swap a stale login challenge for"
         },
         {
-          "repo": "sdk",
-          "file": "src/auth/types.ts",
-          "line": 108,
-          "snippet": "* passkey button. Parsed from the \"true\"/\"false\" string in the DB."
+          "repo": "backend",
+          "file": "src/controllers/http/auth/auth-mfa.router.ts",
+          "line": 122,
+          "snippet": "* POST /api/v1/auth/mfa/step-up/initiate — start a step-up MFA challenge."
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/auth/auth-mfa.router.ts",
+          "line": 124,
+          "snippet": "* available factors. The FE presents the TOTP input, then calls step-up/verify."
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/auth/auth-mfa.router.ts",
+          "line": 142,
+          "snippet": "* POST /api/v1/auth/mfa/step-up/verify — verify a step-up MFA challenge."
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/auth/auth-mfa.router.ts",
+          "line": 144,
+          "snippet": "* The FE must send this token in the X-MFA-Action-Authorization header when"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/auth/auth-mfa.router.ts",
+          "line": 148,
+          "snippet": "const body = req.body as z.infer<typeof MfaStepUpVerifySchema>;"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/auth/auth-mfa.router.ts",
+          "line": 165,
+          "snippet": "path: \"/api/v1/auth/mfa/enroll/begin\","
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/auth/auth-mfa.router.ts",
+          "line": 171,
+          "snippet": "path: \"/api/v1/auth/mfa/enroll/finish\","
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/auth/auth-mfa.router.ts",
+          "line": 178,
+          "snippet": "path: \"/api/v1/auth/mfa/factors\","
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/auth/auth-mfa.router.ts",
+          "line": 184,
+          "snippet": "path: \"/api/v1/auth/mfa/factors/:uuid\","
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/auth/auth-mfa.router.ts",
+          "line": 190,
+          "snippet": "path: \"/api/v1/auth/mfa/verify\","
         }
       ],
       "violations": []
@@ -248,7 +350,7 @@
         "CCPA": "§1798.130(a)(5)(A)"
       },
       "status": "compliant",
-      "evidenceCount": 115,
+      "evidenceCount": 160,
       "violationCount": 0,
       "reposScanned": [
         "backend",
@@ -257,27 +359,69 @@
       "evidence": [
         {
           "repo": "backend",
-          "file": "src/db/audit-port-adapter.ts",
-          "line": 2,
-          "snippet": "import { AuditLogEntity } from \"@primebrick/dal-pg\";"
+          "file": "src/controllers/http/collaboration.router.ts",
+          "line": 8,
+          "snippet": "* - `GET  /api/v1/entities/:entity/:uuid/audit/:auditLogId` — field-level diff."
         },
         {
           "repo": "backend",
-          "file": "src/db/audit-port-adapter.ts",
-          "line": 7,
-          "snippet": "async writeAudit(params: AuditParams): Promise<void> {"
+          "file": "src/controllers/http/collaboration.router.ts",
+          "line": 114,
+          "snippet": "// GET /api/v1/entities/:entity/:uuid/audit/:auditLogId — field-level diff"
         },
         {
           "repo": "backend",
-          "file": "src/db/audit-port-adapter.ts",
-          "line": 16,
-          "snippet": "await this.repo.add(AuditLogEntity, {"
+          "file": "src/controllers/http/collaboration.router.ts",
+          "line": 115,
+          "snippet": "// Returns the audit log entry's delta for the FE merge / conflict UI."
         },
         {
           "repo": "backend",
-          "file": "src/db/audit-port-adapter.ts",
-          "line": 26,
-          "snippet": "// AuditLogEntity has no @AuditableField → no audit stamping."
+          "file": "src/controllers/http/collaboration.router.ts",
+          "line": 117,
+          "snippet": "\"/api/v1/entities/:entity/:uuid/audit/:auditLogId\","
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/collaboration.router.ts",
+          "line": 122,
+          "snippet": "const auditLogId = BigInt(String(req.params.auditLogId));"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/collaboration.router.ts",
+          "line": 124,
+          "snippet": "const response = await collaborationService.getAuditLogDiff(entity, uuid, auditLogId);"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/__tests__/collaboration.router.test.ts",
+          "line": 88,
+          "snippet": "it(\"GET audit diff → service.getAuditLogDiff\", async () => {"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/__tests__/collaboration.router.test.ts",
+          "line": 90,
+          "snippet": "audit_log_id: 9,"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/__tests__/collaboration.router.test.ts",
+          "line": 102,
+          "snippet": "expect(body.audit_log_id).toBe(9);"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/__tests__/collaboration.router.test.ts",
+          "line": 107,
+          "snippet": "new NotFoundError(\"Audit log entry 42 not found\", { internal_code: \"AUDIT_LOG_NOT_FOUND\" }),"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/__tests__/collaboration.router.test.ts",
+          "line": 112,
+          "snippet": "expect(body.internal_code).toBe(\"AUDIT_LOG_NOT_FOUND\");"
         },
         {
           "repo": "backend",
@@ -288,92 +432,50 @@
         {
           "repo": "backend",
           "file": "src/db/audit-query-helper.ts",
-          "line": 40,
+          "line": 45,
           "snippet": "const { joins, projections: joinProjections } = buildAuditTrailJoins(AuditLogEntity, UserProfileEntity);"
         },
         {
           "repo": "backend",
           "file": "src/db/audit-query-helper.ts",
-          "line": 43,
+          "line": 48,
           "snippet": "Project.field(field(AuditLogEntity, \"id\")),"
         },
         {
           "repo": "backend",
           "file": "src/db/audit-query-helper.ts",
-          "line": 44,
+          "line": 49,
           "snippet": "Project.field(field(AuditLogEntity, \"entity_id\")),"
         },
         {
           "repo": "backend",
           "file": "src/db/audit-query-helper.ts",
-          "line": 45,
+          "line": 50,
           "snippet": "Project.field(field(AuditLogEntity, \"entity_uuid\")),"
         },
         {
           "repo": "backend",
           "file": "src/db/audit-query-helper.ts",
-          "line": 46,
+          "line": 51,
           "snippet": "Project.field(field(AuditLogEntity, \"action\")),"
         },
         {
           "repo": "backend",
           "file": "src/db/audit-query-helper.ts",
-          "line": 47,
+          "line": 52,
           "snippet": "Project.field(field(AuditLogEntity, \"changed_at\")),"
         },
         {
           "repo": "backend",
           "file": "src/db/audit-query-helper.ts",
-          "line": 48,
+          "line": 53,
           "snippet": "Project.field(field(AuditLogEntity, \"changed_by\")),"
         },
         {
           "repo": "backend",
           "file": "src/db/audit-query-helper.ts",
-          "line": 49,
+          "line": 54,
           "snippet": "Project.field(field(AuditLogEntity, \"version\")),"
-        },
-        {
-          "repo": "backend",
-          "file": "src/db/audit-query-helper.ts",
-          "line": 50,
-          "snippet": "Project.field(field(AuditLogEntity, \"delta\")),"
-        },
-        {
-          "repo": "backend",
-          "file": "src/db/audit-query-helper.ts",
-          "line": 56,
-          "snippet": "* Uses AuditLogEntity + tableName override + buildAuditTrailJoins."
-        },
-        {
-          "repo": "backend",
-          "file": "src/db/audit-query-helper.ts",
-          "line": 61,
-          "snippet": "const countResult = await repo.find<AuditLogEntity, { total: bigint }>("
-        },
-        {
-          "repo": "backend",
-          "file": "src/db/audit-query-helper.ts",
-          "line": 62,
-          "snippet": "AuditLogEntity,"
-        },
-        {
-          "repo": "backend",
-          "file": "src/db/audit-query-helper.ts",
-          "line": 66,
-          "snippet": "filters: [Filter.fieldValue(field(AuditLogEntity, \"entity_uuid\"), \"=\", opts.entityUuid)],"
-        },
-        {
-          "repo": "backend",
-          "file": "src/db/audit-query-helper.ts",
-          "line": 72,
-          "snippet": "const page = await repo.findByPage<AuditLogEntity>("
-        },
-        {
-          "repo": "backend",
-          "file": "src/db/audit-query-helper.ts",
-          "line": 73,
-          "snippet": "AuditLogEntity,"
         }
       ],
       "violations": []
@@ -390,7 +492,7 @@
         "CCPA": "§1798.150(a)(1)"
       },
       "status": "partially-compliant",
-      "evidenceCount": 1,
+      "evidenceCount": 2,
       "violationCount": 0,
       "reposScanned": [
         "backend",
@@ -399,9 +501,15 @@
       ],
       "evidence": [
         {
+          "repo": "backend",
+          "file": "src/modules/auth/__tests__/boundary-integration.test.ts",
+          "line": 52,
+          "snippet": "WHERE key IN ('idp_endpoint', 'idp_client_id', 'idp_client_secret', 'idp_organization')`,"
+        },
+        {
           "repo": "sdk",
           "file": "src/auth/session-context.ts",
-          "line": 90,
+          "line": 91,
           "snippet": "* scope — meaning the caller forgot to wrap the code in `runAsSystem()` or"
         }
       ],
@@ -418,7 +526,7 @@
         "NIS2": "Art. 21(2)(c)"
       },
       "status": "compliant",
-      "evidenceCount": 136,
+      "evidenceCount": 149,
       "violationCount": 0,
       "reposScanned": [
         "backend",
@@ -427,123 +535,123 @@
       "evidence": [
         {
           "repo": "backend",
-          "file": "src/db/entity-ts-to-pg.ts",
-          "line": 83,
-          "snippet": "sl === \"deleted_at\" ||"
+          "file": "src/controllers/http/auth/auth-session.router.ts",
+          "line": 59,
+          "snippet": "{ key: \"deleted_at\", label_key: \"system.entities.user_profile.fields.deleted_at\", type: \"datetime\", order: 3, sortable: "
         },
         {
           "repo": "backend",
-          "file": "src/db/entity-ts-to-pg.ts",
-          "line": 114,
-          "snippet": "sl === \"deleted_at\""
+          "file": "src/controllers/http/auth/config-entries.router.ts",
+          "line": 13,
+          "snippet": "*   DELETE /api/v1/entities/config_entry/:uuid             → soft-delete (reserved rejected, step-up MFA)"
         },
         {
           "repo": "backend",
-          "file": "src/db/repository/query-builder.ts",
-          "line": 47,
-          "snippet": "return Boolean(meta.columns[\"deleted_at\"]);"
+          "file": "src/controllers/http/auth/config-entries.router.ts",
+          "line": 14,
+          "snippet": "*   POST   /api/v1/entities/config_entry/bulk-delete       → bulk soft-delete (reserved rejected, step-up MFA)"
         },
         {
           "repo": "backend",
-          "file": "src/db/repository/query-builder.ts",
-          "line": 217,
-          "snippet": "const col = `${qTable(entity)}.${quoteIdent(\"deleted_at\")}`;"
+          "file": "src/controllers/http/auth/config-entries.router.ts",
+          "line": 15,
+          "snippet": "*   POST   /api/v1/entities/config_entry/:uuid/restore     → restore soft-deleted row"
         },
         {
           "repo": "backend",
-          "file": "src/db/repository/repository.ts",
-          "line": 215,
-          "snippet": "* Soft delete a single entity by UUID."
+          "file": "src/controllers/http/auth/config-entries.router.ts",
+          "line": 205,
+          "snippet": "const softDelete: RequestHandler = asyncHandler(async (req, res) => {"
         },
         {
           "repo": "backend",
-          "file": "src/db/repository/repository.ts",
-          "line": 216,
-          "snippet": "* Updates deleted_at, deleted_by, updated_at, updated_by instead of physical DELETE."
+          "file": "src/controllers/http/auth/config-entries.router.ts",
+          "line": 209,
+          "snippet": "const row = await service.softDelete(uuid, version, requireUserUuid(req));"
         },
         {
           "repo": "backend",
-          "file": "src/db/repository/repository.ts",
-          "line": 241,
-          "snippet": "const deleted_at = new Date();"
-        },
-        {
-          "repo": "backend",
-          "file": "src/db/repository/repository.ts",
-          "line": 253,
-          "snippet": "const sql = `UPDATE \"${table}\" SET deleted_at = $1, deleted_by = $2, updated_at = $3, updated_by = $4, version = version"
-        },
-        {
-          "repo": "backend",
-          "file": "src/db/repository/repository.ts",
-          "line": 254,
-          "snippet": "const result = await this.db.query(sql, [deleted_at, deletedBy, deleted_at, deletedBy, uuid]);"
-        },
-        {
-          "repo": "backend",
-          "file": "src/db/repository/repository.ts",
-          "line": 270,
-          "snippet": "const newRecord = { ...oldRecord, deleted_at, deleted_by: deletedBy, updated_at: deleted_at, updated_by: deletedBy, vers"
-        },
-        {
-          "repo": "backend",
-          "file": "src/db/repository/repository.ts",
+          "file": "src/controllers/http/auth/config-entries.router.ts",
           "line": 278,
-          "snippet": "AuditAction.SOFT_DELETE,"
+          "snippet": "handler: softDelete,"
         },
         {
           "repo": "backend",
-          "file": "src/db/repository/repository.ts",
-          "line": 279,
-          "snippet": "deleted_at,"
+          "file": "src/controllers/http/auth/role-mappings.router.ts",
+          "line": 129,
+          "snippet": "// (same optimistic-concurrency contract as soft-delete entities; the FE"
         },
         {
           "repo": "backend",
-          "file": "src/db/repository/repository.ts",
-          "line": 287,
-          "snippet": "* Restore a soft-deleted entity by UUID."
+          "file": "src/controllers/http/auth/users.router.ts",
+          "line": 7,
+          "snippet": "*   DELETE /api/v1/auth/users/:uuid?version=N        → soft-delete user (Casdoor disable FIRST — critical)"
         },
         {
           "repo": "backend",
-          "file": "src/db/repository/repository.ts",
-          "line": 288,
-          "snippet": "* Clears deleted_at and deleted_by, updates updated_at and updated_by."
+          "file": "src/controllers/http/customers.router.ts",
+          "line": 16,
+          "snippet": "*   DELETE /api/v1/entities/customer/:uuid           → soft delete"
         },
         {
           "repo": "backend",
-          "file": "src/db/repository/repository.ts",
-          "line": 325,
-          "snippet": "const sql = `UPDATE \"${table}\" SET deleted_at = NULL, deleted_by = NULL, updated_at = $1, updated_by = $2, version = ver"
+          "file": "src/controllers/http/customers.router.ts",
+          "line": 17,
+          "snippet": "*   POST   /api/v1/entities/customer/:uuid/restore   → restore soft-deleted"
         },
         {
           "repo": "backend",
-          "file": "src/db/repository/repository.ts",
-          "line": 342,
-          "snippet": "const newRecord = { ...oldRecord, deleted_at: null, deleted_by: null, updated_at, updated_by: restoredBy, version: newVe"
+          "file": "src/controllers/http/customers.router.ts",
+          "line": 18,
+          "snippet": "*   POST   /api/v1/entities/customer/bulk-delete     → bulk soft delete"
         },
         {
           "repo": "backend",
-          "file": "src/db/repository/repository.ts",
-          "line": 589,
-          "snippet": "const deleted_at = new Date();"
+          "file": "src/controllers/http/translations.router.ts",
+          "line": 179,
+          "snippet": "await service.softDelete(writeModule(req), req.params.uuid as string);"
         },
         {
           "repo": "backend",
-          "file": "src/db/repository/repository.ts",
-          "line": 624,
-          "snippet": "deleted_at,"
+          "file": "src/controllers/http/__tests__/role-mappings.router.test.ts",
+          "line": 3,
+          "snippet": "* the hard-delete-only entity. Verifies the purge contract: soft DELETE"
         },
         {
           "repo": "backend",
-          "file": "src/domain/entities/entity-decorators.ts",
-          "line": 35,
-          "snippet": "DELETED_AT = \"DELETED_AT\","
+          "file": "src/controllers/http/__tests__/role-mappings.router.test.ts",
+          "line": 81,
+          "snippet": "it(\"DELETE /:uuid → 404 (no soft-delete route)\", async () => {"
         },
         {
           "repo": "backend",
-          "file": "src/domain/entities/entity-decorators.ts",
-          "line": 285,
-          "snippet": "/** Marks a field as deletable (deleted_at, deleted_by). */"
+          "file": "src/db/entity-audit-port.ts",
+          "line": 10,
+          "snippet": "* and, for UPDATE / SOFT_DELETE / RESTORE / HARD_DELETE actions, publishes an"
+        },
+        {
+          "repo": "backend",
+          "file": "src/db/entity-audit-port.ts",
+          "line": 58,
+          "snippet": "params.action === AuditAction.SOFT_DELETE ||"
+        },
+        {
+          "repo": "backend",
+          "file": "src/http/entity-export.ts",
+          "line": 19,
+          "snippet": "* (`*_by`), `version`, `deleted_at`, and columns that are the target of a"
+        },
+        {
+          "repo": "backend",
+          "file": "src/http/entity-export.ts",
+          "line": 60,
+          "snippet": "const NEVER_EXPORTED = new Set([\"version\", \"deleted_at\", \"created_by\", \"updated_by\", \"deleted_by\"]);"
+        },
+        {
+          "repo": "backend",
+          "file": "src/http/entity-meta.types.ts",
+          "line": 101,
+          "snippet": "/** Disable the CTA on soft-deleted rows. */"
         }
       ],
       "violations": []
@@ -560,7 +668,7 @@
         "OWASP": "A03:2021 — Injection"
       },
       "status": "compliant",
-      "evidenceCount": 33,
+      "evidenceCount": 104,
       "violationCount": 0,
       "reposScanned": [
         "backend",
@@ -571,123 +679,123 @@
       "evidence": [
         {
           "repo": "backend",
-          "file": "src/http/validation.ts",
-          "line": 2,
+          "file": "src/controllers/http/auth/auth-invitation.router.ts",
+          "line": 26,
           "snippet": "import { z } from \"zod\";"
         },
         {
           "repo": "backend",
-          "file": "src/http/validation.ts",
-          "line": 25,
-          "snippet": "const r = schema.safeParse(req.query);"
+          "file": "src/controllers/http/auth/auth-invitation.router.ts",
+          "line": 36,
+          "snippet": "// ─── Zod schemas ─────────────────────────────────────────────────────────────"
         },
         {
           "repo": "backend",
-          "file": "src/http/validation.ts",
-          "line": 37,
-          "snippet": "const r = schema.safeParse(req.body);"
-        },
-        {
-          "repo": "backend",
-          "file": "src/index.ts",
-          "line": 48,
-          "snippet": "const pkg = JSON.parse(readFileSync(pkgPath, \"utf-8\")) as { version?: string };"
-        },
-        {
-          "repo": "backend",
-          "file": "src/lib/export/index.ts",
-          "line": 54,
-          "snippet": "return JSON.parse(content);"
-        },
-        {
-          "repo": "backend",
-          "file": "src/lib/export/index.ts",
-          "line": 711,
-          "snippet": "newCell.style = JSON.parse(JSON.stringify(cell.style));"
-        },
-        {
-          "repo": "backend",
-          "file": "src/modules/auth/dto.ts",
-          "line": 2,
-          "snippet": "* Auth module — request/response DTOs and zod schemas."
-        },
-        {
-          "repo": "backend",
-          "file": "src/modules/auth/dto.ts",
+          "file": "src/controllers/http/auth/auth-mfa.router.ts",
           "line": 15,
           "snippet": "import { z } from \"zod\";"
         },
         {
           "repo": "backend",
-          "file": "src/modules/auth/password-policy.ts",
-          "line": 17,
+          "file": "src/controllers/http/auth/auth-mfa.router.ts",
+          "line": 80,
+          "snippet": "const params = FactorUuidParamSchema.parse(req.params);"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/auth/auth-session.router.ts",
+          "line": 19,
           "snippet": "import { z } from \"zod\";"
         },
         {
           "repo": "backend",
-          "file": "src/modules/auth/password-policy.ts",
-          "line": 126,
-          "snippet": "* Build a zod string schema for password validation given a policy."
-        },
-        {
-          "repo": "backend",
-          "file": "src/modules/auth/routers/auth-session.router.ts",
-          "line": 18,
+          "file": "src/controllers/http/auth/auth-webauthn.router.ts",
+          "line": 24,
           "snippet": "import { z } from \"zod\";"
         },
         {
           "repo": "backend",
-          "file": "src/modules/auth/routers/organizations.router.ts",
+          "file": "src/controllers/http/auth/auth-webauthn.router.ts",
+          "line": 171,
+          "snippet": "const params = CredentialIdParamSchema.parse(req.params);"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/auth/config-entries.router.ts",
+          "line": 24,
+          "snippet": "import { z } from \"zod\";"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/auth/organizations.router.ts",
+          "line": 5,
+          "snippet": "* uuid/body/query validation, translations permission, version query,"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/auth/organizations.router.ts",
+          "line": 33,
+          "snippet": "import { z } from \"zod\";"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/auth/role-mappings.router.ts",
+          "line": 5,
+          "snippet": "* uuid/body/query validation) is non-overridable. The create/update/delete"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/auth/role-mappings.router.ts",
+          "line": 33,
+          "snippet": "import { z } from \"zod\";"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/auth/users.router.ts",
+          "line": 21,
+          "snippet": "import { z } from \"zod\";"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/auth/users.router.ts",
+          "line": 46,
+          "snippet": "const parsed = UuidSchema.safeParse(uuid);"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/auth/users.router.ts",
+          "line": 61,
+          "snippet": "const parsed = schema.safeParse(req.body);"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/auth/users.router.ts",
+          "line": 114,
+          "snippet": "const parsed = schema.safeParse(req.body);"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/customers.router.ts",
+          "line": 5,
+          "snippet": "* uuid/body/query validation, translations permission, version query,"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/mcp-call.router.ts",
+          "line": 14,
+          "snippet": "import { z } from \"zod\";"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/system.router.ts",
           "line": 23,
           "snippet": "import { z } from \"zod\";"
         },
         {
           "repo": "backend",
-          "file": "src/modules/auth/routers/organizations.router.ts",
-          "line": 66,
-          "snippet": "filters: filters ? JSON.parse(filters as string) : undefined,"
-        },
-        {
-          "repo": "backend",
-          "file": "src/modules/auth/routers/user-profiles.router.ts",
-          "line": 18,
-          "snippet": "import { z } from \"zod\";"
-        },
-        {
-          "repo": "backend",
-          "file": "src/modules/auth/routers/user-profiles.router.ts",
-          "line": 66,
-          "snippet": "filters: filters ? JSON.parse(filters as string) : undefined,"
-        },
-        {
-          "repo": "backend",
-          "file": "src/modules/auth/routers/user-profiles.router.ts",
-          "line": 88,
-          "snippet": "const r = UuidParamSchema.safeParse(req.params);"
-        },
-        {
-          "repo": "backend",
-          "file": "src/modules/auth/routers/user-profiles.router.ts",
-          "line": 115,
-          "snippet": "const parsed = schema.safeParse(req.body);"
-        },
-        {
-          "repo": "backend",
-          "file": "src/modules/auth/routers/users.router.ts",
-          "line": 16,
-          "snippet": "import { z } from \"zod\";"
-        },
-        {
-          "repo": "backend",
-          "file": "src/modules/auth/routers/users.router.ts",
-          "line": 43,
-          "snippet": "const parsed = UuidSchema.safeParse(uuid);"
-        },
-        {
-          "repo": "backend",
-          "file": "src/modules/auth/routers/users.router.ts",
-          "line": 59,
-          "snippet": "const parsed = schema.safeParse(req.body);"
+          "file": "src/controllers/http/system.router.ts",
+          "line": 54,
+          "snippet": "const r = ServiceCodeParamSchema.safeParse({ code: raw });"
         }
       ],
       "violations": []
@@ -704,7 +812,7 @@
         "CCPA": "§1798.150(a)(1)"
       },
       "status": "compliant",
-      "evidenceCount": 25,
+      "evidenceCount": 84,
       "violationCount": 0,
       "reposScanned": [
         "backend",
@@ -713,123 +821,123 @@
       "evidence": [
         {
           "repo": "backend",
+          "file": "src/controllers/http/auth/auth-session.router.ts",
+          "line": 119,
+          "snippet": "// Both auth cookies are httpOnly → JS cannot clear them; only the server"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/mcp/oauth-authorize.router.ts",
+          "line": 46,
+          "snippet": "* In production, set `PUBLIC_FE_URL` env var (e.g. https://app.primebrick.com)."
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/nats-sub/__tests__/service-lifecycle-subscriber.test.ts",
+          "line": 44,
+          "snippet": "github_repo_url: \"https://github.com/example/svc-a\","
+        },
+        {
+          "repo": "backend",
           "file": "src/http/api-errors.ts",
-          "line": 251,
+          "line": 283,
           "snippet": "// https://www.postgresql.org/docs/current/errcodes-appendix.html"
         },
         {
           "repo": "backend",
           "file": "src/modules/auth/services/auth-session.service.ts",
-          "line": 17,
+          "line": 22,
           "snippet": "*   writes them as httpOnly cookies. This keeps `res` out of the service."
         },
         {
           "repo": "backend",
           "file": "src/modules/auth/services/auth-session.service.ts",
-          "line": 402,
+          "line": 515,
           "snippet": "* Writes the auth tokens as httpOnly cookies on the response. This is the ONLY"
         },
         {
           "repo": "backend",
           "file": "src/modules/auth/services/auth-session.service.ts",
-          "line": 409,
+          "line": 522,
           "snippet": "httpOnly: true,"
         },
         {
           "repo": "backend",
           "file": "src/modules/auth/services/auth-session.service.ts",
-          "line": 411,
+          "line": 524,
           "snippet": "sameSite: \"lax\","
         },
         {
           "repo": "backend",
           "file": "src/modules/auth/services/auth-session.service.ts",
-          "line": 417,
+          "line": 530,
           "snippet": "httpOnly: true,"
         },
         {
           "repo": "backend",
           "file": "src/modules/auth/services/auth-session.service.ts",
-          "line": 419,
+          "line": 532,
           "snippet": "sameSite: \"lax\","
         },
         {
           "repo": "backend",
-          "file": "src/modules/mcp/oauth/authorize.ts",
-          "line": 44,
-          "snippet": "* In production, set `PUBLIC_FE_URL` env var (e.g. https://app.primebrick.com)."
+          "file": "src/modules/auth/services/webauthn.service.ts",
+          "line": 22,
+          "snippet": "*   writes them as httpOnly cookies. This keeps `res` out of the service."
+        },
+        {
+          "repo": "backend",
+          "file": "src/modules/auth/services/webauthn.service.ts",
+          "line": 40,
+          "snippet": "import { request as httpsRequest } from \"https\";"
+        },
+        {
+          "repo": "backend",
+          "file": "src/modules/auth/services/webauthn.service.ts",
+          "line": 68,
+          "snippet": "* fetch-like wrapper that uses Node's `http.request` / `https.request` so we"
+        },
+        {
+          "repo": "backend",
+          "file": "src/modules/auth/services/webauthn.service.ts",
+          "line": 89,
+          "snippet": "const isTls = parsed.protocol === \"https:\";"
+        },
+        {
+          "repo": "backend",
+          "file": "src/modules/auth/services/webauthn.service.ts",
+          "line": 481,
+          "snippet": "* tokens. Sets httpOnly cookies via the controller helper."
+        },
+        {
+          "repo": "backend",
+          "file": "src/modules/auth/utils/aaguid-decoder.ts",
+          "line": 41,
+          "snippet": "* Source: https://github.com/passkeydeveloper/passkey-authenticator-aaguids"
+        },
+        {
+          "repo": "backend",
+          "file": "src/modules/auth/__tests__/user-service-change-password.test.ts",
+          "line": 80,
+          "snippet": "mockGenerateAlertLink.mockResolvedValue(\"https://app/login?alert=xxx\");"
+        },
+        {
+          "repo": "backend",
+          "file": "src/modules/auth/__tests__/user-service-change-password.test.ts",
+          "line": 176,
+          "snippet": "mockGenerateAlertLink.mockResolvedValue(\"https://app/login?alert=xxx\");"
         },
         {
           "repo": "backend",
           "file": "src/modules/proxy/proxy-service.ts",
-          "line": 47,
+          "line": 106,
           "snippet": "type: \"https://primebrick.io/errors/missing-service-code\","
         },
         {
           "repo": "backend",
           "file": "src/modules/proxy/proxy-service.ts",
-          "line": 63,
+          "line": 120,
           "snippet": "type: \"https://primebrick.io/errors/service-not-found\","
-        },
-        {
-          "repo": "backend",
-          "file": "src/modules/proxy/proxy-service.ts",
-          "line": 79,
-          "snippet": "type: \"https://primebrick.io/errors/service-degraded\","
-        },
-        {
-          "repo": "backend",
-          "file": "src/modules/proxy/proxy-service.ts",
-          "line": 88,
-          "snippet": "type: \"https://primebrick.io/errors/service-offline\","
-        },
-        {
-          "repo": "backend",
-          "file": "src/modules/proxy/proxy-service.ts",
-          "line": 172,
-          "snippet": "type: \"https://primebrick.io/errors/bad-gateway\","
-        },
-        {
-          "repo": "backend",
-          "file": "src/modules/proxy/__tests__/service-lifecycle-subscriber.test.ts",
-          "line": 46,
-          "snippet": "github_repo_url: \"https://github.com/example/svc-a\","
-        },
-        {
-          "repo": "frontend",
-          "file": "src/app.d.ts",
-          "line": 1,
-          "snippet": "// See https://svelte.dev/docs/kit/types#app"
-        },
-        {
-          "repo": "frontend",
-          "file": "src/lib/components/ui/rfc-error-dialog.svelte",
-          "line": 238,
-          "snippet": "<a href=\"https://support.example.com/tickets/TICKET-2026-0515-001\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"text"
-        },
-        {
-          "repo": "frontend",
-          "file": "src/lib/components/ui/rfc-error-dialog.svelte",
-          "line": 239,
-          "snippet": "https://support.example.com/tickets/TICKET-2026-0515-001"
-        },
-        {
-          "repo": "frontend",
-          "file": "src/lib/components/ui/sonner/sonner.svelte",
-          "line": 25,
-          "snippet": "Matches shadcn-svelte Sonner docs: https://www.shadcn-svelte.com/docs/components/sonner"
-        },
-        {
-          "repo": "frontend",
-          "file": "src/routes/(app)/system/settings/organizations/create/+page.svelte",
-          "line": 318,
-          "snippet": "placeholder=\"https://example.com\""
-        },
-        {
-          "repo": "frontend",
-          "file": "src/routes/(app)/system/settings/organizations/[uuid]/+page.svelte",
-          "line": 304,
-          "snippet": "placeholder=\"https://example.com\""
         }
       ],
       "violations": []
@@ -845,13 +953,19 @@
         "OWASP": "A04:2021 — Insecure Design"
       },
       "status": "partially-compliant",
-      "evidenceCount": 1,
+      "evidenceCount": 2,
       "violationCount": 0,
       "reposScanned": [
         "backend",
         "microservices"
       ],
       "evidence": [
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/auth/auth-invitation.router.ts",
+          "line": 21,
+          "snippet": "*   - IP rate limiting for public endpoints is configured at the infra level"
+        },
         {
           "repo": "backend",
           "file": "src/openapi/openapi.ts",
@@ -873,7 +987,7 @@
         "OWASP": "A07:2021 — Auth Failures"
       },
       "status": "compliant",
-      "evidenceCount": 132,
+      "evidenceCount": 273,
       "violationCount": 0,
       "reposScanned": [
         "backend",
@@ -884,123 +998,123 @@
       "evidence": [
         {
           "repo": "backend",
-          "file": "src/modules/auth/auth.middleware.ts",
-          "line": 6,
-          "snippet": "* The SDK handles JWT verification (STANDALONE mode) or gateway header"
+          "file": "src/controllers/http/auth/auth-invitation.router.ts",
+          "line": 5,
+          "snippet": "*   POST   /api/v1/auth/welcome/verify       → verify invitation token (PUBLIC)"
         },
         {
           "repo": "backend",
-          "file": "src/modules/auth/auth.middleware.ts",
-          "line": 9,
-          "snippet": "* The BE operates in STANDALONE mode — it receives a raw JWT, verifies it"
+          "file": "src/controllers/http/auth/auth-invitation.router.ts",
+          "line": 38,
+          "snippet": "const VerifyTokenSchema = z.object({"
         },
         {
           "repo": "backend",
-          "file": "src/modules/auth/auth.middleware.ts",
+          "file": "src/controllers/http/auth/auth-invitation.router.ts",
+          "line": 75,
+          "snippet": "* Verify an invitation token. Returns display_name + expires_at — NEVER email."
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/auth/auth-invitation.router.ts",
+          "line": 77,
+          "snippet": "const verifyToken: RequestHandler = asyncHandler(async (req, res) => {"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/auth/auth-invitation.router.ts",
+          "line": 78,
+          "snippet": "const { token } = req.body as z.infer<typeof VerifyTokenSchema>;"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/auth/auth-invitation.router.ts",
+          "line": 79,
+          "snippet": "const result = await service.verifyToken(token);"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/auth/auth-invitation.router.ts",
+          "line": 98,
+          "snippet": "const { token, otp_code } = req.body as z.infer<typeof VerifyOtpSchema>;"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/auth/auth-invitation.router.ts",
+          "line": 99,
+          "snippet": "const result = await service.verifyOtp(token, otp_code);"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/auth/auth-invitation.router.ts",
+          "line": 156,
+          "snippet": "middlewares: [validateBody(VerifyTokenSchema)],"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/auth/auth-invitation.router.ts",
+          "line": 157,
+          "snippet": "handler: verifyToken,"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/auth/auth-session.router.ts",
           "line": 106,
-          "snippet": "if (!authHeader && req.cookies?.access_token) {"
+          "snippet": "const refreshToken = req.cookies.refresh_token;"
         },
         {
           "repo": "backend",
-          "file": "src/modules/auth/auth.middleware.ts",
-          "line": 107,
-          "snippet": "// Inject the cookie token as a Bearer header for the SDK to find"
+          "file": "src/controllers/http/auth/auth-session.router.ts",
+          "line": 123,
+          "snippet": "res.clearCookie(\"access_token\", { path: \"/\" });"
         },
         {
           "repo": "backend",
-          "file": "src/modules/auth/auth.middleware.ts",
-          "line": 108,
-          "snippet": "req.headers[\"authorization\"] = `Bearer ${req.cookies.access_token}`;"
-        },
-        {
-          "repo": "backend",
-          "file": "src/modules/auth/config-repo.ts",
-          "line": 84,
-          "snippet": "// auth_roles_path is mandatory in all modes — used to extract roles from JWT."
-        },
-        {
-          "repo": "backend",
-          "file": "src/modules/auth/rbac.middleware.ts",
-          "line": 15,
-          "snippet": "*      Delegates to `authMiddleware` to verify the Bearer JWT (STANDALONE) or"
-        },
-        {
-          "repo": "backend",
-          "file": "src/modules/auth/role_mapping_entity.ts",
-          "line": 4,
-          "snippet": "* Maps IDP roles (from JWT) to Primebrick permissions."
-        },
-        {
-          "repo": "backend",
-          "file": "src/modules/auth/role_mapping_entity.ts",
-          "line": 10,
-          "snippet": "*   - idp_role: The exact role name as emitted by the IDP in the JWT (case-sensitive)"
-        },
-        {
-          "repo": "backend",
-          "file": "src/modules/auth/router.ts",
+          "file": "src/controllers/http/auth/index.ts",
           "line": 4,
           "snippet": "* This file used to be a 1600-line monolith mixing Casdoor OAuth, JWT decode,"
         },
         {
           "repo": "backend",
-          "file": "src/modules/auth/routers/auth-session.router.ts",
-          "line": 91,
-          "snippet": "const refreshToken = req.cookies.refresh_token;"
-        },
-        {
-          "repo": "backend",
-          "file": "src/modules/auth/services/auth-session.service.ts",
+          "file": "src/controllers/http/mcp/index.ts",
           "line": 6,
-          "snippet": "*   - JWT payload decoding + claim extraction"
+          "snippet": "*   - `requireBearerAuth` validates the Bearer token via our OAuthTokenVerifier"
         },
         {
           "repo": "backend",
-          "file": "src/modules/auth/services/auth-session.service.ts",
-          "line": 15,
-          "snippet": "*   The service returns the raw tokens (`access_token`, `refresh_token`,"
+          "file": "src/controllers/http/mcp/index.ts",
+          "line": 71,
+          "snippet": "// ─── MCP Endpoint with Bearer Auth ────────────────────────────────────────"
         },
         {
           "repo": "backend",
-          "file": "src/modules/auth/services/auth-session.service.ts",
-          "line": 38,
-          "snippet": "access_token: string;"
+          "file": "src/controllers/http/mcp/oauth-dcr.router.ts",
+          "line": 10,
+          "snippet": "*   - grant_types: string[] (optional, defaults to [\"authorization_code\", \"refresh_token\"])"
         },
         {
           "repo": "backend",
-          "file": "src/modules/auth/services/auth-session.service.ts",
-          "line": 39,
-          "snippet": "refresh_token?: string;"
+          "file": "src/controllers/http/mcp/oauth-dcr.router.ts",
+          "line": 129,
+          "snippet": "grant_types: body.grant_types ?? [\"authorization_code\", \"refresh_token\"],"
         },
         {
           "repo": "backend",
-          "file": "src/modules/auth/services/auth-session.service.ts",
-          "line": 47,
-          "snippet": "/** Decoded JWT claims (used by the controller to build the user response). */"
+          "file": "src/controllers/http/mcp/oauth-metadata.router.ts",
+          "line": 56,
+          "snippet": "grant_types_supported: [\"authorization_code\", \"refresh_token\"],"
         },
         {
           "repo": "backend",
-          "file": "src/modules/auth/services/auth-session.service.ts",
-          "line": 70,
-          "snippet": "const tokenUrl = `${cfg.casdoor_endpoint}/api/login/oauth/access_token`;"
+          "file": "src/controllers/http/mcp/oauth-token.router.ts",
+          "line": 4,
+          "snippet": "* Exchanges an authorization code (or refresh token) for a Casdoor JWT."
         },
         {
           "repo": "backend",
-          "file": "src/modules/auth/services/auth-session.service.ts",
-          "line": 92,
-          "snippet": "access_token: string;"
-        },
-        {
-          "repo": "backend",
-          "file": "src/modules/auth/services/auth-session.service.ts",
-          "line": 93,
-          "snippet": "refresh_token?: string;"
-        },
-        {
-          "repo": "backend",
-          "file": "src/modules/auth/services/auth-session.service.ts",
-          "line": 96,
-          "snippet": "const claims = this.decodeJwtPayload(data.access_token);"
+          "file": "src/controllers/http/mcp/oauth-token.router.ts",
+          "line": 7,
+          "snippet": "* is a Casdoor JWT that is valid for the BE API — preserving RBAC and permissions."
         }
       ],
       "violations": []
@@ -1016,7 +1130,7 @@
         "GDPR": "Art. 32(1)(b)"
       },
       "status": "compliant",
-      "evidenceCount": 401,
+      "evidenceCount": 825,
       "violationCount": 0,
       "reposScanned": [
         "backend",
@@ -1026,123 +1140,123 @@
       "evidence": [
         {
           "repo": "backend",
-          "file": "src/index.ts",
-          "line": 7,
-          "snippet": "import CasdoorSDK from \"casdoor-nodejs-sdk\";"
-        },
-        {
-          "repo": "backend",
-          "file": "src/index.ts",
-          "line": 86,
-          "snippet": "// Initialize Casdoor SDK"
-        },
-        {
-          "repo": "backend",
-          "file": "src/index.ts",
-          "line": 95,
-          "snippet": "// Call the correct version endpoint from Casdoor docs with authentication"
-        },
-        {
-          "repo": "backend",
-          "file": "src/index.ts",
-          "line": 115,
-          "snippet": "type: \"Casdoor\","
-        },
-        {
-          "repo": "backend",
-          "file": "src/index.ts",
-          "line": 199,
-          "snippet": "// authMiddleware, because MCP uses its own OAuth token verifier that populates"
-        },
-        {
-          "repo": "backend",
-          "file": "src/index.ts",
-          "line": 201,
-          "snippet": "// OAuth metadata is built lazily on each request so mountMcp is synchronous."
-        },
-        {
-          "repo": "backend",
-          "file": "src/modules/auth/auth.middleware.ts",
-          "line": 10,
-          "snippet": "* via OIDC discovery, resolves the IDP subject to an internal UUID, and"
-        },
-        {
-          "repo": "backend",
-          "file": "src/modules/auth/auth_configuration_entity.ts",
-          "line": 4,
-          "snippet": "* Every OIDC, Casdoor, gateway, and auth-mode setting is stored here as a"
-        },
-        {
-          "repo": "backend",
-          "file": "src/modules/auth/casdoor-api-client.ts",
+          "file": "src/controllers/http/auth/auth-invitation.router.ts",
           "line": 2,
-          "snippet": "* Casdoor REST API client for admin operations."
+          "snippet": "* auth-invitation.router — thin controller for the user onboarding/welcome flow."
         },
         {
           "repo": "backend",
-          "file": "src/modules/auth/casdoor-api-client.ts",
-          "line": 4,
-          "snippet": "* Uses Casdoor's built-in application credentials (clientId/clientSecret)"
+          "file": "src/controllers/http/auth/auth-invitation.router.ts",
+          "line": 105,
+          "snippet": "* Set the user's password in Casdoor + mark invitation COMPLETED."
         },
         {
           "repo": "backend",
-          "file": "src/modules/auth/casdoor-api-client.ts",
+          "file": "src/controllers/http/auth/auth-mfa.router.ts",
+          "line": 89,
+          "snippet": "* On success, sets auth cookies (the Casdoor tokens were stashed server-side)."
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/auth/auth-session.router.ts",
+          "line": 5,
+          "snippet": "*   POST   /api/v1/auth/login    → Casdoor OAuth password grant, sets cookies"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/auth/auth-session.router.ts",
           "line": 6,
-          "snippet": "* Matches the pattern used in setup-casdoor.ts."
+          "snippet": "*   POST   /api/v1/auth/refresh  → Casdoor OAuth refresh grant, sets cookies"
         },
         {
           "repo": "backend",
-          "file": "src/modules/auth/casdoor-api-client.ts",
-          "line": 102,
-          "snippet": "* Updates an existing user in Casdoor."
+          "file": "src/controllers/http/auth/auth-session.router.ts",
+          "line": 161,
+          "snippet": "* Requires the current password for verification (sent to Casdoor)."
         },
         {
           "repo": "backend",
-          "file": "src/modules/auth/casdoor-api-client.ts",
-          "line": 132,
-          "snippet": "// Add Casdoor boolean flags if provided"
+          "file": "src/controllers/http/auth/auth-session.router.ts",
+          "line": 174,
+          "snippet": "result.msg || \"Casdoor™ returned an error while changing the password\","
         },
         {
           "repo": "backend",
-          "file": "src/modules/auth/casdoor-api-client.ts",
-          "line": 163,
-          "snippet": "* Sets a new password for a Casdoor user."
+          "file": "src/controllers/http/auth/auth-webauthn.router.ts",
+          "line": 18,
+          "snippet": "*   The browser's `Origin` header is forwarded to Casdoor so it computes the"
         },
         {
           "repo": "backend",
-          "file": "src/modules/auth/casdoor-api-client.ts",
-          "line": 164,
-          "snippet": "* Returns the raw Casdoor response so callers can check `status === \"ok\"` explicitly."
+          "file": "src/controllers/http/auth/auth-webauthn.router.ts",
+          "line": 41,
+          "snippet": "* Extract the browser origin to forward to Casdoor. Uses the `Origin` header"
         },
         {
           "repo": "backend",
-          "file": "src/modules/auth/casdoor-api-client.ts",
-          "line": 195,
-          "snippet": "* Creates a new user in Casdoor."
+          "file": "src/controllers/http/auth/index.ts",
+          "line": 4,
+          "snippet": "* This file used to be a 1600-line monolith mixing Casdoor OAuth, JWT decode,"
         },
         {
           "repo": "backend",
-          "file": "src/modules/auth/casdoor-api-client.ts",
-          "line": 229,
-          "snippet": "* Physically deletes a user in Casdoor."
+          "file": "src/controllers/http/auth/index.ts",
+          "line": 57,
+          "snippet": "// Role mappings CRUD (Casdoor-synced, non-best-effort)."
         },
         {
           "repo": "backend",
-          "file": "src/modules/auth/casdoor-api-client.ts",
-          "line": 270,
-          "snippet": "* Fetches an organization from Casdoor by name."
+          "file": "src/controllers/http/auth/organizations.router.ts",
+          "line": 12,
+          "snippet": "*   POST   /api/v1/entities/organization                   → create (Casdoor + local)"
         },
         {
           "repo": "backend",
-          "file": "src/modules/auth/casdoor-api-client.ts",
-          "line": 301,
-          "snippet": "* Updates an existing organization in Casdoor."
+          "file": "src/controllers/http/auth/organizations.router.ts",
+          "line": 14,
+          "snippet": "*   DELETE /api/v1/entities/organization/:uuid             → delete (Casdoor + local, MFA step-up)"
         },
         {
           "repo": "backend",
-          "file": "src/modules/auth/casdoor-api-client.ts",
-          "line": 344,
-          "snippet": "* Creates a new organization in Casdoor."
+          "file": "src/controllers/http/auth/organizations.router.ts",
+          "line": 19,
+          "snippet": "* sync to Casdoor (IdP) BEFORE the local DB write (`OrganizationsService`),"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/auth/organizations.router.ts",
+          "line": 25,
+          "snippet": "* Casdoor sync contract itself changes — the factory simply never registers"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/auth/role-mappings.router.ts",
+          "line": 6,
+          "snippet": "* handler BODIES are overridden because this entity writes through Casdoor"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/auth/role-mappings.router.ts",
+          "line": 13,
+          "snippet": "*   POST   /api/v1/entities/role_mapping                 → create (Casdoor + local)"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/auth/role-mappings.router.ts",
+          "line": 14,
+          "snippet": "*   PUT    /api/v1/entities/role_mapping/:uuid           → update (Casdoor + local)"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/auth/role-mappings.router.ts",
+          "line": 15,
+          "snippet": "*   DELETE /api/v1/entities/role_mapping/:uuid/purge     → hard delete (Casdoor + local, MFA step-up)"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/auth/role-mappings.router.ts",
+          "line": 23,
+          "snippet": "* `idp_role` and `idp_org` are immutable on update — the Casdoor role identity"
         }
       ],
       "violations": []
@@ -1158,7 +1272,7 @@
         "NIS2": "Art. 21(2)(e)"
       },
       "status": "compliant",
-      "evidenceCount": 66,
+      "evidenceCount": 141,
       "violationCount": 0,
       "reposScanned": [
         "backend",
@@ -1168,122 +1282,122 @@
         {
           "repo": "backend",
           "file": "src/db/audit-query-helper.ts",
-          "line": 57,
+          "line": 62,
           "snippet": "* No raw SQL — fully typed via DAL-pg query DSL."
         },
         {
           "repo": "backend",
-          "file": "src/db/build-database-snapshot.ts",
-          "line": 23,
-          "snippet": "const r = await pool.query<{ schema: string; table: string; col: string }>("
+          "file": "src/http/entity-export.ts",
+          "line": 15,
+          "snippet": "*   - `data`           → `service.stream(query)` — the SAME filter builder"
         },
         {
           "repo": "backend",
-          "file": "src/db/build-database-snapshot.ts",
-          "line": 69,
-          "snippet": "const existsR = await pool.query<{ oid: string }>("
-        },
-        {
-          "repo": "backend",
-          "file": "src/db/build-database-snapshot.ts",
-          "line": 83,
-          "snippet": "const { rows } = await pool.query<PgColRow>("
-        },
-        {
-          "repo": "backend",
-          "file": "src/db/database-patch-registry.ts",
-          "line": 18,
-          "snippet": "const reg = await pool.query<{ oid: string | null }>("
-        },
-        {
-          "repo": "backend",
-          "file": "src/db/database-patch-registry.ts",
-          "line": 23,
-          "snippet": "const hit = await pool.query("
-        },
-        {
-          "repo": "backend",
-          "file": "src/db/repository/auditable-types.ts",
-          "line": 10,
-          "snippet": "* The display name fields are added by the query-builder when using the auditable join helpers."
-        },
-        {
-          "repo": "backend",
-          "file": "src/db/repository/repository.ts",
-          "line": 18,
-          "snippet": "import { buildSelectQuery } from \"./query-builder.js\";"
-        },
-        {
-          "repo": "backend",
-          "file": "src/db/repository/repository.ts",
-          "line": 25,
-          "snippet": "type Queryable = Pick<Pool, \"query\"> | Pick<PoolClient, \"query\">;"
-        },
-        {
-          "repo": "backend",
-          "file": "src/db/repository/repository.ts",
-          "line": 453,
-          "snippet": "const placeholders = values.map((_, i) => `$${i + 1}`).join(', ');"
-        },
-        {
-          "repo": "backend",
-          "file": "src/db/repository/repository.ts",
-          "line": 456,
-          "snippet": "const insertSql = `INSERT INTO \"${table}\" (${columnNames}) VALUES (${placeholders}) RETURNING \"${uuidColumnMeta.sqlName}"
-        },
-        {
-          "repo": "backend",
-          "file": "src/db/repository/smoke-sql-customers.ts",
-          "line": 4,
-          "snippet": "import { buildSelectQuery } from \"./query-builder.js\";"
-        },
-        {
-          "repo": "backend",
-          "file": "src/domain/entities/column-pg-io.ts",
-          "line": 40,
-          "snippet": "* Value to pass to `node-pg` query parameters (or similar drivers)."
-        },
-        {
-          "repo": "backend",
-          "file": "src/index.ts",
-          "line": 58,
-          "snippet": "await pool.query(\"select 1 as ok\");"
+          "file": "src/lib/search-keys.ts",
+          "line": 8,
+          "snippet": "* `CAST(col AS text)` already applied by the query-builder)."
         },
         {
           "repo": "backend",
           "file": "src/modules/auth/casdoor-api-client.ts",
-          "line": 56,
+          "line": 120,
           "snippet": "* Build API URL with clientId and clientSecret as query parameters."
         },
         {
           "repo": "backend",
-          "file": "src/modules/auth/sdk-auth-ports.ts",
-          "line": 116,
-          "snippet": "const result = await this.pool.query("
+          "file": "src/modules/auth/casdoor-api-client.ts",
+          "line": 755,
+          "snippet": "// (clientId/clientSecret as query params). The BE acts as an admin proxy:"
         },
         {
           "repo": "backend",
-          "file": "src/modules/customers/customers_dal.ts",
-          "line": 505,
-          "snippet": "await this.pool.query("
+          "file": "src/modules/auth/services/config-entries.service.ts",
+          "line": 187,
+          "snippet": "* with a placeholder and only sends a value when the user types a new one."
         },
         {
           "repo": "backend",
-          "file": "src/modules/customers/customers_dal.ts",
-          "line": 528,
-          "snippet": "await this.pool.query("
+          "file": "src/modules/auth/services/invitation.service.ts",
+          "line": 341,
+          "snippet": "// an empty value (seeded placeholder) — update it instead of inserting a"
         },
         {
           "repo": "backend",
-          "file": "src/modules/customers/customers_dal.ts",
-          "line": 542,
-          "snippet": "await this.pool.query("
+          "file": "src/modules/auth/services/user.service.ts",
+          "line": 704,
+          "snippet": "// the welcome page. We pass a random placeholder if no password is"
         },
         {
           "repo": "backend",
-          "file": "src/modules/customers/customers_dal.ts",
-          "line": 550,
-          "snippet": "await this.pool.query("
+          "file": "src/modules/auth/__tests__/boundary-integration.test.ts",
+          "line": 50,
+          "snippet": "const res = await pool.query("
+        },
+        {
+          "repo": "backend",
+          "file": "src/modules/auth/__tests__/boundary-integration.test.ts",
+          "line": 117,
+          "snippet": "await pool.query(`DELETE FROM public.user_profiles WHERE idp_username = $1`, [ACTOR_NAME]);"
+        },
+        {
+          "repo": "backend",
+          "file": "src/modules/auth/__tests__/boundary-integration.test.ts",
+          "line": 150,
+          "snippet": "await pool.query("
+        },
+        {
+          "repo": "backend",
+          "file": "src/modules/auth/__tests__/boundary-integration.test.ts",
+          "line": 169,
+          "snippet": "await pool.query(`DELETE FROM public.user_profiles WHERE idp_username = $1`, [ACTOR_NAME]);"
+        },
+        {
+          "repo": "backend",
+          "file": "src/modules/auth/__tests__/boundary-integration.test.ts",
+          "line": 170,
+          "snippet": "await pool.query(`DELETE FROM public.config_entries WHERE key LIKE 'e2e_boundary_%'`);"
+        },
+        {
+          "repo": "backend",
+          "file": "src/modules/mcp/tools/generic-tools.ts",
+          "line": 4,
+          "snippet": "* Tools are parameterized by `module` and `entity` so a single tool definition"
+        },
+        {
+          "repo": "backend",
+          "file": "src/modules/module-nav-meta.ts",
+          "line": 4,
+          "snippet": "* This is a PLACEHOLDER until microservices self-describe their nav via NATS"
+        },
+        {
+          "repo": "backend",
+          "file": "src/openapi/openapi.ts",
+          "line": 250,
+          "snippet": "{ name: \"client_id\", in: \"query\", required: true, schema: { type: \"string\" } },"
+        },
+        {
+          "repo": "dal",
+          "file": "src/dal/dal.ts",
+          "line": 50,
+          "snippet": "import { quoteIdent } from \"../query/query-builder.js\";"
+        },
+        {
+          "repo": "dal",
+          "file": "src/dal/dal.ts",
+          "line": 231,
+          "snippet": "await client.query(statements.join(\"; \"));"
+        },
+        {
+          "repo": "dal",
+          "file": "src/dal/dal.ts",
+          "line": 606,
+          "snippet": "const r = await this.pool.query<{ server_version: string; version: string }>("
+        },
+        {
+          "repo": "dal",
+          "file": "src/dal/dal.ts",
+          "line": 623,
+          "snippet": "await client.query(\"BEGIN\");"
         }
       ],
       "violations": []
@@ -1299,8 +1413,8 @@
         "OWASP": "A02:2021 — Cryptographic Failures"
       },
       "status": "non-compliant",
-      "evidenceCount": 73,
-      "violationCount": 1,
+      "evidenceCount": 228,
+      "violationCount": 8,
       "reposScanned": [
         "backend",
         "frontend",
@@ -1311,131 +1425,173 @@
       "evidence": [
         {
           "repo": "backend",
-          "file": "src/db/dal-gateway.ts",
-          "line": 8,
-          "snippet": "const connectionString = process.env.DATABASE_URL;"
-        },
-        {
-          "repo": "backend",
-          "file": "src/db/pool.ts",
-          "line": 1,
-          "snippet": "import \"dotenv/config\";"
-        },
-        {
-          "repo": "backend",
-          "file": "src/db/pool.ts",
-          "line": 15,
-          "snippet": "const url = process.env.DATABASE_URL;"
-        },
-        {
-          "repo": "backend",
-          "file": "src/domain/entities/entity-decorators.ts",
-          "line": 457,
-          "snippet": "const provider = (process.env.PB_UUID_DEFAULT_PROVIDER ?? \"pgcrypto\").toLowerCase();"
-        },
-        {
-          "repo": "backend",
-          "file": "src/index.ts",
-          "line": 30,
-          "snippet": "const port = Number(process.env.PORT) || 3001;"
-        },
-        {
-          "repo": "backend",
-          "file": "src/index.ts",
-          "line": 68,
-          "snippet": "// Load configuration from database or fallback to environment variables"
-        },
-        {
-          "repo": "backend",
-          "file": "src/index.ts",
-          "line": 69,
-          "snippet": "let casdoorEndpoint = process.env.CASDOOR_ENDPOINT || \"http://localhost:8000\";"
-        },
-        {
-          "repo": "backend",
-          "file": "src/index.ts",
-          "line": 70,
-          "snippet": "let clientId = process.env.CASDOOR_BUILTIN_CLIENT_ID || \"cb05577e2097c31af3c7\";"
-        },
-        {
-          "repo": "backend",
-          "file": "src/index.ts",
-          "line": 71,
-          "snippet": "let clientSecret = process.env.CASDOOR_BUILTIN_CLIENT_SECRET || \"47b2e05673a5307ccf0552e32ba45a18f6627f21\";"
-        },
-        {
-          "repo": "backend",
-          "file": "src/modules/auth/auth_configuration_entity.ts",
-          "line": 9,
-          "snippet": "* This table is the SOLE source of truth for auth config — no env-var"
-        },
-        {
-          "repo": "backend",
-          "file": "src/modules/auth/services/auth-session.service.ts",
-          "line": 410,
-          "snippet": "secure: process.env.NODE_ENV === \"production\","
-        },
-        {
-          "repo": "backend",
-          "file": "src/modules/auth/services/auth-session.service.ts",
-          "line": 418,
-          "snippet": "secure: process.env.NODE_ENV === \"production\","
-        },
-        {
-          "repo": "backend",
-          "file": "src/modules/auth/services/casdoor.service.ts",
-          "line": 8,
-          "snippet": "*     2. falls back to env vars,"
-        },
-        {
-          "repo": "backend",
-          "file": "src/modules/customers/customers.service.ts",
-          "line": 71,
-          "snippet": "if (process.env.PB_CUSTOMERS_FORCE_EMPTY === \"1\") {"
-        },
-        {
-          "repo": "backend",
-          "file": "src/modules/customers/customers.service.ts",
-          "line": 76,
-          "snippet": "if (process.env.PB_CUSTOMERS_FORCE_ERROR === \"1\") {"
-        },
-        {
-          "repo": "backend",
-          "file": "src/modules/customers/customers_repo.ts",
-          "line": 116,
-          "snippet": "const seedEnabled = process.env.PB_SEED_CUSTOMERS !== \"0\";"
-        },
-        {
-          "repo": "backend",
-          "file": "src/modules/mcp/oauth/authorize.ts",
-          "line": 44,
+          "file": "src/controllers/http/mcp/oauth-authorize.router.ts",
+          "line": 46,
           "snippet": "* In production, set `PUBLIC_FE_URL` env var (e.g. https://app.primebrick.com)."
         },
         {
           "repo": "backend",
-          "file": "src/modules/mcp/oauth/authorize.ts",
-          "line": 48,
+          "file": "src/controllers/http/mcp/oauth-authorize.router.ts",
+          "line": 50,
           "snippet": "if (process.env.PUBLIC_FE_URL) {"
         },
         {
           "repo": "backend",
-          "file": "src/modules/mcp/oauth/authorize.ts",
-          "line": 49,
+          "file": "src/controllers/http/mcp/oauth-authorize.router.ts",
+          "line": 51,
           "snippet": "return process.env.PUBLIC_FE_URL.replace(/\\/$/, \"\");"
         },
         {
           "repo": "backend",
-          "file": "src/modules/mcp/oauth/metadata.ts",
-          "line": 20,
+          "file": "src/controllers/http/mcp/oauth-metadata.router.ts",
+          "line": 21,
           "snippet": "* In production this comes from the `PUBLIC_BASE_URL` env var."
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/mcp/oauth-metadata.router.ts",
+          "line": 25,
+          "snippet": "if (process.env.PUBLIC_BASE_URL) {"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/mcp/oauth-metadata.router.ts",
+          "line": 26,
+          "snippet": "return process.env.PUBLIC_BASE_URL.replace(/\\/$/, \"\");"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/mcp/oauth-metadata.router.ts",
+          "line": 39,
+          "snippet": "const port = process.env.PORT ?? \"3001\";"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/nats-sub/service-lifecycle-subscriber.ts",
+          "line": 187,
+          "snippet": "* A service claims the PG schemas of its DATABASE_SCHEMA env contract."
+        },
+        {
+          "repo": "backend",
+          "file": "src/db/dal-gateway.ts",
+          "line": 22,
+          "snippet": "* The env contract (DATABASE_URL + DATABASE_SCHEMA, nothing else) is"
+        },
+        {
+          "repo": "backend",
+          "file": "src/db/domain-service.ts",
+          "line": 22,
+          "snippet": "*                    `list` (BE-only: the library bans env reads)"
+        },
+        {
+          "repo": "backend",
+          "file": "src/db/domain-service.ts",
+          "line": 95,
+          "snippet": "if (process.env[`PB_${code}_FORCE_EMPTY`] === \"1\") {"
+        },
+        {
+          "repo": "backend",
+          "file": "src/db/domain-service.ts",
+          "line": 100,
+          "snippet": "if (process.env[`PB_${code}_FORCE_ERROR`] === \"1\") {"
+        },
+        {
+          "repo": "backend",
+          "file": "src/db/run-module-migrations.ts",
+          "line": 10,
+          "snippet": "* public.config_entries (key `db_migration.mode`), never from env."
+        },
+        {
+          "repo": "backend",
+          "file": "src/db/run-module-migrations.ts",
+          "line": 39,
+          "snippet": "process.env.NODE_ENV === \"production\" ? [\"release\"] : [\"dev\", \"release\"],"
+        },
+        {
+          "repo": "backend",
+          "file": "src/http/entity-service.ts",
+          "line": 19,
+          "snippet": "*                    `list` (BE-only: the library bans env reads)"
+        },
+        {
+          "repo": "backend",
+          "file": "src/http/entity-service.ts",
+          "line": 99,
+          "snippet": "if (code && process.env[`PB_${code}_FORCE_EMPTY`] === \"1\") {"
+        },
+        {
+          "repo": "backend",
+          "file": "src/http/entity-service.ts",
+          "line": 104,
+          "snippet": "if (code && process.env[`PB_${code}_FORCE_ERROR`] === \"1\") {"
+        },
+        {
+          "repo": "backend",
+          "file": "src/index.ts",
+          "line": 1,
+          "snippet": "import \"dotenv/config\"; // must stay first — loads .env before any module reads it"
+        },
+        {
+          "repo": "backend",
+          "file": "src/index.ts",
+          "line": 43,
+          "snippet": "// Closed-set env contract: DATABASE_URL + DATABASE_SCHEMA are the ONLY"
+        },
+        {
+          "repo": "backend",
+          "file": "src/index.ts",
+          "line": 44,
+          "snippet": "// env vars this service may consume — any violation crashes before listen."
         }
       ],
       "violations": [
         {
           "repo": "backend",
+          "file": "src/modules/auth/services/__tests__/mfa-service.test.ts",
+          "line": 103,
+          "snippet": "const TOTP_SECRET = \"JBSWY3DPEHPK3PXP\"; // base32"
+        },
+        {
+          "repo": "backend",
+          "file": "src/modules/auth/__tests__/casdoor-api-client.test.ts",
+          "line": 16,
+          "snippet": "clientSecret: \"test-secret\","
+        },
+        {
+          "repo": "backend",
+          "file": "src/modules/auth/__tests__/mfa-challenge-token.test.ts",
+          "line": 102,
+          "snippet": "const nonHexSecret = \"my-ascii-secret-key-that-is-long-enough\";"
+        },
+        {
+          "repo": "backend",
+          "file": "src/modules/auth/__tests__/mfa-integration.test.ts",
+          "line": 177,
+          "snippet": "body: { username: ADMIN_USERNAME, password: \"wrong-password\" },"
+        },
+        {
+          "repo": "backend",
           "file": "src/modules/mcp/__tests__/token-verifier.test.ts",
           "line": 137,
           "snippet": "oidc: { client_id: \"test-client\", client_secret: \"test-secret\" },"
+        },
+        {
+          "repo": "sdk",
+          "file": "src/http/__tests__/rpc-router.test.ts",
+          "line": 15,
+          "snippet": "secret: \"test-secret\","
+        },
+        {
+          "repo": "sdk",
+          "file": "src/http/__tests__/rpc-router.test.ts",
+          "line": 25,
+          "snippet": "function userHeaders(perms: string[], secret = \"test-secret\") {"
+        },
+        {
+          "repo": "sdk",
+          "file": "src/nats/__tests__/nats-routes.test.ts",
+          "line": 13,
+          "snippet": "gateway: { secret: \"test-secret\", secret_header_name: \"x-client-shield-secret\", headers: {} },"
         }
       ]
     },
@@ -1458,14 +1614,32 @@
       "evidence": [
         {
           "repo": "backend",
+          "file": "src/controllers/http/mcp/oauth-metadata.router.ts",
+          "line": 15,
+          "snippet": "import cors from \"cors\";"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/mcp/oauth-metadata.router.ts",
+          "line": 95,
+          "snippet": "// Permissive CORS for discovery endpoints"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/mcp/oauth-metadata.router.ts",
+          "line": 96,
+          "snippet": "router.use(cors());"
+        },
+        {
+          "repo": "backend",
           "file": "src/index.ts",
-          "line": 1,
+          "line": 4,
           "snippet": "import cors from \"cors\";"
         },
         {
           "repo": "backend",
           "file": "src/index.ts",
-          "line": 32,
+          "line": 53,
           "snippet": "app.use(cors({ origin: true }));"
         },
         {
@@ -1473,24 +1647,6 @@
           "file": "src/modules/index.ts",
           "line": 6,
           "snippet": "* (Express bootstrap, CORS, cookies, error handler) and makes the set of"
-        },
-        {
-          "repo": "backend",
-          "file": "src/modules/mcp/oauth/metadata.ts",
-          "line": 14,
-          "snippet": "import cors from \"cors\";"
-        },
-        {
-          "repo": "backend",
-          "file": "src/modules/mcp/oauth/metadata.ts",
-          "line": 94,
-          "snippet": "// Permissive CORS for discovery endpoints"
-        },
-        {
-          "repo": "backend",
-          "file": "src/modules/mcp/oauth/metadata.ts",
-          "line": 95,
-          "snippet": "router.use(cors());"
         }
       ],
       "violations": []
@@ -1505,7 +1661,7 @@
         "ISO 27001": "A.8.16"
       },
       "status": "compliant",
-      "evidenceCount": 231,
+      "evidenceCount": 413,
       "violationCount": 0,
       "reposScanned": [
         "backend",
@@ -1515,123 +1671,123 @@
       "evidence": [
         {
           "repo": "backend",
-          "file": "src/domain/entities/registry.ts",
-          "line": 12,
-          "snippet": "import { ServiceRegistryEntity } from \"../../modules/system/service_registry_entity.js\";"
+          "file": "src/cache/cache-port-holder.ts",
+          "line": 56,
+          "snippet": "* Returns the Redis health status for the `/api/v1/health` endpoint."
         },
         {
           "repo": "backend",
-          "file": "src/domain/entities/registry.ts",
+          "file": "src/controllers/http/services-events.router.ts",
+          "line": 2,
+          "snippet": "* SSE endpoint for service registry events."
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/services-events.router.ts",
+          "line": 10,
+          "snippet": "* - service.heartbeat: microservice heartbeat (status update)"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/system.router.ts",
+          "line": 10,
+          "snippet": "*   GET    /api/v1/system/services               → service registry list"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/system.router.ts",
+          "line": 13,
+          "snippet": "*   DELETE /api/v1/system/services/:code         → hard delete from registry"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/system.router.ts",
+          "line": 66,
+          "snippet": "// Mount the SSE events endpoint for service registry"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/nats-sub/internal-request-routes.ts",
           "line": 19,
-          "snippet": "ServiceRegistryEntity,"
+          "snippet": "import { ServiceRegistryService, type ServiceRegistryEntry } from \"../../modules/system/service-registry.service.js\";"
         },
         {
           "repo": "backend",
-          "file": "src/http/api-errors.ts",
-          "line": 206,
-          "snippet": "*     which would trigger a /health probe and show a misleading"
-        },
-        {
-          "repo": "backend",
-          "file": "src/http/protected-router.ts",
-          "line": 20,
-          "snippet": "*     \"/api/v1/health\","
-        },
-        {
-          "repo": "backend",
-          "file": "src/index.ts",
+          "file": "src/controllers/nats-sub/internal-request-routes.ts",
           "line": 24,
-          "snippet": "import { ServiceRegistryRepo } from \"./modules/proxy/service-registry-repo.js\";"
+          "snippet": "export const SERVICE_REGISTRY_GET_SUBJECT = \"service.registry.get\";"
         },
         {
           "repo": "backend",
-          "file": "src/index.ts",
-          "line": 82,
-          "snippet": "console.warn(\"[IDP Health Check] Could not load configuration from database, using fallback:\", error);"
+          "file": "src/controllers/nats-sub/internal-request-routes.ts",
+          "line": 40,
+          "snippet": "const serviceSvc = new ServiceRegistryService();"
         },
         {
           "repo": "backend",
-          "file": "src/index.ts",
-          "line": 108,
-          "snippet": "console.error(`[IDP Health Check] Version endpoint returned non-OK status: ${versionResponse.status}`);"
+          "file": "src/controllers/nats-sub/internal-request-routes.ts",
+          "line": 68,
+          "snippet": "// is the sanctioned replacement for direct public.service_registry"
         },
         {
           "repo": "backend",
-          "file": "src/index.ts",
-          "line": 118,
-          "snippet": "console.log(`[IDP Health Check] Result:`, result);"
+          "file": "src/controllers/nats-sub/internal-request-routes.ts",
+          "line": 70,
+          "snippet": "subject: SERVICE_REGISTRY_GET_SUBJECT,"
         },
         {
           "repo": "backend",
-          "file": "src/index.ts",
-          "line": 122,
-          "snippet": "console.error(`[IDP Health Check] Error:`, (e as Error).message);"
+          "file": "src/controllers/nats-sub/internal-request-routes.ts",
+          "line": 73,
+          "snippet": "handler: async ({ request }): Promise<ServiceRegistryEntry | ServiceRegistryEntry[] | null> => {"
         },
         {
           "repo": "backend",
-          "file": "src/index.ts",
-          "line": 146,
-          "snippet": "app.get(\"/api/v1/health\", async (_req, res) => {"
+          "file": "src/controllers/nats-sub/internal-request-routes.ts",
+          "line": 127,
+          "snippet": "`Subscribed to ${AUTH_APIKEY_BY_HASH_SUBJECT}, ${CLIENT_SHIELD_REGISTRY_SUBJECTS.GET}, ${SERVICE_REGISTRY_GET_SUBJECT} ("
         },
         {
           "repo": "backend",
-          "file": "src/index.ts",
-          "line": 159,
-          "snippet": "const repo = new ServiceRegistryRepo(getPool());"
+          "file": "src/controllers/nats-sub/publisher-identity.ts",
+          "line": 4,
+          "snippet": "* Shared between ServiceLifecycleSubscriber (register/heartbeat/unregister)"
         },
         {
           "repo": "backend",
-          "file": "src/index.ts",
-          "line": 206,
-          "snippet": "// Bind the port BEFORE any DB-dependent startup work so /health stays"
+          "file": "src/controllers/nats-sub/publisher-identity.ts",
+          "line": 6,
+          "snippet": "* service.registry.get, auth.apikey.byHash): the caller is a *service*,"
         },
         {
           "repo": "backend",
-          "file": "src/index.ts",
-          "line": 213,
-          "snippet": "// /health is public and unaffected; authenticated endpoints fail closed"
+          "file": "src/controllers/nats-sub/service-lifecycle-subscriber.ts",
+          "line": 4,
+          "snippet": "* Subscribes to service.register, service.heartbeat, service.unregister"
         },
         {
           "repo": "backend",
-          "file": "src/modules/mcp/tools/dispatch.ts",
-          "line": 24,
-          "snippet": "import { ServiceRegistryRepo } from \"../../proxy/service-registry-repo.js\";"
+          "file": "src/controllers/nats-sub/service-lifecycle-subscriber.ts",
+          "line": 5,
+          "snippet": "* and persists state changes to the service_registry table via"
         },
         {
           "repo": "backend",
-          "file": "src/modules/mcp/tools/dispatch.ts",
-          "line": 509,
-          "snippet": "// ─── Service Registry (manage_service tool) ──────────────────────────────────"
+          "file": "src/controllers/nats-sub/service-lifecycle-subscriber.ts",
+          "line": 6,
+          "snippet": "* ServiceRegistryService (the domain owner — no Repository here)."
         },
         {
           "repo": "backend",
-          "file": "src/modules/mcp/tools/dispatch.ts",
-          "line": 512,
-          "snippet": "* List all services from the service registry."
+          "file": "src/controllers/nats-sub/service-lifecycle-subscriber.ts",
+          "line": 15,
+          "snippet": "import { NatsClient, SERVICE_SUBJECTS, CLIENT_SHIELD_REGISTRY_SUBJECTS, makeNatsRequestRoute, setNatsShieldRegistry, typ"
         },
         {
           "repo": "backend",
-          "file": "src/modules/mcp/tools/dispatch.ts",
-          "line": 515,
-          "snippet": "const repo = new ServiceRegistryRepo(getPool());"
-        },
-        {
-          "repo": "backend",
-          "file": "src/modules/mcp/tools/dispatch.ts",
-          "line": 524,
-          "snippet": "const repo = new ServiceRegistryRepo(getPool());"
-        },
-        {
-          "repo": "backend",
-          "file": "src/modules/mcp/tools/dispatch.ts",
-          "line": 536,
-          "snippet": "const repo = new ServiceRegistryRepo(getPool());"
-        },
-        {
-          "repo": "backend",
-          "file": "src/modules/mcp/tools/dispatch.ts",
-          "line": 553,
-          "snippet": "const repo = new ServiceRegistryRepo(getPool());"
+          "file": "src/controllers/nats-sub/service-lifecycle-subscriber.ts",
+          "line": 17,
+          "snippet": "import { ServiceRegistryService } from \"../../modules/system/service-registry.service.js\";"
         }
       ],
       "violations": []
@@ -1646,7 +1802,7 @@
         "ISO 27001": "A.5.23"
       },
       "status": "compliant",
-      "evidenceCount": 278,
+      "evidenceCount": 653,
       "violationCount": 0,
       "reposScanned": [
         "backend",
@@ -1656,123 +1812,123 @@
       "evidence": [
         {
           "repo": "backend",
-          "file": "src/domain/entities/registry.ts",
-          "line": 12,
-          "snippet": "import { ServiceRegistryEntity } from \"../../modules/system/service_registry_entity.js\";"
+          "file": "src/controllers/http/collaboration.router.ts",
+          "line": 16,
+          "snippet": "* - Subscribe to per-entity bus (refcounted NATS bridge via"
         },
         {
           "repo": "backend",
-          "file": "src/domain/entities/registry.ts",
+          "file": "src/controllers/http/collaboration.router.ts",
+          "line": 72,
+          "snippet": "// 1. Acquire per-entity bus (creates + bridges NATS on first client)"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/services-events.router.ts",
+          "line": 2,
+          "snippet": "* SSE endpoint for service registry events."
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/services-events.router.ts",
+          "line": 9,
+          "snippet": "* - service.register: microservice registered"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/services-events.router.ts",
+          "line": 11,
+          "snippet": "* - service.unregister: microservice unregistered → offline"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/system.router.ts",
+          "line": 10,
+          "snippet": "*   GET    /api/v1/system/services               → service registry list"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/system.router.ts",
+          "line": 13,
+          "snippet": "*   DELETE /api/v1/system/services/:code         → hard delete from registry"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/system.router.ts",
+          "line": 66,
+          "snippet": "// Mount the SSE events endpoint for service registry"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/nats-sub/internal-request-routes.ts",
+          "line": 2,
+          "snippet": "* Governed service-to-BE query endpoints (NATS pub/sub correlation-reply —"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/nats-sub/internal-request-routes.ts",
+          "line": 13,
+          "snippet": "import type { Msg } from \"nats\";"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/nats-sub/internal-request-routes.ts",
           "line": 19,
-          "snippet": "ServiceRegistryEntity,"
+          "snippet": "import { ServiceRegistryService, type ServiceRegistryEntry } from \"../../modules/system/service-registry.service.js\";"
         },
         {
           "repo": "backend",
-          "file": "src/index.ts",
+          "file": "src/controllers/nats-sub/internal-request-routes.ts",
           "line": 24,
-          "snippet": "import { ServiceRegistryRepo } from \"./modules/proxy/service-registry-repo.js\";"
+          "snippet": "export const SERVICE_REGISTRY_GET_SUBJECT = \"service.registry.get\";"
         },
         {
           "repo": "backend",
-          "file": "src/index.ts",
-          "line": 159,
-          "snippet": "const repo = new ServiceRegistryRepo(getPool());"
+          "file": "src/controllers/nats-sub/internal-request-routes.ts",
+          "line": 28,
+          "snippet": "// Layer-1 shield for every governed NATS route in this process — same"
         },
         {
           "repo": "backend",
-          "file": "src/index.ts",
-          "line": 268,
-          "snippet": "\"[startup] NATS connection failed (service lifecycle subscriber not started). Retrying in 5s.\","
+          "file": "src/controllers/nats-sub/internal-request-routes.ts",
+          "line": 40,
+          "snippet": "const serviceSvc = new ServiceRegistryService();"
         },
         {
           "repo": "backend",
-          "file": "src/modules/mcp/tools/dispatch.ts",
-          "line": 24,
-          "snippet": "import { ServiceRegistryRepo } from \"../../proxy/service-registry-repo.js\";"
+          "file": "src/controllers/nats-sub/internal-request-routes.ts",
+          "line": 68,
+          "snippet": "// is the sanctioned replacement for direct public.service_registry"
         },
         {
           "repo": "backend",
-          "file": "src/modules/mcp/tools/dispatch.ts",
-          "line": 509,
-          "snippet": "// ─── Service Registry (manage_service tool) ──────────────────────────────────"
+          "file": "src/controllers/nats-sub/internal-request-routes.ts",
+          "line": 70,
+          "snippet": "subject: SERVICE_REGISTRY_GET_SUBJECT,"
         },
         {
           "repo": "backend",
-          "file": "src/modules/mcp/tools/dispatch.ts",
-          "line": 512,
-          "snippet": "* List all services from the service registry."
+          "file": "src/controllers/nats-sub/internal-request-routes.ts",
+          "line": 73,
+          "snippet": "handler: async ({ request }): Promise<ServiceRegistryEntry | ServiceRegistryEntry[] | null> => {"
         },
         {
           "repo": "backend",
-          "file": "src/modules/mcp/tools/dispatch.ts",
-          "line": 515,
-          "snippet": "const repo = new ServiceRegistryRepo(getPool());"
+          "file": "src/controllers/nats-sub/internal-request-routes.ts",
+          "line": 127,
+          "snippet": "`Subscribed to ${AUTH_APIKEY_BY_HASH_SUBJECT}, ${CLIENT_SHIELD_REGISTRY_SUBJECTS.GET}, ${SERVICE_REGISTRY_GET_SUBJECT} ("
         },
         {
           "repo": "backend",
-          "file": "src/modules/mcp/tools/dispatch.ts",
-          "line": 524,
-          "snippet": "const repo = new ServiceRegistryRepo(getPool());"
+          "file": "src/controllers/nats-sub/internal-request-routes.ts",
+          "line": 128,
+          "snippet": "{ tags: [\"nats\"] },"
         },
         {
           "repo": "backend",
-          "file": "src/modules/mcp/tools/dispatch.ts",
-          "line": 536,
-          "snippet": "const repo = new ServiceRegistryRepo(getPool());"
-        },
-        {
-          "repo": "backend",
-          "file": "src/modules/mcp/tools/dispatch.ts",
-          "line": 553,
-          "snippet": "const repo = new ServiceRegistryRepo(getPool());"
-        },
-        {
-          "repo": "backend",
-          "file": "src/modules/mcp/tools/dispatch.ts",
-          "line": 572,
-          "snippet": "* Hard delete a service from the registry."
-        },
-        {
-          "repo": "backend",
-          "file": "src/modules/mcp/tools/dispatch.ts",
-          "line": 576,
-          "snippet": "const repo = new ServiceRegistryRepo(getPool());"
-        },
-        {
-          "repo": "backend",
-          "file": "src/modules/mcp/tools/entity-registry.ts",
-          "line": 5,
-          "snippet": "* Microservice entities are registered dynamically when a microservice"
-        },
-        {
-          "repo": "backend",
-          "file": "src/modules/mcp/tools/entity-registry.ts",
-          "line": 6,
-          "snippet": "* registers via NATS (proxy dispatch — paths constructed from the standard"
-        },
-        {
-          "repo": "backend",
-          "file": "src/modules/mcp/tools/entity-registry.ts",
-          "line": 104,
-          "snippet": "/** Register a microservice entity (proxy dispatch). */"
-        },
-        {
-          "repo": "backend",
-          "file": "src/modules/mcp/tools/generic-tools.ts",
-          "line": 546,
-          "snippet": "\"Manage registered microservices in the Primebrick service registry. \" +"
-        },
-        {
-          "repo": "backend",
-          "file": "src/modules/mcp/tools/generic-tools.ts",
-          "line": 549,
-          "snippet": "\"WARNING: The 'delete' action is irreversible — the service record is permanently removed from the registry.\","
-        },
-        {
-          "repo": "backend",
-          "file": "src/modules/mcp/tools/openapi-discovery.ts",
-          "line": 6,
-          "snippet": "* This is used by the service lifecycle subscriber to dynamically register"
+          "file": "src/controllers/nats-sub/publisher-identity.ts",
+          "line": 2,
+          "snippet": "* Publisher identity verification for service-to-BE NATS subjects."
         }
       ],
       "violations": []
@@ -1787,7 +1943,7 @@
         "OWASP": "A09:2021 — Security Logging"
       },
       "status": "compliant",
-      "evidenceCount": 94,
+      "evidenceCount": 218,
       "violationCount": 0,
       "reposScanned": [
         "backend",
@@ -1797,123 +1953,123 @@
       "evidence": [
         {
           "repo": "backend",
-          "file": "src/http/api-errors.ts",
-          "line": 32,
-          "snippet": "export class ApiError extends Error {"
-        },
-        {
-          "repo": "backend",
-          "file": "src/http/api-errors.ts",
-          "line": 55,
-          "snippet": "this.name = \"ApiError\";"
-        },
-        {
-          "repo": "backend",
-          "file": "src/http/api-errors.ts",
-          "line": 83,
-          "snippet": "export class NotFoundError extends ApiError {"
-        },
-        {
-          "repo": "backend",
-          "file": "src/http/api-errors.ts",
-          "line": 103,
-          "snippet": "export class ValidationError extends ApiError {"
-        },
-        {
-          "repo": "backend",
-          "file": "src/http/api-errors.ts",
-          "line": 123,
-          "snippet": "export class UnprocessableEntityError extends ApiError {"
-        },
-        {
-          "repo": "backend",
-          "file": "src/http/api-errors.ts",
-          "line": 144,
-          "snippet": "export class UnauthorizedError extends ApiError {"
-        },
-        {
-          "repo": "backend",
-          "file": "src/http/api-errors.ts",
-          "line": 173,
-          "snippet": "export class ForbiddenError extends ApiError {"
-        },
-        {
-          "repo": "backend",
-          "file": "src/http/api-errors.ts",
-          "line": 216,
-          "snippet": "export class AuthConfigNotLoadedError extends ApiError {"
-        },
-        {
-          "repo": "backend",
-          "file": "src/http/api-errors.ts",
-          "line": 260,
-          "snippet": "* Check if error is an ApiError instance"
-        },
-        {
-          "repo": "backend",
-          "file": "src/http/api-errors.ts",
-          "line": 262,
-          "snippet": "export function isApiError(err: unknown): err is ApiError {"
-        },
-        {
-          "repo": "backend",
-          "file": "src/http/api-errors.ts",
-          "line": 263,
-          "snippet": "return err instanceof ApiError;"
-        },
-        {
-          "repo": "backend",
-          "file": "src/http/error-handler.ts",
-          "line": 1,
-          "snippet": "import type { ErrorRequestHandler } from \"express\";"
-        },
-        {
-          "repo": "backend",
-          "file": "src/http/error-handler.ts",
-          "line": 4,
-          "snippet": "export const errorHandler: ErrorRequestHandler = (err, req, res, _next) => {"
-        },
-        {
-          "repo": "backend",
-          "file": "src/http/error-handler.ts",
-          "line": 17,
-          "snippet": "// Handle ApiError instances (RFC 7807 compliant)"
-        },
-        {
-          "repo": "backend",
-          "file": "src/http/protected-router.ts",
-          "line": 7,
-          "snippet": "* permission is always served as 403 with a stable RFC 7807 error code,"
-        },
-        {
-          "repo": "backend",
-          "file": "src/index.ts",
-          "line": 11,
-          "snippet": "import { errorHandler } from \"./http/error-handler.js\";"
-        },
-        {
-          "repo": "backend",
-          "file": "src/index.ts",
-          "line": 204,
-          "snippet": "app.use(errorHandler);"
-        },
-        {
-          "repo": "backend",
-          "file": "src/modules/auth/routers/auth-check.router.ts",
+          "file": "src/controllers/http/auth/auth-check.router.ts",
           "line": 9,
           "snippet": "* `UserService`, and shapes the JSON response. Errors are thrown as `ApiError`"
         },
         {
           "repo": "backend",
-          "file": "src/modules/auth/routers/auth-session.router.ts",
+          "file": "src/controllers/http/auth/auth-invitation.router.ts",
           "line": 13,
+          "snippet": "* The router contains NO business logic. All errors are thrown as `ApiError`"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/auth/auth-invitation.router.ts",
+          "line": 14,
+          "snippet": "* subclasses and converted to RFC 7807 by the centralized `errorHandler`."
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/auth/auth-mfa.router.ts",
+          "line": 10,
+          "snippet": "* The router contains NO business logic. All errors are thrown as `ApiError`"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/auth/auth-mfa.router.ts",
+          "line": 11,
+          "snippet": "* subclasses and converted to RFC 7807 by the centralized `errorHandler`."
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/auth/auth-session.router.ts",
+          "line": 14,
           "snippet": "* flow touches `res` for cookies). All errors are thrown as `ApiError`"
         },
         {
           "repo": "backend",
-          "file": "src/modules/auth/routers/auth-session.router.ts",
-          "line": 14,
+          "file": "src/controllers/http/auth/auth-session.router.ts",
+          "line": 15,
           "snippet": "* subclasses and converted to RFC 7807 by the centralized `errorHandler`."
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/auth/auth-session.router.ts",
+          "line": 35,
+          "snippet": "import { UnauthorizedError, ApiError } from \"../../../http/api-errors.js\";"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/auth/auth-session.router.ts",
+          "line": 170,
+          "snippet": "throw new ApiError("
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/auth/auth-webauthn.router.ts",
+          "line": 14,
+          "snippet": "* All errors are thrown as `ApiError` subclasses and converted to RFC 7807"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/auth/auth-webauthn.router.ts",
+          "line": 15,
+          "snippet": "* by the centralized `errorHandler`."
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/auth/config-entries.router.ts",
+          "line": 20,
+          "snippet": "* `ApiError` subclasses and converted to RFC 7807 by `errorHandler`."
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/auth/config-entries.router.ts",
+          "line": 48,
+          "snippet": "import { ApiError } from \"../../../http/api-errors.js\";"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/auth/config-entries.router.ts",
+          "line": 54,
+          "snippet": "throw new ApiError("
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/auth/users.router.ts",
+          "line": 16,
+          "snippet": "* `ApiError` subclasses and converted to RFC 7807 by the centralized"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/auth/users.router.ts",
+          "line": 17,
+          "snippet": "* `errorHandler`."
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/mcp/oauth-authorize.router.ts",
+          "line": 86,
+          "snippet": "error_description: \"Only response_type=code is supported\","
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/mcp/oauth-authorize.router.ts",
+          "line": 221,
+          "snippet": "error_description: \"Missing code or state parameter from Casdoor callback\","
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/mcp/oauth-authorize.router.ts",
+          "line": 262,
+          "snippet": "// Router-level error handler"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/mcp/oauth-dcr.router.ts",
+          "line": 169,
+          "snippet": "// Router-level error handler — catches any unhandled errors"
         }
       ],
       "violations": []
@@ -1929,13 +2085,25 @@
         "CCPA": "§1798.100(d)"
       },
       "status": "compliant",
-      "evidenceCount": 54,
+      "evidenceCount": 89,
       "violationCount": 0,
       "reposScanned": [
         "backend",
         "dal"
       ],
       "evidence": [
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/collaboration.router.ts",
+          "line": 8,
+          "snippet": "* - `GET  /api/v1/entities/:entity/:uuid/audit/:auditLogId` — field-level diff."
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/collaboration.router.ts",
+          "line": 114,
+          "snippet": "// GET /api/v1/entities/:entity/:uuid/audit/:auditLogId — field-level diff"
+        },
         {
           "repo": "backend",
           "file": "src/db/audit-query-helper.ts",
@@ -1945,409 +2113,117 @@
         {
           "repo": "backend",
           "file": "src/db/audit-query-helper.ts",
-          "line": 66,
+          "line": 71,
           "snippet": "filters: [Filter.fieldValue(field(AuditLogEntity, \"entity_uuid\"), \"=\", opts.entityUuid)],"
         },
         {
           "repo": "backend",
           "file": "src/db/audit-query-helper.ts",
-          "line": 80,
+          "line": 85,
           "snippet": "filters: [Filter.fieldValue(field(AuditLogEntity, \"entity_uuid\"), \"=\", opts.entityUuid)],"
         },
         {
           "repo": "backend",
-          "file": "src/db/repository/auditable-joins.ts",
-          "line": 44,
-          "snippet": "* @returns Array of Join expressions for selected audit fields"
+          "file": "src/db/audit-query-helper.ts",
+          "line": 118,
+          "snippet": "* to return a field-level diff for the FE merge / conflict UI."
         },
         {
           "repo": "backend",
-          "file": "src/db/repository/repository.ts",
-          "line": 128,
-          "snippet": "filters: [Filter.fieldValue(field(entity, pk.propertyKey), \"=\", id)],"
+          "file": "src/db/audit-query-helper.ts",
+          "line": 133,
+          "snippet": "filters: [Filter.fieldValue(field(AuditLogEntity, \"id\"), \"=\", auditLogId)],"
         },
         {
           "repo": "backend",
-          "file": "src/db/repository/repository.ts",
-          "line": 407,
-          "snippet": "// Skip excluded fields"
+          "file": "src/http/entity-meta.types.ts",
+          "line": 33,
+          "snippet": "* Entity field descriptor — the root-level `columns` dictionary."
         },
         {
           "repo": "backend",
-          "file": "src/db/repository/smoke-sql-customers.ts",
-          "line": 9,
-          "snippet": "filters: [Filter.fieldValue(field(CustomerEntity, \"uuid\"), \"=\", \"00000000-0000-0000-0000-000000000000\")],"
+          "file": "src/http/entity-meta.types.ts",
+          "line": 45,
+          "snippet": "* sticky column, hidden but selectable); `display_field` is `order: 0`. */"
         },
         {
           "repo": "backend",
-          "file": "src/modules/auth/auth_configurations_dal.ts",
-          "line": 44,
-          "snippet": "Filter.fieldValue("
+          "file": "src/http/entity-meta.types.ts",
+          "line": 157,
+          "snippet": "/** Entity field dictionary (root-level, transversal). */"
         },
         {
           "repo": "backend",
-          "file": "src/modules/auth/organizations_dal.ts",
-          "line": 57,
-          "snippet": "filters?: Array<{ field: string; op: string; value: unknown; connector?: \"AND\" | \"OR\" }>;"
+          "file": "src/http/list-query.ts",
+          "line": 5,
+          "snippet": "* notation (`filters[0][field]=x&filters[0][op]=ILIKE&filters[0][value]=%25x%25`),"
         },
         {
           "repo": "backend",
-          "file": "src/modules/auth/organizations_dal.ts",
-          "line": 93,
-          "snippet": "filters: [Filter.fieldValue(field(OrganizationEntity, \"uuid\" as any), \"=\", uuid)] as any,"
+          "file": "src/http/__tests__/entity-export.test.ts",
+          "line": 20,
+          "snippet": "it(\"excludes audit actors, version, deleted_at and IANA helper fields\", () => {"
         },
         {
           "repo": "backend",
-          "file": "src/modules/auth/organizations_dal.ts",
-          "line": 106,
-          "snippet": "filters: [Filter.fieldValue(field(OrganizationEntity, \"idp_code\" as any), \"=\", idpCode)] as any,"
+          "file": "src/http/__tests__/list-query.test.ts",
+          "line": 85,
+          "snippet": "filters: '[{\"field\":\"status\",\"op\":\"=\",\"value\":\"A\"}]',"
         },
         {
           "repo": "backend",
-          "file": "src/modules/auth/organizations_dal.ts",
-          "line": 132,
-          "snippet": "baseFilters.push(Filter.fieldValue(field(OrganizationEntity, \"deleted_at\" as any), \"IS NOT\", null));"
+          "file": "src/modules/auth/sdk-auth-ports.ts",
+          "line": 158,
+          "snippet": "filters: [Filter.fieldValue(field(ApiKeyEntity, \"key_hash\"), \"=\", hash)],"
         },
         {
           "repo": "backend",
-          "file": "src/modules/auth/organizations_dal.ts",
-          "line": 134,
-          "snippet": "baseFilters.push(Filter.fieldValue(field(OrganizationEntity, \"deleted_at\" as any), \"IS\", null));"
+          "file": "src/modules/auth/services/auth-events.service.ts",
+          "line": 181,
+          "snippet": "Filter.fieldValue(ref, \">=\", v.value[0]),"
         },
         {
           "repo": "backend",
-          "file": "src/modules/auth/organizations_dal.ts",
-          "line": 141,
-          "snippet": "Filter.fieldValue(field(OrganizationEntity, f as any), \"ILIKE\", `%${search}%`)"
+          "file": "src/modules/auth/services/auth-events.service.ts",
+          "line": 182,
+          "snippet": "Filter.fieldValue(ref, \"<=\", v.value[1]),"
         },
         {
           "repo": "backend",
-          "file": "src/modules/auth/organizations_dal.ts",
-          "line": 234,
-          "snippet": "Filter.fieldValue(field(UserProfileEntity, \"idp_org\" as any), \"=\", idpCode),"
+          "file": "src/modules/auth/services/auth-events.service.ts",
+          "line": 188,
+          "snippet": "filterExprs.push(Filter.fieldValue(ref, \"IN\", value));"
         },
         {
           "repo": "backend",
-          "file": "src/modules/auth/organizations_dal.ts",
-          "line": 235,
-          "snippet": "Filter.fieldValue(field(UserProfileEntity, \"deleted_at\" as any), \"IS\", null),"
+          "file": "src/modules/auth/services/auth-events.service.ts",
+          "line": 191,
+          "snippet": "filterExprs.push(Filter.fieldValue(ref, \"=\", value));"
         },
         {
           "repo": "backend",
-          "file": "src/modules/auth/organizations_dal.ts",
-          "line": 236,
-          "snippet": "Filter.fieldValue(field(UserProfileEntity, \"is_active\" as any), \"=\", true),"
+          "file": "src/modules/auth/services/config-entries.service.ts",
+          "line": 288,
+          "snippet": "Filter.fieldValue(field(ConfigEntryEntity, \"key\" as any), \"=\", key),"
         },
         {
           "repo": "backend",
-          "file": "src/modules/auth/organizations_dal.ts",
-          "line": 321,
-          "snippet": "Filter.fieldValue(field(OrganizationEntity, cond.field as any), cond.op as any, value, cond.connector)"
-        },
-        {
-          "repo": "backend",
-          "file": "src/modules/auth/organizations_dal.ts",
-          "line": 325,
-          "snippet": "Filter.fieldValue(field(OrganizationEntity, cond.field as any), cond.op as any, value, cond.connector)"
-        },
-        {
-          "repo": "backend",
-          "file": "src/modules/auth/user-profile-repo.ts",
-          "line": 87,
-          "snippet": "filters: [Filter.fieldValue(field(UserProfileEntity, \"idp_code\" as any), \"=\", input.idp_code)],"
+          "file": "src/modules/auth/services/config-entries.service.ts",
+          "line": 751,
+          "snippet": "Filter.fieldValue(field(ConfigEntryEntity, \"uuid\" as any), \"IN\", uuids),"
         }
       ],
       "violations": []
     }
   ],
   "dependencies": {
-    "frontend": [
+    "dal": [
       {
-        "package": "@fontsource-variable/inter",
-        "version": "^5.2.8",
+        "package": "@primebrick/decimal",
+        "version": "^3.0.0",
         "severity": "low",
         "type": "unpinned-version",
-        "description": "Version \"^5.2.8\" is not pinned — could resolve to a vulnerable release"
-      },
-      {
-        "package": "class-variance-authority",
-        "version": "^0.7.1",
-        "severity": "low",
-        "type": "unpinned-version",
-        "description": "Version \"^0.7.1\" is not pinned — could resolve to a vulnerable release"
-      },
-      {
-        "package": "dompurify",
-        "version": "^3.4.3",
-        "severity": "low",
-        "type": "unpinned-version",
-        "description": "Version \"^3.4.3\" is not pinned — could resolve to a vulnerable release"
-      },
-      {
-        "package": "flag-icons",
-        "version": "^7.5.0",
-        "severity": "low",
-        "type": "unpinned-version",
-        "description": "Version \"^7.5.0\" is not pinned — could resolve to a vulnerable release"
-      },
-      {
-        "package": "formsnap",
-        "version": "^2.0.1",
-        "severity": "low",
-        "type": "unpinned-version",
-        "description": "Version \"^2.0.1\" is not pinned — could resolve to a vulnerable release"
-      },
-      {
-        "package": "html2pdf.js",
-        "version": "^0.14.0",
-        "severity": "low",
-        "type": "unpinned-version",
-        "description": "Version \"^0.14.0\" is not pinned — could resolve to a vulnerable release"
-      },
-      {
-        "package": "inline-css",
-        "version": "^4.0.3",
-        "severity": "low",
-        "type": "unpinned-version",
-        "description": "Version \"^4.0.3\" is not pinned — could resolve to a vulnerable release"
-      },
-      {
-        "package": "shiki",
-        "version": "^4.0.2",
-        "severity": "low",
-        "type": "unpinned-version",
-        "description": "Version \"^4.0.2\" is not pinned — could resolve to a vulnerable release"
-      },
-      {
-        "package": "svelte-motion",
-        "version": "^0.12.2",
-        "severity": "low",
-        "type": "unpinned-version",
-        "description": "Version \"^0.12.2\" is not pinned — could resolve to a vulnerable release"
-      },
-      {
-        "package": "svelte-sonner",
-        "version": "^1.1.1",
-        "severity": "low",
-        "type": "unpinned-version",
-        "description": "Version \"^1.1.1\" is not pinned — could resolve to a vulnerable release"
-      },
-      {
-        "package": "sveltekit-superforms",
-        "version": "^2.30.1",
-        "severity": "low",
-        "type": "unpinned-version",
-        "description": "Version \"^2.30.1\" is not pinned — could resolve to a vulnerable release"
-      },
-      {
-        "package": "zod",
-        "version": "^4.4.3",
-        "severity": "low",
-        "type": "unpinned-version",
-        "description": "Version \"^4.4.3\" is not pinned — could resolve to a vulnerable release"
-      },
-      {
-        "package": "@iconify-json/bi",
-        "version": "^1.2.7",
-        "severity": "low",
-        "type": "unpinned-version",
-        "description": "Version \"^1.2.7\" is not pinned — could resolve to a vulnerable release"
-      },
-      {
-        "package": "@iconify-json/lucide",
-        "version": "^1.2.111",
-        "severity": "low",
-        "type": "unpinned-version",
-        "description": "Version \"^1.2.111\" is not pinned — could resolve to a vulnerable release"
-      },
-      {
-        "package": "@internationalized/date",
-        "version": "^3.12.1",
-        "severity": "low",
-        "type": "unpinned-version",
-        "description": "Version \"^3.12.1\" is not pinned — could resolve to a vulnerable release"
-      },
-      {
-        "package": "@lucide/svelte",
-        "version": "^1.17.0",
-        "severity": "low",
-        "type": "unpinned-version",
-        "description": "Version \"^1.17.0\" is not pinned — could resolve to a vulnerable release"
-      },
-      {
-        "package": "@sveltejs/adapter-auto",
-        "version": "^7.0.1",
-        "severity": "low",
-        "type": "unpinned-version",
-        "description": "Version \"^7.0.1\" is not pinned — could resolve to a vulnerable release"
-      },
-      {
-        "package": "@sveltejs/kit",
-        "version": "^2.61.1",
-        "severity": "low",
-        "type": "unpinned-version",
-        "description": "Version \"^2.61.1\" is not pinned — could resolve to a vulnerable release"
-      },
-      {
-        "package": "@sveltejs/vite-plugin-svelte",
-        "version": "^7.1.2",
-        "severity": "low",
-        "type": "unpinned-version",
-        "description": "Version \"^7.1.2\" is not pinned — could resolve to a vulnerable release"
-      },
-      {
-        "package": "@tailwindcss/postcss",
-        "version": "^4.3.0",
-        "severity": "low",
-        "type": "unpinned-version",
-        "description": "Version \"^4.3.0\" is not pinned — could resolve to a vulnerable release"
-      },
-      {
-        "package": "@tsconfig/svelte",
-        "version": "^5.0.8",
-        "severity": "low",
-        "type": "unpinned-version",
-        "description": "Version \"^5.0.8\" is not pinned — could resolve to a vulnerable release"
-      },
-      {
-        "package": "@types/dompurify",
-        "version": "^3.2.0",
-        "severity": "low",
-        "type": "unpinned-version",
-        "description": "Version \"^3.2.0\" is not pinned — could resolve to a vulnerable release"
-      },
-      {
-        "package": "@types/node",
-        "version": "^24.12.4",
-        "severity": "low",
-        "type": "unpinned-version",
-        "description": "Version \"^24.12.4\" is not pinned — could resolve to a vulnerable release"
-      },
-      {
-        "package": "@zxcvbn-ts/core",
-        "version": "^3.0.4",
-        "severity": "low",
-        "type": "unpinned-version",
-        "description": "Version \"^3.0.4\" is not pinned — could resolve to a vulnerable release"
-      },
-      {
-        "package": "@zxcvbn-ts/language-common",
-        "version": "^3.0.4",
-        "severity": "low",
-        "type": "unpinned-version",
-        "description": "Version \"^3.0.4\" is not pinned — could resolve to a vulnerable release"
-      },
-      {
-        "package": "@zxcvbn-ts/language-en",
-        "version": "^3.0.2",
-        "severity": "low",
-        "type": "unpinned-version",
-        "description": "Version \"^3.0.2\" is not pinned — could resolve to a vulnerable release"
-      },
-      {
-        "package": "bits-ui",
-        "version": "^2.18.1",
-        "severity": "low",
-        "type": "unpinned-version",
-        "description": "Version \"^2.18.1\" is not pinned — could resolve to a vulnerable release"
-      },
-      {
-        "package": "clsx",
-        "version": "^2.1.1",
-        "severity": "low",
-        "type": "unpinned-version",
-        "description": "Version \"^2.1.1\" is not pinned — could resolve to a vulnerable release"
-      },
-      {
-        "package": "paneforge",
-        "version": "^1.0.2",
-        "severity": "low",
-        "type": "unpinned-version",
-        "description": "Version \"^1.0.2\" is not pinned — could resolve to a vulnerable release"
-      },
-      {
-        "package": "postcss",
-        "version": "^8.5.9",
-        "severity": "low",
-        "type": "unpinned-version",
-        "description": "Version \"^8.5.9\" is not pinned — could resolve to a vulnerable release"
-      },
-      {
-        "package": "runed",
-        "version": "^0.37.1",
-        "severity": "low",
-        "type": "unpinned-version",
-        "description": "Version \"^0.37.1\" is not pinned — could resolve to a vulnerable release"
-      },
-      {
-        "package": "svelte",
-        "version": "^5.56.0",
-        "severity": "low",
-        "type": "unpinned-version",
-        "description": "Version \"^5.56.0\" is not pinned — could resolve to a vulnerable release"
-      },
-      {
-        "package": "svelte-check",
-        "version": "^4.4.8",
-        "severity": "low",
-        "type": "unpinned-version",
-        "description": "Version \"^4.4.8\" is not pinned — could resolve to a vulnerable release"
-      },
-      {
-        "package": "svelte-toolbelt",
-        "version": "^0.10.6",
-        "severity": "low",
-        "type": "unpinned-version",
-        "description": "Version \"^0.10.6\" is not pinned — could resolve to a vulnerable release"
-      },
-      {
-        "package": "tailwind-merge",
-        "version": "^3.5.0",
-        "severity": "low",
-        "type": "unpinned-version",
-        "description": "Version \"^3.5.0\" is not pinned — could resolve to a vulnerable release"
-      },
-      {
-        "package": "tailwind-variants",
-        "version": "^3.2.2",
-        "severity": "low",
-        "type": "unpinned-version",
-        "description": "Version \"^3.2.2\" is not pinned — could resolve to a vulnerable release"
-      },
-      {
-        "package": "tailwindcss",
-        "version": "^4.3.0",
-        "severity": "low",
-        "type": "unpinned-version",
-        "description": "Version \"^4.3.0\" is not pinned — could resolve to a vulnerable release"
-      },
-      {
-        "package": "tw-animate-css",
-        "version": "^1.4.0",
-        "severity": "low",
-        "type": "unpinned-version",
-        "description": "Version \"^1.4.0\" is not pinned — could resolve to a vulnerable release"
-      },
-      {
-        "package": "typescript",
-        "version": "~6.0.3",
-        "severity": "low",
-        "type": "unpinned-version",
-        "description": "Version \"~6.0.3\" is not pinned — could resolve to a vulnerable release"
-      },
-      {
-        "package": "unplugin-icons",
-        "version": "^23.0.1",
-        "severity": "low",
-        "type": "unpinned-version",
-        "description": "Version \"^23.0.1\" is not pinned — could resolve to a vulnerable release"
-      },
-      {
-        "package": "vite",
-        "version": "^8.0.4",
-        "severity": "low",
-        "type": "unpinned-version",
-        "description": "Version \"^8.0.4\" is not pinned — could resolve to a vulnerable release"
+        "description": "Version \"^3.0.0\" is not pinned — could resolve to a vulnerable release"
       }
     ]
   },
@@ -2357,8 +2233,8 @@
     "partiallyCompliant": 2,
     "notFound": 0,
     "nonCompliant": 1,
-    "totalEvidence": 1953,
-    "totalViolations": 1,
-    "unpinnedDependencies": 41
+    "totalEvidence": 5264,
+    "totalViolations": 8,
+    "unpinnedDependencies": 1
   }
 }
