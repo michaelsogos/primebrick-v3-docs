@@ -8,7 +8,7 @@ Primebrick uses **Shadcn-Svelte™** as the vendored primitive layer in
 `src/lib/components/ui/`. On top of those primitives, several custom
 components are provided for common app-wide patterns. The full prop
 reference for every component is in the
-[API reference](/docs/dev-guide/api-reference).
+[API reference](/frontend/dev/api-reference).
 
 ## Where custom components live
 
@@ -21,10 +21,10 @@ reference for every component is in the
   Wrapped --> Custom
 `} />
 
-The [component catalog](/docs/dev-guide/components) lists every component
+The [component catalog](/frontend/dev/components) lists every component
 grouped by origin (custom, wrapped, more-shadcn-svelte, shadcn-svelte-extras,
 unmodified shadcn-svelte). The sections below cover the most commonly used
-custom components. See [UI stack](/docs/dev-guide/ui-stack) for the full
+custom components. See [UI stack](/frontend/dev/ui-stack) for the full
 layering of all five UI technologies.
 
 ## ComboSelect
@@ -107,7 +107,7 @@ with a priority tooltip (uses `priority-tooltip-content`).
 
 `src/lib/components/forms/PasswordChecklist.svelte` — live checklist of
 password policy rules. See
-[Password policy](/docs/dev-guide/authentication#password-policy).
+[Password policy](/frontend/dev/authentication#password-policy).
 
 ## Tooltip system
 
@@ -142,13 +142,13 @@ sub-components.
 ## Sidebar badges
 
 `src/lib/components/sidebar/` contains the sidebar-specific components
-described in [App shell & sidebar](/docs/dev-guide/app-shell):
+described in [App shell & sidebar](/frontend/dev/app-shell):
 `SidebarOrgSwitcher`, `SidebarModuleSwitcher`, `SidebarProfileMenu`,
 `SidebarHealthBadge`, `SidebarVersionBadge`.
 
 ## Next steps
 
-- [Component catalog](/docs/dev-guide/components) — every custom/wrapped component, grouped by origin
-- [API reference](/docs/dev-guide/api-reference) — full prop tables for every component
-- [Entity list table](/docs/dev-guide/components/entity-list-table) — the flagship custom component
-- [App shell & sidebar](/docs/dev-guide/app-shell)
+- [Component catalog](/frontend/dev/components) — every custom/wrapped component, grouped by origin
+- [API reference](/frontend/dev/api-reference) — full prop tables for every component
+- [Entity list table](/frontend/dev/components/entity-list-table) — the flagship custom component
+- [App shell & sidebar](/frontend/dev/app-shell)

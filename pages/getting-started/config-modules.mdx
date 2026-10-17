@@ -9,7 +9,7 @@ Primebrick modules (the Backend's `auth` module, the `emailsender`
 microservice, and any future module) store their runtime configuration in
 **dictionary-style config tables**. This page is the cross-cutting
 architectural overview; the API-level reference lives in the
-[SDK guide → Config tables & ConfigLoader](/sdk/guide/config-tables).
+[SDK guide → Config tables & ConfigLoader](/sdk/dev/config-tables).
 
 ## What is a config module?
 
@@ -96,7 +96,7 @@ The SDK defines the row shape (`IConfigEntity`), the DB-agnostic read port
 (`ConfigRepositoryPort`), and the generic typed loader
 (`ConfigLoader<TResult>`). The loader reads all rows once, coerces each
 value by its `type` column, and builds the consumer's `TResult`. See
-[SDK guide → Config tables & ConfigLoader](/sdk/guide/config-tables) for
+[SDK guide → Config tables & ConfigLoader](/sdk/dev/config-tables) for
 the full API.
 
 ### Layer 3 — Consumer: `TResult` + adapter + validate
@@ -134,7 +134,7 @@ FE widget selection. The vocabulary is fixed and shared:
 | `secret` | as-is | `Password` (masked, write-only) |
 | `json` | `JSON.parse` | `Textarea` |
 
-See the [SDK guide](/sdk/guide/config-tables) for the full rules.
+See the [SDK guide](/sdk/dev/config-tables) for the full rules.
 
 ## Caching
 
@@ -185,10 +185,10 @@ standard handles it.
 
 ## Next steps
 
-- [SDK → Config tables & ConfigLoader](/sdk/guide/config-tables) — full API
+- [SDK → Config tables & ConfigLoader](/sdk/dev/config-tables) — full API
   reference for `IConfigEntity`, `ConfigRepositoryPort`, `ConfigLoader<TResult>`.
-- [SDK → Redis cache layer](/sdk/guide/cache-layer) — the complementary
+- [SDK → Redis cache layer](/sdk/dev/cache-layer) — the complementary
   single-row cache.
-- [Microservices → Architecture](/microservices/guide/architecture) — how
+- [Microservices → Architecture](/microservices/dev/architecture) — how
   microservice config tables are proxied through the BE.
 - [Architecture](./architecture) — the overall layered architecture.

@@ -12,9 +12,9 @@ A self-contained login form that posts credentials to
 `/api/v1/auth/login` and reacts to the backend auth config. The
 username/password fields are always rendered (form auth is an invariant);
 when `enable_webauthn` is on (and the browser supports WebAuthn) it renders a
-[PasskeyButton](/docs/dev-guide/components/passkey-button) below the
+[PasskeyButton](/frontend/dev/components/passkey-button) below the
 form. Use it on the login page and inside the
-[SessionExpiredDialog](/docs/dev-guide/components/session-expired-dialog).
+[SessionExpiredDialog](/frontend/dev/components/session-expired-dialog).
 
 ## Origin
 
@@ -76,7 +76,7 @@ while the session-expired dialog drains and retries pending requests.
 
 ## Props
 
-Full prop table: see [API reference — loginform](/docs/dev-guide/api-reference#loginform).
+Full prop table: see [API reference — loginform](/frontend/dev/api-reference#loginform).
 
 Key props:
 
@@ -85,6 +85,6 @@ Key props:
 
 ## Next steps
 
-- [Component catalog](/docs/dev-guide/components)
-- [UI stack](/docs/dev-guide/ui-stack)
-- [API reference](/docs/dev-guide/api-reference#loginform)
+- [Component catalog](/frontend/dev/components)
+- [UI stack](/frontend/dev/ui-stack)
+- [API reference](/frontend/dev/api-reference#loginform)

@@ -41,6 +41,67 @@ const TIERS = [
 
 const TMP_DIR = join(projectRoot, '.tmp-repo-sync');
 
+/**
+ * Rewrite doc links authored inside upstream repos into site routes.
+ *
+ * Upstream sources link with repo-rooted paths (`/docs/dev-guide/x`,
+ * `docs/user-guide/y`, `../dev-guide/z`) or the legacy inverted scheme
+ * (`/dev/<repo>/…`). On the site pages live under `/<repo>/<tier>/**`,
+ * so every link is normalized at copy time — sources never change.
+ *
+ * Links inside fenced code blocks and inline code spans are untouched.
+ * Anchors (#…) are preserved; .md/.mdx extensions are stripped.
+ */
+const TIER_FOR_SRC = { 'user-guide': 'guide', 'dev-guide': 'dev' };
+const KNOWN_SLUGS = REPOS.map((r) => r.slug);
+// Repo shorthand aliases usable inside doc links (`../be/dev/x` → /backend/dev/x).
+const SLUG_ALIASES = { be: 'backend', fe: 'frontend', us: 'microservices' };
+const LINK_SLUGS = [...KNOWN_SLUGS, ...Object.keys(SLUG_ALIASES)];
+const canonSlug = (s) => SLUG_ALIASES[s] ?? s;
+
+function stripDocExt(rest) {
+  return rest.replace(/\.(md|mdx)$/, '').replace(/\/index$/, '');
+}
+
+function rewriteLinkTarget(target, repoSlug) {
+  // Split off anchor/query — never part of path mapping.
+  const m = target.match(/^([^#?]*)([#?].*)?$/);
+  let path = m[1];
+  const suffix = m[2] || '';
+
+  // 1) Repo-rooted tier links: [/]docs/(user-guide|dev-guide)/… and
+  //    (../)+…/(user-guide|dev-guide)/…  (cross-tier relative from docs/<other>/…)
+  let t = path.match(/^(?:\/)?docs\/(user-guide|dev-guide)\/(.+)$/);
+  if (!t) t = path.match(/^(?:\.\.\/)+(?:[^/]+\/)*(user-guide|dev-guide)\/(.+)$/);
+  if (t) return `/${repoSlug}/${TIER_FOR_SRC[t[1]]}/${stripDocExt(t[2])}${suffix}`;
+
+  // 2) Legacy inverted site scheme: /dev/<slug>/… or /guide/<slug>/…
+  t = path.match(/^\/(dev|guide)\/([^/]+)\/(.+)$/);
+  if (t && LINK_SLUGS.includes(t[2])) {
+    return `/${canonSlug(t[2])}/${t[1]}/${stripDocExt(t[3])}${suffix}`;
+  }
+
+  // 3) Repo-relative cross-repo links: [../]<slug-or-alias>/(guide|dev)/…
+  t = path.match(/^(?:\.\.\/)*([^/]+)\/(guide|dev)\/(.+)$/);
+  if (t && LINK_SLUGS.includes(t[1])) {
+    return `/${canonSlug(t[1])}/${t[2]}/${stripDocExt(t[3])}${suffix}`;
+  }
+
+  return target;
+}
+
+function rewriteLinks(content, repoSlug) {
+  // Skip fenced code blocks and inline code spans (odd parts = code).
+  const parts = content.split(/(```[\s\S]*?```|~~~[\s\S]*?~~~|`[^`\n]+`)/g);
+  for (let i = 0; i < parts.length; i += 2) {
+    parts[i] = parts[i].replace(/\]\(([^)\s]+)\)/g, (match, target) => {
+      if (/^(https?:|mailto:|tel:|#)/.test(target)) return match;
+      return `](${rewriteLinkTarget(target, repoSlug)})`;
+    });
+  }
+  return parts.join('');
+}
+
 function addFrontmatter(content, title, repoSlug) {
   if (content.startsWith('---')) {
     return content;
@@ -59,6 +120,7 @@ ${content}`;
 
 function processMarkdownFile(srcPath, destPath, repoSlug) {
   let content = readFileSync(srcPath, 'utf-8');
+  content = rewriteLinks(content, repoSlug);
   const filename = basename(srcPath, '.md');
   const title = filename
     .split(/[-_]/)
@@ -105,6 +167,7 @@ function copyDirRecursive(srcDir, destDir, repoSlug) {
         if (content.startsWith('---')) {
           content = content.replace(/^(---[\s\S]*?---\s*\n)#\s+.+\r?\n?/, '$1');
         }
+        content = rewriteLinks(content, repoSlug);
         mkdirSync(dirname(destPath), { recursive: true });
         writeFileSync(destPath, content, 'utf-8');
       } else {
@@ -157,6 +220,40 @@ function syncRepo(repo) {
     mkdirSync(targetDir, { recursive: true });
     const count = copyDirRecursive(srcDir, targetDir, repo.slug);
     console.log(`  Copied ${count} files from ${tier.src}/ → pages/${repo.slug}/${tier.dest}/`);
+  }
+
+  // Umbrella repos (serviceDocs: true): each <svc>/docs/{tier} syncs to
+  // pages/<slug>/<tier>/services/<svc>/ so /microservices/dev/services/x
+  // links resolve.
+  if (repo.serviceDocs) {
+    for (const entry of readdirSync(cloneDir)) {
+      const svcDocsDir = join(cloneDir, entry, 'docs');
+      if (!statSyncSafe(svcDocsDir)?.isDirectory()) continue;
+      if (entry.startsWith('.') || entry === 'node_modules') continue;
+      for (const tier of TIERS) {
+        const srcDir = join(svcDocsDir, tier.src.split('/')[1]);
+        const targetDir = join(projectRoot, 'pages', repo.slug, tier.dest, 'services', entry);
+        if (!existsSync(srcDir)) {
+          if (existsSync(targetDir)) {
+            rmSync(targetDir, { recursive: true, force: true });
+            console.log(`  No ${tier.src}/ in ${repo.slug}/${entry} — removed stale pages`);
+          }
+          continue;
+        }
+        rmSync(targetDir, { recursive: true, force: true });
+        mkdirSync(targetDir, { recursive: true });
+        const count = copyDirRecursive(srcDir, targetDir, repo.slug);
+        console.log(`  Copied ${count} files from ${entry}/${tier.src}/ → pages/${repo.slug}/${tier.dest}/services/${entry}/`);
+      }
+    }
+  }
+}
+
+function statSyncSafe(p) {
+  try {
+    return statSync(p);
+  } catch {
+    return null;
   }
 }
 

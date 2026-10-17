@@ -78,7 +78,7 @@ via `useHealthChip()` (`chipLabel`, `chipClass`).
    `updateModuleConfigKey(code, key, value)`.
 
 The module's icon is rendered with `<DynamicIcon>` (see
-[UI components](/docs/dev-guide/ui-components#dynamicicon)) when
+[UI components](/frontend/dev/ui-components#dynamicicon)) when
 `icon_type` is `icon`.
 
 ## Organizations
@@ -87,9 +87,9 @@ The organizations list and forms use standard entity patterns. The create
 page (`/system/settings/organizations/create`) and edit page
 (`/system/settings/organizations/[uuid]`) use `FormPageLayout` and
 SuperForms with the form guards described in
-[Authentication & sessions](/docs/dev-guide/authentication#form-guards).
+[Authentication & sessions](/frontend/dev/authentication#form-guards).
 For the end-user procedure see
-[Organizations](/docs/user-guide/manual/organizations).
+[Organizations](/backend/guide/generated/organizations).
 
 ```svelte
 <script lang="ts">
@@ -114,7 +114,7 @@ The users list (`/system/settings/users`) renders an `EntityListTable` with
 row actions including edit and **change password**. The change-password
 action opens `ChangePasswordDialog`, which loads the active password policy
 and validates against it (see
-[Password policy](/docs/dev-guide/authentication#password-policy)).
+[Password policy](/frontend/dev/authentication#password-policy)).
 
 The user edit page (`/system/settings/users/[uuid]`) and create page
 (`/system/settings/users/create`) use SuperForms with `useFormGuard` and
@@ -123,15 +123,15 @@ The user edit page (`/system/settings/users/[uuid]`) and create page
 link) and per-organization username availability checks.
 
 For the end-user procedures (create user, invitation flow, making a user
-admin), see [Managing users](/docs/user-guide/manual/users). Role mappings
+admin), see [Managing users](/backend/guide/generated/users). Role mappings
 are managed under `/system/settings/roles` — see
-[Roles and permissions](/docs/user-guide/rbac).
+[Roles and permissions](/backend/guide/rbac).
 
 ## Profile
 
 `/system/settings/profile` edits the current user's profile. It uses
 SuperForms with the form guards and includes avatar preview/color selection
-(see [UI components](/docs/dev-guide/ui-components)).
+(see [UI components](/frontend/dev/ui-components)).
 
 ## AI models
 
@@ -199,8 +199,8 @@ direct, other codes → `/ws/<code>`); types in `src/lib/api-types.ts`
 
 ## Next steps
 
-- [App shell & sidebar](/docs/dev-guide/app-shell)
-- [Authentication & sessions](/docs/dev-guide/authentication)
-- [Entity list table](/docs/dev-guide/components/entity-list-table) — used by the users list
-- [Component catalog](/docs/dev-guide/components) — every custom/wrapped component
-- [API reference](/docs/dev-guide/api-reference)
+- [App shell & sidebar](/frontend/dev/app-shell)
+- [Authentication & sessions](/frontend/dev/authentication)
+- [Entity list table](/frontend/dev/components/entity-list-table) — used by the users list
+- [Component catalog](/frontend/dev/components) — every custom/wrapped component
+- [API reference](/frontend/dev/api-reference)
