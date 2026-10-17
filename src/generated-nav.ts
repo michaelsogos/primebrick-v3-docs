@@ -180,7 +180,15 @@ export const generatedRepoNav: Navigation = [
           "microservices/dev/architecture",
           "microservices/dev/conventions",
           "microservices/dev/adding-a-service",
-          "microservices/dev/job-handler"
+          "microservices/dev/job-handler",
+          {
+            "type": "category",
+            "label": "Services",
+            "items": [
+              "microservices/dev/services/ai/docs-kb",
+              "microservices/dev/services/emailsender/providers"
+            ]
+          }
         ]
       }
     ]
@@ -436,7 +444,15 @@ export const serviceNav: Navigation = [
           "microservices/dev/architecture",
           "microservices/dev/conventions",
           "microservices/dev/adding-a-service",
-          "microservices/dev/job-handler"
+          "microservices/dev/job-handler",
+          {
+            "type": "category",
+            "label": "Services",
+            "items": [
+              "microservices/dev/services/ai/docs-kb",
+              "microservices/dev/services/emailsender/providers"
+            ]
+          }
         ]
       }
     ]

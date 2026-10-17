@@ -1,5 +1,5 @@
 {
-  "scanDate": "2026-10-17T13:01:37.446Z",
+  "scanDate": "2026-10-17T20:33:40.579Z",
   "scannerVersion": "1.0.0",
   "reposScanned": [
     "backend",
@@ -74,6 +74,90 @@
       "evidence": [
         {
           "repo": "backend",
+          "file": "src/controllers/http/__tests__/collaboration.router.test.ts",
+          "line": 9,
+          "snippet": "PERMISSION_DECLARED_TEST: Symbol.for(\"primebrick.permission_declared\"),"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/__tests__/collaboration.router.test.ts",
+          "line": 30,
+          "snippet": "vi.mock(\"../../../modules/auth/rbac.middleware.js\", () => ({"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/__tests__/collaboration.router.test.ts",
+          "line": 31,
+          "snippet": "PERMISSION_DECLARED: mocks.PERMISSION_DECLARED_TEST,"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/__tests__/collaboration.router.test.ts",
+          "line": 34,
+          "snippet": "req.user = { id: \"user-1\", name: \"U\", permissions: new Set([\"*\"]) };"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/__tests__/collaboration.router.test.ts",
+          "line": 37,
+          "snippet": "h[mocks.PERMISSION_DECLARED_TEST] = true;"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/__tests__/harness.ts",
+          "line": 6,
+          "snippet": "* Express routing, mocked domain dependencies (services, rbac, pool)."
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/__tests__/role-mappings.router.test.ts",
+          "line": 10,
+          "snippet": "PERMISSION_DECLARED_TEST: Symbol.for(\"primebrick.permission_declared\"),"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/__tests__/role-mappings.router.test.ts",
+          "line": 31,
+          "snippet": "vi.mock(\"../../../modules/auth/rbac.middleware.js\", () => ({"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/__tests__/role-mappings.router.test.ts",
+          "line": 32,
+          "snippet": "PERMISSION_DECLARED: mocks.PERMISSION_DECLARED_TEST,"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/__tests__/role-mappings.router.test.ts",
+          "line": 35,
+          "snippet": "req.user = { id: \"user-1\", permissions: new Set([\"*\"]), isAdmin: true };"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/__tests__/role-mappings.router.test.ts",
+          "line": 38,
+          "snippet": "h[mocks.PERMISSION_DECLARED_TEST] = { declared: [\"test.perm\"] };"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/__tests__/role-mappings.router.test.ts",
+          "line": 77,
+          "snippet": "const BASE = \"/api/v1/entities/role_mapping\";"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/__tests__/role-mappings.router.test.ts",
+          "line": 105,
+          "snippet": "expect(mocks.mfaStepUp).toHaveBeenCalledWith(\"delete\", \"role_mapping\");"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/__tests__/role-mappings.router.test.ts",
+          "line": 163,
+          "snippet": "entity: { idp_role: \"sales\", idp_org: \"primebrick\", permissions: [\"auth.user_read_all\"] },"
+        },
+        {
+          "repo": "backend",
           "file": "src/controllers/http/auth/auth-check.router.ts",
           "line": 18,
           "snippet": "import { rbacHandler } from \"../../../modules/auth/rbac.middleware.js\";"
@@ -107,90 +191,6 @@
           "file": "src/controllers/http/auth/auth-invitation.router.ts",
           "line": 33,
           "snippet": "import { Permission } from \"@primebrick/sdk\";"
-        },
-        {
-          "repo": "backend",
-          "file": "src/controllers/http/auth/auth-invitation.router.ts",
-          "line": 155,
-          "snippet": "permission: rbacHandler([Permission.PUBLIC]),"
-        },
-        {
-          "repo": "backend",
-          "file": "src/controllers/http/auth/auth-invitation.router.ts",
-          "line": 162,
-          "snippet": "permission: rbacHandler([Permission.PUBLIC]),"
-        },
-        {
-          "repo": "backend",
-          "file": "src/controllers/http/auth/auth-invitation.router.ts",
-          "line": 169,
-          "snippet": "permission: rbacHandler([Permission.PUBLIC]),"
-        },
-        {
-          "repo": "backend",
-          "file": "src/controllers/http/auth/auth-invitation.router.ts",
-          "line": 176,
-          "snippet": "permission: rbacHandler([Permission.PUBLIC]),"
-        },
-        {
-          "repo": "backend",
-          "file": "src/controllers/http/auth/auth-invitation.router.ts",
-          "line": 183,
-          "snippet": "permission: rbacHandler([Permission.USER_PROFILE_UPDATE_SINGLE]),"
-        },
-        {
-          "repo": "backend",
-          "file": "src/controllers/http/auth/auth-invitation.router.ts",
-          "line": 189,
-          "snippet": "permission: rbacHandler([Permission.USER_PROFILE_UPDATE_SINGLE]),"
-        },
-        {
-          "repo": "backend",
-          "file": "src/controllers/http/auth/auth-invitation.router.ts",
-          "line": 195,
-          "snippet": "permission: rbacHandler([Permission.PUBLIC]),"
-        },
-        {
-          "repo": "backend",
-          "file": "src/controllers/http/auth/auth-mfa.router.ts",
-          "line": 21,
-          "snippet": "import { rbacHandler } from \"../../../modules/auth/rbac.middleware.js\";"
-        },
-        {
-          "repo": "backend",
-          "file": "src/controllers/http/auth/auth-mfa.router.ts",
-          "line": 22,
-          "snippet": "import { Permission } from \"@primebrick/sdk\";"
-        },
-        {
-          "repo": "backend",
-          "file": "src/controllers/http/auth/auth-mfa.router.ts",
-          "line": 166,
-          "snippet": "permission: rbacHandler([Permission.AUTHENTICATED_USER]),"
-        },
-        {
-          "repo": "backend",
-          "file": "src/controllers/http/auth/auth-mfa.router.ts",
-          "line": 172,
-          "snippet": "permission: rbacHandler([Permission.AUTHENTICATED_USER]),"
-        },
-        {
-          "repo": "backend",
-          "file": "src/controllers/http/auth/auth-mfa.router.ts",
-          "line": 179,
-          "snippet": "permission: rbacHandler([Permission.AUTHENTICATED_USER]),"
-        },
-        {
-          "repo": "backend",
-          "file": "src/controllers/http/auth/auth-mfa.router.ts",
-          "line": 185,
-          "snippet": "permission: rbacHandler([Permission.AUTHENTICATED_USER]),"
-        },
-        {
-          "repo": "backend",
-          "file": "src/controllers/http/auth/auth-mfa.router.ts",
-          "line": 191,
-          "snippet": "permission: rbacHandler([Permission.PUBLIC]),"
         }
       ],
       "violations": []
@@ -215,6 +215,18 @@
         "sdk"
       ],
       "evidence": [
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/__tests__/role-mappings.router.test.ts",
+          "line": 43,
+          "snippet": "vi.mock(\"../../../modules/auth/mfa-step-up.middleware.js\", () => ({"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/__tests__/role-mappings.router.test.ts",
+          "line": 104,
+          "snippet": "it(\"purge is MFA step-up gated (middleware registered)\", () => {"
+        },
         {
           "repo": "backend",
           "file": "src/controllers/http/auth/auth-mfa.router.ts",
@@ -322,18 +334,6 @@
           "file": "src/controllers/http/auth/auth-mfa.router.ts",
           "line": 178,
           "snippet": "path: \"/api/v1/auth/mfa/factors\","
-        },
-        {
-          "repo": "backend",
-          "file": "src/controllers/http/auth/auth-mfa.router.ts",
-          "line": 184,
-          "snippet": "path: \"/api/v1/auth/mfa/factors/:uuid\","
-        },
-        {
-          "repo": "backend",
-          "file": "src/controllers/http/auth/auth-mfa.router.ts",
-          "line": 190,
-          "snippet": "path: \"/api/v1/auth/mfa/verify\","
         }
       ],
       "violations": []
@@ -357,6 +357,36 @@
         "dal"
       ],
       "evidence": [
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/__tests__/collaboration.router.test.ts",
+          "line": 88,
+          "snippet": "it(\"GET audit diff → service.getAuditLogDiff\", async () => {"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/__tests__/collaboration.router.test.ts",
+          "line": 90,
+          "snippet": "audit_log_id: 9,"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/__tests__/collaboration.router.test.ts",
+          "line": 102,
+          "snippet": "expect(body.audit_log_id).toBe(9);"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/__tests__/collaboration.router.test.ts",
+          "line": 107,
+          "snippet": "new NotFoundError(\"Audit log entry 42 not found\", { internal_code: \"AUDIT_LOG_NOT_FOUND\" }),"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/__tests__/collaboration.router.test.ts",
+          "line": 112,
+          "snippet": "expect(body.internal_code).toBe(\"AUDIT_LOG_NOT_FOUND\");"
+        },
         {
           "repo": "backend",
           "file": "src/controllers/http/collaboration.router.ts",
@@ -392,36 +422,6 @@
           "file": "src/controllers/http/collaboration.router.ts",
           "line": 124,
           "snippet": "const response = await collaborationService.getAuditLogDiff(entity, uuid, auditLogId);"
-        },
-        {
-          "repo": "backend",
-          "file": "src/controllers/http/__tests__/collaboration.router.test.ts",
-          "line": 88,
-          "snippet": "it(\"GET audit diff → service.getAuditLogDiff\", async () => {"
-        },
-        {
-          "repo": "backend",
-          "file": "src/controllers/http/__tests__/collaboration.router.test.ts",
-          "line": 90,
-          "snippet": "audit_log_id: 9,"
-        },
-        {
-          "repo": "backend",
-          "file": "src/controllers/http/__tests__/collaboration.router.test.ts",
-          "line": 102,
-          "snippet": "expect(body.audit_log_id).toBe(9);"
-        },
-        {
-          "repo": "backend",
-          "file": "src/controllers/http/__tests__/collaboration.router.test.ts",
-          "line": 107,
-          "snippet": "new NotFoundError(\"Audit log entry 42 not found\", { internal_code: \"AUDIT_LOG_NOT_FOUND\" }),"
-        },
-        {
-          "repo": "backend",
-          "file": "src/controllers/http/__tests__/collaboration.router.test.ts",
-          "line": 112,
-          "snippet": "expect(body.internal_code).toBe(\"AUDIT_LOG_NOT_FOUND\");"
         },
         {
           "repo": "backend",
@@ -535,6 +535,18 @@
       "evidence": [
         {
           "repo": "backend",
+          "file": "src/controllers/http/__tests__/role-mappings.router.test.ts",
+          "line": 3,
+          "snippet": "* the hard-delete-only entity. Verifies the purge contract: soft DELETE"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/__tests__/role-mappings.router.test.ts",
+          "line": 81,
+          "snippet": "it(\"DELETE /:uuid → 404 (no soft-delete route)\", async () => {"
+        },
+        {
+          "repo": "backend",
           "file": "src/controllers/http/auth/auth-session.router.ts",
           "line": 59,
           "snippet": "{ key: \"deleted_at\", label_key: \"system.entities.user_profile.fields.deleted_at\", type: \"datetime\", order: 3, sortable: "
@@ -613,18 +625,6 @@
         },
         {
           "repo": "backend",
-          "file": "src/controllers/http/__tests__/role-mappings.router.test.ts",
-          "line": 3,
-          "snippet": "* the hard-delete-only entity. Verifies the purge contract: soft DELETE"
-        },
-        {
-          "repo": "backend",
-          "file": "src/controllers/http/__tests__/role-mappings.router.test.ts",
-          "line": 81,
-          "snippet": "it(\"DELETE /:uuid → 404 (no soft-delete route)\", async () => {"
-        },
-        {
-          "repo": "backend",
           "file": "src/db/entity-audit-port.ts",
           "line": 10,
           "snippet": "* and, for UPDATE / SOFT_DELETE / RESTORE / HARD_DELETE actions, publishes an"
@@ -637,21 +637,21 @@
         },
         {
           "repo": "backend",
-          "file": "src/http/entity-export.ts",
-          "line": 19,
-          "snippet": "* (`*_by`), `version`, `deleted_at`, and columns that are the target of a"
+          "file": "src/http/__tests__/entity-export.test.ts",
+          "line": 20,
+          "snippet": "it(\"excludes audit actors, version, deleted_at and IANA helper fields\", () => {"
         },
         {
           "repo": "backend",
-          "file": "src/http/entity-export.ts",
-          "line": 60,
-          "snippet": "const NEVER_EXPORTED = new Set([\"version\", \"deleted_at\", \"created_by\", \"updated_by\", \"deleted_by\"]);"
+          "file": "src/http/__tests__/entity-export.test.ts",
+          "line": 26,
+          "snippet": "expect(keys).not.toContain(\"deleted_at\");"
         },
         {
           "repo": "backend",
-          "file": "src/http/entity-meta.types.ts",
-          "line": 101,
-          "snippet": "/** Disable the CTA on soft-deleted rows. */"
+          "file": "src/http/__tests__/entity-router.test.ts",
+          "line": 106,
+          "snippet": "describe(\"makeEntityRouter — soft-delete-only entity\", () => {"
         }
       ],
       "violations": []
@@ -845,6 +845,18 @@
         },
         {
           "repo": "backend",
+          "file": "src/modules/auth/__tests__/user-service-change-password.test.ts",
+          "line": 80,
+          "snippet": "mockGenerateAlertLink.mockResolvedValue(\"https://app/login?alert=xxx\");"
+        },
+        {
+          "repo": "backend",
+          "file": "src/modules/auth/__tests__/user-service-change-password.test.ts",
+          "line": 176,
+          "snippet": "mockGenerateAlertLink.mockResolvedValue(\"https://app/login?alert=xxx\");"
+        },
+        {
+          "repo": "backend",
           "file": "src/modules/auth/services/auth-session.service.ts",
           "line": 22,
           "snippet": "*   writes them as httpOnly cookies. This keeps `res` out of the service."
@@ -917,27 +929,15 @@
         },
         {
           "repo": "backend",
-          "file": "src/modules/auth/__tests__/user-service-change-password.test.ts",
-          "line": 80,
-          "snippet": "mockGenerateAlertLink.mockResolvedValue(\"https://app/login?alert=xxx\");"
+          "file": "src/modules/proxy/__tests__/proxy-headers.test.ts",
+          "line": 9,
+          "snippet": "protocol: \"https\","
         },
         {
           "repo": "backend",
-          "file": "src/modules/auth/__tests__/user-service-change-password.test.ts",
-          "line": 176,
-          "snippet": "mockGenerateAlertLink.mockResolvedValue(\"https://app/login?alert=xxx\");"
-        },
-        {
-          "repo": "backend",
-          "file": "src/modules/proxy/proxy-service.ts",
-          "line": 106,
-          "snippet": "type: \"https://primebrick.io/errors/missing-service-code\","
-        },
-        {
-          "repo": "backend",
-          "file": "src/modules/proxy/proxy-service.ts",
-          "line": 120,
-          "snippet": "type: \"https://primebrick.io/errors/service-not-found\","
+          "file": "src/modules/proxy/__tests__/proxy-headers.test.ts",
+          "line": 62,
+          "snippet": "expect(h[\"x-forwarded-proto\"]).toBe(\"https\");"
         }
       ],
       "violations": []
@@ -1140,6 +1140,12 @@
       "evidence": [
         {
           "repo": "backend",
+          "file": "src/controllers/http/__tests__/role-mappings.router.test.ts",
+          "line": 4,
+          "snippet": "* absent (404), DELETE /:uuid/purge wired to the Casdoor-synced service"
+        },
+        {
+          "repo": "backend",
           "file": "src/controllers/http/auth/auth-invitation.router.ts",
           "line": 2,
           "snippet": "* auth-invitation.router — thin controller for the user onboarding/welcome flow."
@@ -1251,12 +1257,6 @@
           "file": "src/controllers/http/auth/role-mappings.router.ts",
           "line": 15,
           "snippet": "*   DELETE /api/v1/entities/role_mapping/:uuid/purge     → hard delete (Casdoor + local, MFA step-up)"
-        },
-        {
-          "repo": "backend",
-          "file": "src/controllers/http/auth/role-mappings.router.ts",
-          "line": 23,
-          "snippet": "* `idp_role` and `idp_org` are immutable on update — the Casdoor role identity"
         }
       ],
       "violations": []
@@ -1299,36 +1299,6 @@
         },
         {
           "repo": "backend",
-          "file": "src/modules/auth/casdoor-api-client.ts",
-          "line": 120,
-          "snippet": "* Build API URL with clientId and clientSecret as query parameters."
-        },
-        {
-          "repo": "backend",
-          "file": "src/modules/auth/casdoor-api-client.ts",
-          "line": 755,
-          "snippet": "// (clientId/clientSecret as query params). The BE acts as an admin proxy:"
-        },
-        {
-          "repo": "backend",
-          "file": "src/modules/auth/services/config-entries.service.ts",
-          "line": 187,
-          "snippet": "* with a placeholder and only sends a value when the user types a new one."
-        },
-        {
-          "repo": "backend",
-          "file": "src/modules/auth/services/invitation.service.ts",
-          "line": 341,
-          "snippet": "// an empty value (seeded placeholder) — update it instead of inserting a"
-        },
-        {
-          "repo": "backend",
-          "file": "src/modules/auth/services/user.service.ts",
-          "line": 704,
-          "snippet": "// the welcome page. We pass a random placeholder if no password is"
-        },
-        {
-          "repo": "backend",
           "file": "src/modules/auth/__tests__/boundary-integration.test.ts",
           "line": 50,
           "snippet": "const res = await pool.query("
@@ -1356,6 +1326,36 @@
           "file": "src/modules/auth/__tests__/boundary-integration.test.ts",
           "line": 170,
           "snippet": "await pool.query(`DELETE FROM public.config_entries WHERE key LIKE 'e2e_boundary_%'`);"
+        },
+        {
+          "repo": "backend",
+          "file": "src/modules/auth/casdoor-api-client.ts",
+          "line": 120,
+          "snippet": "* Build API URL with clientId and clientSecret as query parameters."
+        },
+        {
+          "repo": "backend",
+          "file": "src/modules/auth/casdoor-api-client.ts",
+          "line": 755,
+          "snippet": "// (clientId/clientSecret as query params). The BE acts as an admin proxy:"
+        },
+        {
+          "repo": "backend",
+          "file": "src/modules/auth/services/config-entries.service.ts",
+          "line": 187,
+          "snippet": "* with a placeholder and only sends a value when the user types a new one."
+        },
+        {
+          "repo": "backend",
+          "file": "src/modules/auth/services/invitation.service.ts",
+          "line": 341,
+          "snippet": "// an empty value (seeded placeholder) — update it instead of inserting a"
+        },
+        {
+          "repo": "backend",
+          "file": "src/modules/auth/services/user.service.ts",
+          "line": 704,
+          "snippet": "// the welcome page. We pass a random placeholder if no password is"
         },
         {
           "repo": "backend",
@@ -1547,12 +1547,6 @@
       "violations": [
         {
           "repo": "backend",
-          "file": "src/modules/auth/services/__tests__/mfa-service.test.ts",
-          "line": 103,
-          "snippet": "const TOTP_SECRET = \"JBSWY3DPEHPK3PXP\"; // base32"
-        },
-        {
-          "repo": "backend",
           "file": "src/modules/auth/__tests__/casdoor-api-client.test.ts",
           "line": 16,
           "snippet": "clientSecret: \"test-secret\","
@@ -1568,6 +1562,12 @@
           "file": "src/modules/auth/__tests__/mfa-integration.test.ts",
           "line": 177,
           "snippet": "body: { username: ADMIN_USERNAME, password: \"wrong-password\" },"
+        },
+        {
+          "repo": "backend",
+          "file": "src/modules/auth/services/__tests__/mfa-service.test.ts",
+          "line": 103,
+          "snippet": "const TOTP_SECRET = \"JBSWY3DPEHPK3PXP\"; // base32"
         },
         {
           "repo": "backend",
@@ -1707,6 +1707,66 @@
         },
         {
           "repo": "backend",
+          "file": "src/controllers/nats-sub/__tests__/service-lifecycle-subscriber.test.ts",
+          "line": 4,
+          "snippet": "// Shared mock service instance — returned by every `new ServiceRegistryService()` call"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/nats-sub/__tests__/service-lifecycle-subscriber.test.ts",
+          "line": 13,
+          "snippet": "// Mock ServiceRegistryService — always returns the shared mockRepo instance"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/nats-sub/__tests__/service-lifecycle-subscriber.test.ts",
+          "line": 14,
+          "snippet": "vi.mock(\"../../../modules/system/service-registry.service.js\", () => ({"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/nats-sub/__tests__/service-lifecycle-subscriber.test.ts",
+          "line": 15,
+          "snippet": "ServiceRegistryService: vi.fn().mockImplementation(function () { return mockRepo; }),"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/nats-sub/__tests__/service-lifecycle-subscriber.test.ts",
+          "line": 45,
+          "snippet": "endpoints: { \"/health\": { method: \"GET\" } },"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/nats-sub/__tests__/service-lifecycle-subscriber.test.ts",
+          "line": 218,
+          "snippet": "// existing status is 'online' and heartbeat derives 'online' → no change log"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/nats-sub/__tests__/stale-detection-job.test.ts",
+          "line": 4,
+          "snippet": "// Shared mock service instance — returned by every `new ServiceRegistryService()` call"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/nats-sub/__tests__/stale-detection-job.test.ts",
+          "line": 11,
+          "snippet": "// Mock ServiceRegistryService — always returns the shared mockRepo instance"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/nats-sub/__tests__/stale-detection-job.test.ts",
+          "line": 12,
+          "snippet": "vi.mock(\"../../../modules/system/service-registry.service.js\", () => ({"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/nats-sub/__tests__/stale-detection-job.test.ts",
+          "line": 13,
+          "snippet": "ServiceRegistryService: vi.fn().mockImplementation(function () { return mockRepo; }),"
+        },
+        {
+          "repo": "backend",
           "file": "src/controllers/nats-sub/internal-request-routes.ts",
           "line": 19,
           "snippet": "import { ServiceRegistryService, type ServiceRegistryEntry } from \"../../modules/system/service-registry.service.js\";"
@@ -1728,66 +1788,6 @@
           "file": "src/controllers/nats-sub/internal-request-routes.ts",
           "line": 68,
           "snippet": "// is the sanctioned replacement for direct public.service_registry"
-        },
-        {
-          "repo": "backend",
-          "file": "src/controllers/nats-sub/internal-request-routes.ts",
-          "line": 70,
-          "snippet": "subject: SERVICE_REGISTRY_GET_SUBJECT,"
-        },
-        {
-          "repo": "backend",
-          "file": "src/controllers/nats-sub/internal-request-routes.ts",
-          "line": 73,
-          "snippet": "handler: async ({ request }): Promise<ServiceRegistryEntry | ServiceRegistryEntry[] | null> => {"
-        },
-        {
-          "repo": "backend",
-          "file": "src/controllers/nats-sub/internal-request-routes.ts",
-          "line": 127,
-          "snippet": "`Subscribed to ${AUTH_APIKEY_BY_HASH_SUBJECT}, ${CLIENT_SHIELD_REGISTRY_SUBJECTS.GET}, ${SERVICE_REGISTRY_GET_SUBJECT} ("
-        },
-        {
-          "repo": "backend",
-          "file": "src/controllers/nats-sub/publisher-identity.ts",
-          "line": 4,
-          "snippet": "* Shared between ServiceLifecycleSubscriber (register/heartbeat/unregister)"
-        },
-        {
-          "repo": "backend",
-          "file": "src/controllers/nats-sub/publisher-identity.ts",
-          "line": 6,
-          "snippet": "* service.registry.get, auth.apikey.byHash): the caller is a *service*,"
-        },
-        {
-          "repo": "backend",
-          "file": "src/controllers/nats-sub/service-lifecycle-subscriber.ts",
-          "line": 4,
-          "snippet": "* Subscribes to service.register, service.heartbeat, service.unregister"
-        },
-        {
-          "repo": "backend",
-          "file": "src/controllers/nats-sub/service-lifecycle-subscriber.ts",
-          "line": 5,
-          "snippet": "* and persists state changes to the service_registry table via"
-        },
-        {
-          "repo": "backend",
-          "file": "src/controllers/nats-sub/service-lifecycle-subscriber.ts",
-          "line": 6,
-          "snippet": "* ServiceRegistryService (the domain owner — no Repository here)."
-        },
-        {
-          "repo": "backend",
-          "file": "src/controllers/nats-sub/service-lifecycle-subscriber.ts",
-          "line": 15,
-          "snippet": "import { NatsClient, SERVICE_SUBJECTS, CLIENT_SHIELD_REGISTRY_SUBJECTS, makeNatsRequestRoute, setNatsShieldRegistry, typ"
-        },
-        {
-          "repo": "backend",
-          "file": "src/controllers/nats-sub/service-lifecycle-subscriber.ts",
-          "line": 17,
-          "snippet": "import { ServiceRegistryService } from \"../../modules/system/service-registry.service.js\";"
         }
       ],
       "violations": []
@@ -1860,6 +1860,66 @@
         },
         {
           "repo": "backend",
+          "file": "src/controllers/nats-sub/__tests__/service-lifecycle-subscriber.test.ts",
+          "line": 4,
+          "snippet": "// Shared mock service instance — returned by every `new ServiceRegistryService()` call"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/nats-sub/__tests__/service-lifecycle-subscriber.test.ts",
+          "line": 13,
+          "snippet": "// Mock ServiceRegistryService — always returns the shared mockRepo instance"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/nats-sub/__tests__/service-lifecycle-subscriber.test.ts",
+          "line": 14,
+          "snippet": "vi.mock(\"../../../modules/system/service-registry.service.js\", () => ({"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/nats-sub/__tests__/service-lifecycle-subscriber.test.ts",
+          "line": 15,
+          "snippet": "ServiceRegistryService: vi.fn().mockImplementation(function () { return mockRepo; }),"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/nats-sub/__tests__/stale-detection-job.test.ts",
+          "line": 4,
+          "snippet": "// Shared mock service instance — returned by every `new ServiceRegistryService()` call"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/nats-sub/__tests__/stale-detection-job.test.ts",
+          "line": 11,
+          "snippet": "// Mock ServiceRegistryService — always returns the shared mockRepo instance"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/nats-sub/__tests__/stale-detection-job.test.ts",
+          "line": 12,
+          "snippet": "vi.mock(\"../../../modules/system/service-registry.service.js\", () => ({"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/nats-sub/__tests__/stale-detection-job.test.ts",
+          "line": 13,
+          "snippet": "ServiceRegistryService: vi.fn().mockImplementation(function () { return mockRepo; }),"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/nats-sub/__tests__/stale-detection-job.test.ts",
+          "line": 102,
+          "snippet": "it(\"ALL services stale → NATS-outage error logged once per outage\", async () => {"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/nats-sub/__tests__/stale-detection-job.test.ts",
+          "line": 124,
+          "snippet": "expect(errorMsg).toContain(\"NATS outage suspected\");"
+        },
+        {
+          "repo": "backend",
           "file": "src/controllers/nats-sub/internal-request-routes.ts",
           "line": 2,
           "snippet": "* Governed service-to-BE query endpoints (NATS pub/sub correlation-reply —"
@@ -1869,66 +1929,6 @@
           "file": "src/controllers/nats-sub/internal-request-routes.ts",
           "line": 13,
           "snippet": "import type { Msg } from \"nats\";"
-        },
-        {
-          "repo": "backend",
-          "file": "src/controllers/nats-sub/internal-request-routes.ts",
-          "line": 19,
-          "snippet": "import { ServiceRegistryService, type ServiceRegistryEntry } from \"../../modules/system/service-registry.service.js\";"
-        },
-        {
-          "repo": "backend",
-          "file": "src/controllers/nats-sub/internal-request-routes.ts",
-          "line": 24,
-          "snippet": "export const SERVICE_REGISTRY_GET_SUBJECT = \"service.registry.get\";"
-        },
-        {
-          "repo": "backend",
-          "file": "src/controllers/nats-sub/internal-request-routes.ts",
-          "line": 28,
-          "snippet": "// Layer-1 shield for every governed NATS route in this process — same"
-        },
-        {
-          "repo": "backend",
-          "file": "src/controllers/nats-sub/internal-request-routes.ts",
-          "line": 40,
-          "snippet": "const serviceSvc = new ServiceRegistryService();"
-        },
-        {
-          "repo": "backend",
-          "file": "src/controllers/nats-sub/internal-request-routes.ts",
-          "line": 68,
-          "snippet": "// is the sanctioned replacement for direct public.service_registry"
-        },
-        {
-          "repo": "backend",
-          "file": "src/controllers/nats-sub/internal-request-routes.ts",
-          "line": 70,
-          "snippet": "subject: SERVICE_REGISTRY_GET_SUBJECT,"
-        },
-        {
-          "repo": "backend",
-          "file": "src/controllers/nats-sub/internal-request-routes.ts",
-          "line": 73,
-          "snippet": "handler: async ({ request }): Promise<ServiceRegistryEntry | ServiceRegistryEntry[] | null> => {"
-        },
-        {
-          "repo": "backend",
-          "file": "src/controllers/nats-sub/internal-request-routes.ts",
-          "line": 127,
-          "snippet": "`Subscribed to ${AUTH_APIKEY_BY_HASH_SUBJECT}, ${CLIENT_SHIELD_REGISTRY_SUBJECTS.GET}, ${SERVICE_REGISTRY_GET_SUBJECT} ("
-        },
-        {
-          "repo": "backend",
-          "file": "src/controllers/nats-sub/internal-request-routes.ts",
-          "line": 128,
-          "snippet": "{ tags: [\"nats\"] },"
-        },
-        {
-          "repo": "backend",
-          "file": "src/controllers/nats-sub/publisher-identity.ts",
-          "line": 2,
-          "snippet": "* Publisher identity verification for service-to-BE NATS subjects."
         }
       ],
       "violations": []
@@ -1951,6 +1951,24 @@
         "sdk"
       ],
       "evidence": [
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/__tests__/harness.ts",
+          "line": 4,
+          "snippet": "* Mounts a real Express app + the real `errorHandler`, listens on an"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/__tests__/harness.ts",
+          "line": 11,
+          "snippet": "import { errorHandler } from \"../../../http/error-handler.js\";"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/__tests__/harness.ts",
+          "line": 22,
+          "snippet": "app.use(errorHandler);"
+        },
         {
           "repo": "backend",
           "file": "src/controllers/http/auth/auth-check.router.ts",
@@ -2052,24 +2070,6 @@
           "file": "src/controllers/http/mcp/oauth-authorize.router.ts",
           "line": 86,
           "snippet": "error_description: \"Only response_type=code is supported\","
-        },
-        {
-          "repo": "backend",
-          "file": "src/controllers/http/mcp/oauth-authorize.router.ts",
-          "line": 221,
-          "snippet": "error_description: \"Missing code or state parameter from Casdoor callback\","
-        },
-        {
-          "repo": "backend",
-          "file": "src/controllers/http/mcp/oauth-authorize.router.ts",
-          "line": 262,
-          "snippet": "// Router-level error handler"
-        },
-        {
-          "repo": "backend",
-          "file": "src/controllers/http/mcp/oauth-dcr.router.ts",
-          "line": 169,
-          "snippet": "// Router-level error handler — catches any unhandled errors"
         }
       ],
       "violations": []
@@ -2136,6 +2136,18 @@
         },
         {
           "repo": "backend",
+          "file": "src/http/__tests__/entity-export.test.ts",
+          "line": 20,
+          "snippet": "it(\"excludes audit actors, version, deleted_at and IANA helper fields\", () => {"
+        },
+        {
+          "repo": "backend",
+          "file": "src/http/__tests__/list-query.test.ts",
+          "line": 85,
+          "snippet": "filters: '[{\"field\":\"status\",\"op\":\"=\",\"value\":\"A\"}]',"
+        },
+        {
+          "repo": "backend",
           "file": "src/http/entity-meta.types.ts",
           "line": 33,
           "snippet": "* Entity field descriptor — the root-level `columns` dictionary."
@@ -2157,18 +2169,6 @@
           "file": "src/http/list-query.ts",
           "line": 5,
           "snippet": "* notation (`filters[0][field]=x&filters[0][op]=ILIKE&filters[0][value]=%25x%25`),"
-        },
-        {
-          "repo": "backend",
-          "file": "src/http/__tests__/entity-export.test.ts",
-          "line": 20,
-          "snippet": "it(\"excludes audit actors, version, deleted_at and IANA helper fields\", () => {"
-        },
-        {
-          "repo": "backend",
-          "file": "src/http/__tests__/list-query.test.ts",
-          "line": 85,
-          "snippet": "filters: '[{\"field\":\"status\",\"op\":\"=\",\"value\":\"A\"}]',"
         },
         {
           "repo": "backend",
@@ -2216,17 +2216,7 @@
       "violations": []
     }
   ],
-  "dependencies": {
-    "dal": [
-      {
-        "package": "@primebrick/decimal",
-        "version": "^3.0.0",
-        "severity": "low",
-        "type": "unpinned-version",
-        "description": "Version \"^3.0.0\" is not pinned — could resolve to a vulnerable release"
-      }
-    ]
-  },
+  "dependencies": {},
   "summary": {
     "totalControls": 17,
     "compliant": 14,
@@ -2235,6 +2225,6 @@
     "nonCompliant": 1,
     "totalEvidence": 5264,
     "totalViolations": 8,
-    "unpinnedDependencies": 1
+    "unpinnedDependencies": 0
   }
 }
