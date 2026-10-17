@@ -60,12 +60,15 @@ pnpm install
 && node scripts/fetch-openapi.mjs
 && node scripts/generate-nav.mjs
 && node scripts/generate-vpat-pdf.mjs
+&& node scripts/compliance-scan.mjs
+&& node scripts/generate-compliance-pdf.mjs
 && pnpm run build
 ```
 
-1. **`sync-repo-docs.mjs`** — shallow-clones all 5 Primebrick repos, copies
-   `docs/user-guide/**` → `pages/<repo>/guide/**` (recursive, preserves
-   subdirectories like `services/`).
+1. **`sync-repo-docs.mjs`** — shallow-clones the upstream repos listed in
+   `scripts/repos.mjs`, copies `docs/user-guide/**` → `pages/<repo>/guide/**`
+   and `docs/dev-guide/**` → `pages/<repo>/dev/**` (recursive, preserves
+   subdirectories; `_extracted/` is skipped).
 2. **`sync-vpat-data.mjs`** — copies `public/vpat/vpat-data.json` from the
    shallow-cloned FE repo (`.tmp-repo-sync/frontend/`) to `public/vpat/`.
    Skips gracefully if the FE repo doesn't have it yet.
@@ -74,18 +77,31 @@ pnpm install
    and each microservice's `src/server/openapi-route.ts` → `apis/<service>.json`.
    Also generates `src/generated-apis.ts` for Zudoku's API Catalog config.
 4. **`generate-nav.mjs`** — reads `_order.json` from each `pages/<repo>/guide/`
-   directory and generates `src/generated-nav.ts` with the sidebar navigation
-   in logical reading order. Recurses into subdirectories (e.g. `services/`)
-   and creates nested categories.
+   and `pages/<repo>/dev/` directory and generates `src/generated-nav.ts` with
+   the sidebar navigation in logical reading order.
 5. **`generate-vpat-pdf.mjs`** — generates `public/vpat/vpat-2.5.pdf` using
    pdfkit (pure Node.js®, no browser). Reads `public/vpat/vpat-data.json`
    (synced in step 2) and produces a formal VPAT 2.5 INT PDF document.
-6. **`zudoku build`** — prerenders all routes to static HTML. Copies
-   `public/**` → `dist/**` (including `public/vpat/vpat-2.5.pdf`).
+6. **`compliance-scan.mjs`** — scans `pages/**` for required content markers
+   and emits `public/compliance/compliance-report.json`.
+7. **`generate-compliance-pdf.mjs`** — renders the compliance report to
+   `public/compliance/compliance-report.pdf`.
+8. **`zudoku build`** — prerenders all routes to static HTML. Copies
+   `public/**` → `dist/**` (including the generated PDFs).
 
-The GitHub™ Actions workflow (`sync-docs.yml`) also runs this chain on a cron
-schedule (every 6 hours) and on push to `main`, committing any changes back
-to the repo.
+> ⚠️ There is intentionally **no in-repo reference generator**: per-entity /
+> filter / navigation reference pages are generated **inside the backend repo**
+> (`primebrick-be-v3` → `pnpm generate:docs`, wired into `prebuild`) and synced
+> here from `docs/user-guide/generated/` like any other page. The retired
+> `scripts/generate-reference-docs.mjs` was removed — do not resurrect it.
+
+The GitHub™ Actions workflow **`.github/workflows/docs-release.yml`** is the
+release automation: every 6 hours (cron) and on manual dispatch it compares
+each upstream repo's `main` HEAD against `scripts/docs-sync-state.json`; on
+drift it runs this chain, validates the Zudoku build, commits the synced
+content on `develop`, cuts a `release/<patch>` to `main` and tags it — the
+push to `main` wakes the Cloudflare® build. If upstream moved without docs
+content changes, it only records the new SHAs on `develop` (no release).
 
 ## Dev server
 
@@ -217,9 +233,11 @@ it up and the page will be missing from the docs site.
      MDX file, copies it to `pages/<repo>/guide/`, and the build includes it.
 
 **Never invert this order.** A docs release before the upstream release
-will build a docs site without the new content, and the next scheduled
-sync (every 6 hours via GitHub™ Actions cron) will only pick it up after
-the upstream repo's `main` is updated — potentially hours later.
+will build a docs site without the new content. The scheduled
+`docs-release` workflow (cron every 6h, or `gh workflow run docs-release.yml`
+to force it now) picks the content up automatically once upstream `main`
+has it — it detects the SHA drift, re-syncs, validates the build, and
+cuts a patch release. Manual sync commits to `develop` are unnecessary.
 
 ### _order.json manifest
 
