@@ -21,19 +21,13 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const projectRoot = join(__dirname, '..');
 const pagesDir = join(projectRoot, 'pages');
 
-// Each repo is tagged with its sidebar group:
-//   'service'  → appears under the "Services" category
-//   'library'  → appears under the "Libraries" category
-// This explicit tagging replaces the old positional slice(0,3)/slice(3)
-// split, which silently shifted categories when a repo was filtered out
-// (e.g. Backend having no docs caused DAL to slide into Services).
-const REPOS = [
-  { slug: 'backend',      label: 'Backend',      icon: 'server',   group: 'service' },
-  { slug: 'frontend',     label: 'Frontend',     icon: 'monitor',  group: 'service' },
-  { slug: 'microservices', label: 'Microservices', icon: 'boxes',  group: 'service' },
-  { slug: 'dal',          label: 'DAL Library',  icon: 'database', group: 'library' },
-  { slug: 'sdk',          label: 'SDK Library',  icon: 'package',  group: 'library' },
-];
+// Repo metadata (slug/label/icon/group) is the single source of truth in
+// scripts/repos.mjs — shared with sync-repo-docs.mjs so a synced repo can
+// never silently lose its sidebar entry (this was the decimal bug: it was
+// synced but missing here, leaving /decimal/dev/** orphaned).
+//   group 'service' → "Services" category; group 'library' → "Libraries".
+import { REPOS as ALL_REPOS } from './repos.mjs';
+const REPOS = ALL_REPOS.filter(r => r.label && r.icon && r.group);
 
 // Each tier maps a synced pages subdir to its sidebar grouping:
 //   guide — user-facing docs, flat in the repo category
