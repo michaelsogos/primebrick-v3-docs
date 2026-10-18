@@ -180,7 +180,15 @@ export const generatedRepoNav: Navigation = [
           "microservices/dev/architecture",
           "microservices/dev/conventions",
           "microservices/dev/adding-a-service",
-          "microservices/dev/job-handler"
+          "microservices/dev/job-handler",
+          {
+            "type": "category",
+            "label": "Services",
+            "items": [
+              "microservices/dev/services/ai/docs-kb",
+              "microservices/dev/services/emailsender/providers"
+            ]
+          }
         ]
       }
     ]
@@ -249,6 +257,31 @@ export const generatedRepoNav: Navigation = [
           "sdk/dev/cache-layer",
           "sdk/dev/telemetry-logging",
           "sdk/dev/api-reference"
+        ]
+      }
+    ]
+  },
+  {
+    "type": "category",
+    "label": "Decimal Library",
+    "icon": "calculator",
+    "collapsed": true,
+    "items": [
+      {
+        "type": "category",
+        "label": "Developer Guide",
+        "collapsed": true,
+        "items": [
+          "decimal/dev/getting-started",
+          "decimal/dev/precision-model",
+          "decimal/dev/division-and-periodicity",
+          "decimal/dev/rounding",
+          "decimal/dev/wire-format",
+          "decimal/dev/when-to-use",
+          "decimal/dev/when-not-to-use",
+          "decimal/dev/examples",
+          "decimal/dev/api-reference",
+          "decimal/dev/contributing"
         ]
       }
     ]
@@ -436,7 +469,15 @@ export const serviceNav: Navigation = [
           "microservices/dev/architecture",
           "microservices/dev/conventions",
           "microservices/dev/adding-a-service",
-          "microservices/dev/job-handler"
+          "microservices/dev/job-handler",
+          {
+            "type": "category",
+            "label": "Services",
+            "items": [
+              "microservices/dev/services/ai/docs-kb",
+              "microservices/dev/services/emailsender/providers"
+            ]
+          }
         ]
       }
     ]
@@ -507,6 +548,31 @@ export const libraryNav: Navigation = [
           "sdk/dev/cache-layer",
           "sdk/dev/telemetry-logging",
           "sdk/dev/api-reference"
+        ]
+      }
+    ]
+  },
+  {
+    "type": "category",
+    "label": "Decimal Library",
+    "icon": "calculator",
+    "collapsed": true,
+    "items": [
+      {
+        "type": "category",
+        "label": "Developer Guide",
+        "collapsed": true,
+        "items": [
+          "decimal/dev/getting-started",
+          "decimal/dev/precision-model",
+          "decimal/dev/division-and-periodicity",
+          "decimal/dev/rounding",
+          "decimal/dev/wire-format",
+          "decimal/dev/when-to-use",
+          "decimal/dev/when-not-to-use",
+          "decimal/dev/examples",
+          "decimal/dev/api-reference",
+          "decimal/dev/contributing"
         ]
       }
     ]
