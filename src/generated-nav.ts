@@ -260,6 +260,31 @@ export const generatedRepoNav: Navigation = [
         ]
       }
     ]
+  },
+  {
+    "type": "category",
+    "label": "Decimal Library",
+    "icon": "calculator",
+    "collapsed": true,
+    "items": [
+      {
+        "type": "category",
+        "label": "Developer Guide",
+        "collapsed": true,
+        "items": [
+          "decimal/dev/getting-started",
+          "decimal/dev/precision-model",
+          "decimal/dev/division-and-periodicity",
+          "decimal/dev/rounding",
+          "decimal/dev/wire-format",
+          "decimal/dev/when-to-use",
+          "decimal/dev/when-not-to-use",
+          "decimal/dev/examples",
+          "decimal/dev/api-reference",
+          "decimal/dev/contributing"
+        ]
+      }
+    ]
   }
 ];
 
@@ -523,6 +548,31 @@ export const libraryNav: Navigation = [
           "sdk/dev/cache-layer",
           "sdk/dev/telemetry-logging",
           "sdk/dev/api-reference"
+        ]
+      }
+    ]
+  },
+  {
+    "type": "category",
+    "label": "Decimal Library",
+    "icon": "calculator",
+    "collapsed": true,
+    "items": [
+      {
+        "type": "category",
+        "label": "Developer Guide",
+        "collapsed": true,
+        "items": [
+          "decimal/dev/getting-started",
+          "decimal/dev/precision-model",
+          "decimal/dev/division-and-periodicity",
+          "decimal/dev/rounding",
+          "decimal/dev/wire-format",
+          "decimal/dev/when-to-use",
+          "decimal/dev/when-not-to-use",
+          "decimal/dev/examples",
+          "decimal/dev/api-reference",
+          "decimal/dev/contributing"
         ]
       }
     ]
