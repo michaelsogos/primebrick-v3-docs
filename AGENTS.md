@@ -1,5 +1,21 @@
 # AI AGENT INSTRUCTIONS - Primebrick Docs (docs.primebrick.dev)
 
+## Documentation is the contract — code is the proof
+
+- Docs (AGENTS.md, .devin/rules/, docs/) are the source of truth for HOW
+  things work. Source code is NEVER documentation — reading code alone
+  tells you little about what the system actually does.
+- Need to know how to do something (tests, dev servers, conventions)?
+  Find it in the doc FIRST. Read code only as the "prova del 9" — to verify
+  the code behaves as the doc says. Never the reverse.
+- Doc and code disagree? Report the discrepancy — the doc is probably stale.
+  Do NOT fix docs silently and do NOT create new files in .devin/rules/,
+  docs/, or AGENTS.md on your own initiative: propose the text, write only
+  after approval.
+- Before claiming "a doc is missing", check the indexes:
+  .devin/rules/ listing and the AGENTS.md "Where to look" section.
+  The missing doc is usually a doc you haven't read.
+
 ## ⚠️ CRITICAL: NEVER COMMIT AUTOMATICALLY
 
 **AI agents MUST NEVER commit changes without explicit user instruction.**
