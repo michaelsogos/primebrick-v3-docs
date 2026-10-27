@@ -196,6 +196,11 @@ const config: ZudokuConfig = {
   redirects: [
     { from: "/", to: "/getting-started/introduction" },
   ],
+  sitemap: {
+    siteUrl: "https://docs.primebrick.dev",
+    changefreq: "weekly",
+    autoLastmod: true,
+  },
   catalogs: {
     path: "/catalog",
     label: "API Catalog",

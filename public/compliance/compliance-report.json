@@ -1,5 +1,5 @@
 {
-  "scanDate": "2026-10-17T20:33:40.579Z",
+  "scanDate": "2026-10-18T15:49:42.361Z",
   "scannerVersion": "1.0.0",
   "reposScanned": [
     "backend",
@@ -350,7 +350,7 @@
         "CCPA": "§1798.130(a)(5)(A)"
       },
       "status": "compliant",
-      "evidenceCount": 160,
+      "evidenceCount": 159,
       "violationCount": 0,
       "reposScanned": [
         "backend",
@@ -526,7 +526,7 @@
         "NIS2": "Art. 21(2)(c)"
       },
       "status": "compliant",
-      "evidenceCount": 149,
+      "evidenceCount": 141,
       "violationCount": 0,
       "reposScanned": [
         "backend",
@@ -2223,7 +2223,7 @@
     "partiallyCompliant": 2,
     "notFound": 0,
     "nonCompliant": 1,
-    "totalEvidence": 5264,
+    "totalEvidence": 5255,
     "totalViolations": 8,
     "unpinnedDependencies": 0
   }
