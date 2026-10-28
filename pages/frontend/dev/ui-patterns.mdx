@@ -18,7 +18,7 @@ A **detail page** is any page that is **not** a table/list page. Examples:
 - `/system/settings/organizations/create` — org create form
 - `/system/settings/organizations/{uuid}` — org edit form
 
-Table pages (entity lists) use `EntityListTable` and are covered in
+Table pages (entity lists) use `EntityTablePage` → `EntityListTable` and are covered in
 [Entity list table](/frontend/dev/components/entity-list-table). This page
 only covers detail pages.
 
@@ -308,7 +308,8 @@ NOT user passwords, NOT subject to the password policy.
   `email-providers/+page.svelte` (API key).
 
 OTP/code inputs (6-digit verification codes) are NOT password fields —
-use plain `Input` with `inputmode="numeric" autocomplete="one-time-code"`.
+use `OtpInput` + `useOtpInput` from `@primebrick/ui` (digits-only cells, paste, auto-submit;
+never a plain `Input`).
 
 ## In-card list pattern
 
