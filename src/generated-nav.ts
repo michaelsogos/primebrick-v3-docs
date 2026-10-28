@@ -35,14 +35,17 @@ export const generatedRepoNav: Navigation = [
           "backend/guide/generated/entity-field-reference",
           "backend/guide/generated/filter-operator-reference",
           "backend/guide/generated/filter-syntax-guide",
-          "backend/guide/generated/navigation-map"
+          "backend/guide/generated/navigation-map",
+          "backend/guide/generated/entity-api-catalog",
+          "backend/guide/generated/clients-create",
+          "backend/guide/generated/clients-edit",
+          "backend/guide/generated/clients"
         ]
       },
       {
         "type": "category",
         "label": "Manual",
         "items": [
-          "backend/guide/manual/entities-crud",
           "backend/guide/manual/migrations"
         ]
       },
@@ -56,6 +59,7 @@ export const generatedRepoNav: Navigation = [
           "backend/dev/api-conventions",
           "backend/dev/entity-metadata",
           "backend/dev/entity-crud-pipeline",
+          "backend/dev/entities-crud",
           "backend/dev/module-navigation",
           "backend/dev/service-registry",
           "backend/dev/mcp",
@@ -120,8 +124,8 @@ export const generatedRepoNav: Navigation = [
               "frontend/dev/components/browser-client-info",
               "frontend/dev/components/lang-select",
               "frontend/dev/components/theme-toggle",
+              "frontend/dev/components/sidebar-app-launcher",
               "frontend/dev/components/sidebar-health-badge",
-              "frontend/dev/components/sidebar-module-switcher",
               "frontend/dev/components/sidebar-org-switcher",
               "frontend/dev/components/sidebar-profile-menu",
               "frontend/dev/components/sidebar-version-badge",
@@ -180,7 +184,6 @@ export const generatedRepoNav: Navigation = [
           "microservices/dev/architecture",
           "microservices/dev/conventions",
           "microservices/dev/adding-a-service",
-          "microservices/dev/job-handler",
           {
             "type": "category",
             "label": "Services",
@@ -324,14 +327,17 @@ export const serviceNav: Navigation = [
           "backend/guide/generated/entity-field-reference",
           "backend/guide/generated/filter-operator-reference",
           "backend/guide/generated/filter-syntax-guide",
-          "backend/guide/generated/navigation-map"
+          "backend/guide/generated/navigation-map",
+          "backend/guide/generated/entity-api-catalog",
+          "backend/guide/generated/clients-create",
+          "backend/guide/generated/clients-edit",
+          "backend/guide/generated/clients"
         ]
       },
       {
         "type": "category",
         "label": "Manual",
         "items": [
-          "backend/guide/manual/entities-crud",
           "backend/guide/manual/migrations"
         ]
       },
@@ -345,6 +351,7 @@ export const serviceNav: Navigation = [
           "backend/dev/api-conventions",
           "backend/dev/entity-metadata",
           "backend/dev/entity-crud-pipeline",
+          "backend/dev/entities-crud",
           "backend/dev/module-navigation",
           "backend/dev/service-registry",
           "backend/dev/mcp",
@@ -409,8 +416,8 @@ export const serviceNav: Navigation = [
               "frontend/dev/components/browser-client-info",
               "frontend/dev/components/lang-select",
               "frontend/dev/components/theme-toggle",
+              "frontend/dev/components/sidebar-app-launcher",
               "frontend/dev/components/sidebar-health-badge",
-              "frontend/dev/components/sidebar-module-switcher",
               "frontend/dev/components/sidebar-org-switcher",
               "frontend/dev/components/sidebar-profile-menu",
               "frontend/dev/components/sidebar-version-badge",
@@ -469,7 +476,6 @@ export const serviceNav: Navigation = [
           "microservices/dev/architecture",
           "microservices/dev/conventions",
           "microservices/dev/adding-a-service",
-          "microservices/dev/job-handler",
           {
             "type": "category",
             "label": "Services",
