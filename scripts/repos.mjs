@@ -19,4 +19,8 @@ export const REPOS = [
   // Dev-guide only — decimal is a developer library; no user-guide tier exists,
   // so it publishes to pages/decimal/dev/** and never enters the product KB.
   { git: 'https://github.com/michaelsogos/primebrick-decimal.git', slug: 'decimal', label: 'Decimal Library', icon: 'calculator', group: 'library' },
+  // Same dev-guide-only class: core/ui are developer libraries — contracts and
+  // components documented for consumers, no product-facing user-guide tier.
+  { git: 'https://github.com/michaelsogos/primebrick-v3-core.git', slug: 'core', label: 'Core Contracts', icon: 'braces', group: 'library' },
+  { git: 'https://github.com/michaelsogos/primebrick-v3-ui.git', slug: 'ui', label: 'UI Library', icon: 'component', group: 'library' },
 ];
