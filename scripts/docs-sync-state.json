@@ -1,10 +1,10 @@
 {
   "shas": {
-    "backend": "ca9e2246c7f1fd27d038fcc93fbf6a037a2b6c0c",
-    "frontend": "f3166903c17578564341a5133b80bfc947de6773",
-    "microservices": "f1106c2826874895aa895159213eb068a2a606d1",
-    "dal": "c47af58a5bf5923eb8fdf4d5b9f7d2d5b57e11be",
-    "sdk": "884b05c56faf711f6e88a92e77f5a5d20b3f1b76",
-    "decimal": "efd4f740544d150ea8da4bc92506f1cfde29d46e"
+    "backend": "db3f8e8e42d59298c35450a518228fbaeafd3967",
+    "frontend": "065affa3baadf2e414d830e89e1b9c1dae0c9762",
+    "microservices": "637ceac46da41fa9ef9c9e6b544e6f00ab3e8517",
+    "dal": "f8691ec51d80f8311eee32be7323ea888358e518",
+    "sdk": "e16025dd4311c21c77a41349fb21d0176f0c5833",
+    "decimal": "8c0f931526377e151ad9f5b9805e37a3f4f112e6"
   }
 }

@@ -1,5 +1,5 @@
 {
-  "scanDate": "2026-10-18T15:49:42.361Z",
+  "scanDate": "2026-10-28T05:35:26.392Z",
   "scannerVersion": "1.0.0",
   "reposScanned": [
     "backend",
@@ -64,7 +64,7 @@
         "CCPA": "§1798.150(a)(1)"
       },
       "status": "compliant",
-      "evidenceCount": 872,
+      "evidenceCount": 946,
       "violationCount": 0,
       "reposScanned": [
         "backend",
@@ -110,6 +110,60 @@
         },
         {
           "repo": "backend",
+          "file": "src/controllers/http/__tests__/mcp-call.router.test.ts",
+          "line": 6,
+          "snippet": "* of the service result (RBAC denial → 403, unknown tool → 404)."
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/__tests__/mcp-call.router.test.ts",
+          "line": 11,
+          "snippet": "PERMISSION_DECLARED_TEST: Symbol.for(\"primebrick.permission_declared\"),"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/__tests__/mcp-call.router.test.ts",
+          "line": 26,
+          "snippet": "vi.mock(\"../../../modules/auth/rbac.middleware.js\", () => ({"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/__tests__/mcp-call.router.test.ts",
+          "line": 27,
+          "snippet": "PERMISSION_DECLARED: mocks.PERMISSION_DECLARED_TEST,"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/__tests__/mcp-call.router.test.ts",
+          "line": 30,
+          "snippet": "req.user = { id: \"user-1\", permissions: new Set([\"*\"]), isAdmin: true };"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/__tests__/mcp-call.router.test.ts",
+          "line": 34,
+          "snippet": "h[mocks.PERMISSION_DECLARED_TEST] = { declared: [\"test.perm\"] };"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/__tests__/mcp-call.router.test.ts",
+          "line": 114,
+          "snippet": "it(\"RBAC denial from the tool → status passthrough (403)\", async () => {"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/__tests__/mcp-call.router.test.ts",
+          "line": 115,
+          "snippet": "mocks.service.call.mockResolvedValue({ ok: false, error: \"Permission denied\", status: 403 });"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/__tests__/mcp-call.router.test.ts",
+          "line": 124,
+          "snippet": "expect(body.error).toBe(\"Permission denied\");"
+        },
+        {
+          "repo": "backend",
           "file": "src/controllers/http/__tests__/role-mappings.router.test.ts",
           "line": 10,
           "snippet": "PERMISSION_DECLARED_TEST: Symbol.for(\"primebrick.permission_declared\"),"
@@ -137,60 +191,6 @@
           "file": "src/controllers/http/__tests__/role-mappings.router.test.ts",
           "line": 38,
           "snippet": "h[mocks.PERMISSION_DECLARED_TEST] = { declared: [\"test.perm\"] };"
-        },
-        {
-          "repo": "backend",
-          "file": "src/controllers/http/__tests__/role-mappings.router.test.ts",
-          "line": 77,
-          "snippet": "const BASE = \"/api/v1/entities/role_mapping\";"
-        },
-        {
-          "repo": "backend",
-          "file": "src/controllers/http/__tests__/role-mappings.router.test.ts",
-          "line": 105,
-          "snippet": "expect(mocks.mfaStepUp).toHaveBeenCalledWith(\"delete\", \"role_mapping\");"
-        },
-        {
-          "repo": "backend",
-          "file": "src/controllers/http/__tests__/role-mappings.router.test.ts",
-          "line": 163,
-          "snippet": "entity: { idp_role: \"sales\", idp_org: \"primebrick\", permissions: [\"auth.user_read_all\"] },"
-        },
-        {
-          "repo": "backend",
-          "file": "src/controllers/http/auth/auth-check.router.ts",
-          "line": 18,
-          "snippet": "import { rbacHandler } from \"../../../modules/auth/rbac.middleware.js\";"
-        },
-        {
-          "repo": "backend",
-          "file": "src/controllers/http/auth/auth-check.router.ts",
-          "line": 19,
-          "snippet": "import { Permission } from \"@primebrick/sdk\";"
-        },
-        {
-          "repo": "backend",
-          "file": "src/controllers/http/auth/auth-check.router.ts",
-          "line": 62,
-          "snippet": "permission: rbacHandler([Permission.USER_PROFILE_READ_ALL]),"
-        },
-        {
-          "repo": "backend",
-          "file": "src/controllers/http/auth/auth-check.router.ts",
-          "line": 68,
-          "snippet": "permission: rbacHandler([Permission.USER_PROFILE_READ_ALL]),"
-        },
-        {
-          "repo": "backend",
-          "file": "src/controllers/http/auth/auth-invitation.router.ts",
-          "line": 32,
-          "snippet": "import { rbacHandler } from \"../../../modules/auth/rbac.middleware.js\";"
-        },
-        {
-          "repo": "backend",
-          "file": "src/controllers/http/auth/auth-invitation.router.ts",
-          "line": 33,
-          "snippet": "import { Permission } from \"@primebrick/sdk\";"
         }
       ],
       "violations": []
@@ -207,7 +207,7 @@
         "CCPA": "§1798.150(a)(1)"
       },
       "status": "compliant",
-      "evidenceCount": 1045,
+      "evidenceCount": 1061,
       "violationCount": 0,
       "reposScanned": [
         "backend",
@@ -526,7 +526,7 @@
         "NIS2": "Art. 21(2)(c)"
       },
       "status": "compliant",
-      "evidenceCount": 141,
+      "evidenceCount": 160,
       "violationCount": 0,
       "reposScanned": [
         "backend",
@@ -601,6 +601,12 @@
         },
         {
           "repo": "backend",
+          "file": "src/controllers/http/client-registry.router.ts",
+          "line": 15,
+          "snippet": "*   DELETE /api/v1/entities/client_registry/:uuid          → soft delete (manual rows only)"
+        },
+        {
+          "repo": "backend",
           "file": "src/controllers/http/customers.router.ts",
           "line": 16,
           "snippet": "*   DELETE /api/v1/entities/customer/:uuid           → soft delete"
@@ -625,6 +631,12 @@
         },
         {
           "repo": "backend",
+          "file": "src/controllers/nats-sub/service-lifecycle-subscriber.ts",
+          "line": 390,
+          "snippet": "// Re-registration after a soft-delete: restore the tombstone row —"
+        },
+        {
+          "repo": "backend",
           "file": "src/db/entity-audit-port.ts",
           "line": 10,
           "snippet": "* and, for UPDATE / SOFT_DELETE / RESTORE / HARD_DELETE actions, publishes an"
@@ -640,18 +652,6 @@
           "file": "src/http/__tests__/entity-export.test.ts",
           "line": 20,
           "snippet": "it(\"excludes audit actors, version, deleted_at and IANA helper fields\", () => {"
-        },
-        {
-          "repo": "backend",
-          "file": "src/http/__tests__/entity-export.test.ts",
-          "line": 26,
-          "snippet": "expect(keys).not.toContain(\"deleted_at\");"
-        },
-        {
-          "repo": "backend",
-          "file": "src/http/__tests__/entity-router.test.ts",
-          "line": 106,
-          "snippet": "describe(\"makeEntityRouter — soft-delete-only entity\", () => {"
         }
       ],
       "violations": []
@@ -668,7 +668,7 @@
         "OWASP": "A03:2021 — Injection"
       },
       "status": "compliant",
-      "evidenceCount": 104,
+      "evidenceCount": 112,
       "violationCount": 0,
       "reposScanned": [
         "backend",
@@ -677,6 +677,18 @@
         "dal"
       ],
       "evidence": [
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/__tests__/mcp-call.router.test.ts",
+          "line": 4,
+          "snippet": "* transport contract: zod body validation, authenticated-user gate, single"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/__tests__/mcp-call.router.test.ts",
+          "line": 60,
+          "snippet": "it(\"missing tool → 400 (zod body schema)\", async () => {"
+        },
         {
           "repo": "backend",
           "file": "src/controllers/http/auth/auth-invitation.router.ts",
@@ -775,27 +787,15 @@
         },
         {
           "repo": "backend",
-          "file": "src/controllers/http/customers.router.ts",
-          "line": 5,
+          "file": "src/controllers/http/client-registry.router.ts",
+          "line": 7,
           "snippet": "* uuid/body/query validation, translations permission, version query,"
         },
         {
           "repo": "backend",
-          "file": "src/controllers/http/mcp-call.router.ts",
-          "line": 14,
-          "snippet": "import { z } from \"zod\";"
-        },
-        {
-          "repo": "backend",
-          "file": "src/controllers/http/system.router.ts",
-          "line": 23,
-          "snippet": "import { z } from \"zod\";"
-        },
-        {
-          "repo": "backend",
-          "file": "src/controllers/http/system.router.ts",
-          "line": 54,
-          "snippet": "const r = ServiceCodeParamSchema.safeParse({ code: raw });"
+          "file": "src/controllers/http/customers.router.ts",
+          "line": 5,
+          "snippet": "* uuid/body/query validation, translations permission, version query,"
         }
       ],
       "violations": []
@@ -812,7 +812,7 @@
         "CCPA": "§1798.150(a)(1)"
       },
       "status": "compliant",
-      "evidenceCount": 84,
+      "evidenceCount": 82,
       "violationCount": 0,
       "reposScanned": [
         "backend",
@@ -827,14 +827,8 @@
         },
         {
           "repo": "backend",
-          "file": "src/controllers/http/mcp/oauth-authorize.router.ts",
-          "line": 46,
-          "snippet": "* In production, set `PUBLIC_FE_URL` env var (e.g. https://app.primebrick.com)."
-        },
-        {
-          "repo": "backend",
           "file": "src/controllers/nats-sub/__tests__/service-lifecycle-subscriber.test.ts",
-          "line": 44,
+          "line": 51,
           "snippet": "github_repo_url: \"https://github.com/example/svc-a\","
         },
         {
@@ -938,6 +932,12 @@
           "file": "src/modules/proxy/__tests__/proxy-headers.test.ts",
           "line": 62,
           "snippet": "expect(h[\"x-forwarded-proto\"]).toBe(\"https\");"
+        },
+        {
+          "repo": "backend",
+          "file": "src/modules/proxy/proxy-service.ts",
+          "line": 106,
+          "snippet": "type: \"https://primebrick.io/errors/missing-service-code\","
         }
       ],
       "violations": []
@@ -987,7 +987,7 @@
         "OWASP": "A07:2021 — Auth Failures"
       },
       "status": "compliant",
-      "evidenceCount": 273,
+      "evidenceCount": 277,
       "violationCount": 0,
       "reposScanned": [
         "backend",
@@ -1101,7 +1101,7 @@
         {
           "repo": "backend",
           "file": "src/controllers/http/mcp/oauth-metadata.router.ts",
-          "line": 56,
+          "line": 53,
           "snippet": "grant_types_supported: [\"authorization_code\", \"refresh_token\"],"
         },
         {
@@ -1130,7 +1130,7 @@
         "GDPR": "Art. 32(1)(b)"
       },
       "status": "compliant",
-      "evidenceCount": 825,
+      "evidenceCount": 841,
       "violationCount": 0,
       "reposScanned": [
         "backend",
@@ -1272,13 +1272,25 @@
         "NIS2": "Art. 21(2)(e)"
       },
       "status": "compliant",
-      "evidenceCount": 141,
+      "evidenceCount": 149,
       "violationCount": 0,
       "reposScanned": [
         "backend",
         "dal"
       ],
       "evidence": [
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/client-registry.router.ts",
+          "line": 42,
+          "snippet": "ClientRegistryListQuerySchema,"
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/client-registry.router.ts",
+          "line": 71,
+          "snippet": "listQuery: ClientRegistryListQuerySchema,"
+        },
         {
           "repo": "backend",
           "file": "src/db/audit-query-helper.ts",
@@ -1354,7 +1366,7 @@
         {
           "repo": "backend",
           "file": "src/modules/auth/services/user.service.ts",
-          "line": 704,
+          "line": 708,
           "snippet": "// the welcome page. We pass a random placeholder if no password is"
         },
         {
@@ -1365,39 +1377,27 @@
         },
         {
           "repo": "backend",
-          "file": "src/modules/module-nav-meta.ts",
-          "line": 4,
-          "snippet": "* This is a PLACEHOLDER until microservices self-describe their nav via NATS"
+          "file": "src/modules/system/client-shield-registry.dto.ts",
+          "line": 26,
+          "snippet": "export const ClientRegistryListQuerySchema = ListQueryBaseSchema.extend({"
         },
         {
           "repo": "backend",
-          "file": "src/openapi/openapi.ts",
-          "line": 250,
-          "snippet": "{ name: \"client_id\", in: \"query\", required: true, schema: { type: \"string\" } },"
+          "file": "src/modules/system/client-shield-registry.dto.ts",
+          "line": 30,
+          "snippet": "export type ClientRegistryListQuery = z.infer<typeof ClientRegistryListQuerySchema>;"
         },
         {
-          "repo": "dal",
-          "file": "src/dal/dal.ts",
-          "line": 50,
-          "snippet": "import { quoteIdent } from \"../query/query-builder.js\";"
+          "repo": "backend",
+          "file": "src/modules/system/client-shield-registry.service.ts",
+          "line": 25,
+          "snippet": "ClientRegistryListQuery,"
         },
         {
-          "repo": "dal",
-          "file": "src/dal/dal.ts",
-          "line": 231,
-          "snippet": "await client.query(statements.join(\"; \"));"
-        },
-        {
-          "repo": "dal",
-          "file": "src/dal/dal.ts",
-          "line": 606,
-          "snippet": "const r = await this.pool.query<{ server_version: string; version: string }>("
-        },
-        {
-          "repo": "dal",
-          "file": "src/dal/dal.ts",
-          "line": 623,
-          "snippet": "await client.query(\"BEGIN\");"
+          "repo": "backend",
+          "file": "src/modules/system/client-shield-registry.service.ts",
+          "line": 207,
+          "snippet": "(q as ClientRegistryListQuery).source"
         }
       ],
       "violations": []
@@ -1413,8 +1413,8 @@
         "OWASP": "A02:2021 — Cryptographic Failures"
       },
       "status": "non-compliant",
-      "evidenceCount": 228,
-      "violationCount": 8,
+      "evidenceCount": 233,
+      "violationCount": 9,
       "reposScanned": [
         "backend",
         "frontend",
@@ -1426,49 +1426,19 @@
         {
           "repo": "backend",
           "file": "src/controllers/http/mcp/oauth-authorize.router.ts",
-          "line": 46,
-          "snippet": "* In production, set `PUBLIC_FE_URL` env var (e.g. https://app.primebrick.com)."
-        },
-        {
-          "repo": "backend",
-          "file": "src/controllers/http/mcp/oauth-authorize.router.ts",
-          "line": 50,
-          "snippet": "if (process.env.PUBLIC_FE_URL) {"
-        },
-        {
-          "repo": "backend",
-          "file": "src/controllers/http/mcp/oauth-authorize.router.ts",
-          "line": 51,
-          "snippet": "return process.env.PUBLIC_FE_URL.replace(/\\/$/, \"\");"
+          "line": 47,
+          "snippet": "* Closed-set env contract: no PUBLIC_FE_URL env var — the frontend URL is a"
         },
         {
           "repo": "backend",
           "file": "src/controllers/http/mcp/oauth-metadata.router.ts",
           "line": 21,
-          "snippet": "* In production this comes from the `PUBLIC_BASE_URL` env var."
-        },
-        {
-          "repo": "backend",
-          "file": "src/controllers/http/mcp/oauth-metadata.router.ts",
-          "line": 25,
-          "snippet": "if (process.env.PUBLIC_BASE_URL) {"
-        },
-        {
-          "repo": "backend",
-          "file": "src/controllers/http/mcp/oauth-metadata.router.ts",
-          "line": 26,
-          "snippet": "return process.env.PUBLIC_BASE_URL.replace(/\\/$/, \"\");"
-        },
-        {
-          "repo": "backend",
-          "file": "src/controllers/http/mcp/oauth-metadata.router.ts",
-          "line": 39,
-          "snippet": "const port = process.env.PORT ?? \"3001\";"
+          "snippet": "* Closed-set env contract: no PUBLIC_BASE_URL/PORT env var — derived from"
         },
         {
           "repo": "backend",
           "file": "src/controllers/nats-sub/service-lifecycle-subscriber.ts",
-          "line": 187,
+          "line": 240,
           "snippet": "* A service claims the PG schemas of its DATABASE_SCHEMA env contract."
         },
         {
@@ -1534,14 +1504,44 @@
         {
           "repo": "backend",
           "file": "src/index.ts",
-          "line": 43,
+          "line": 44,
           "snippet": "// Closed-set env contract: DATABASE_URL + DATABASE_SCHEMA are the ONLY"
         },
         {
           "repo": "backend",
           "file": "src/index.ts",
-          "line": 44,
+          "line": 45,
           "snippet": "// env vars this service may consume — any violation crashes before listen."
+        },
+        {
+          "repo": "backend",
+          "file": "src/index.ts",
+          "line": 52,
+          "snippet": "// Closed-set env contract (assertDbEnv above): only DATABASE_URL and"
+        },
+        {
+          "repo": "backend",
+          "file": "src/index.ts",
+          "line": 54,
+          "snippet": "// not an env override."
+        },
+        {
+          "repo": "backend",
+          "file": "src/index.ts",
+          "line": 92,
+          "snippet": "// Closed-set env contract: no env fallbacks — IDP configuration lives in"
+        },
+        {
+          "repo": "backend",
+          "file": "src/index.ts",
+          "line": 397,
+          "snippet": "const dbUrl = (process.env.DATABASE_URL ?? \"localhost:5432\").replace(/(:\\/\\/[^:/]+):[^@]+@/, \"$1@\");"
+        },
+        {
+          "repo": "backend",
+          "file": "src/index.ts",
+          "line": 447,
+          "snippet": "// 20261022225000_seed_nats_url) — the env contract allows only"
         }
       ],
       "violations": [
@@ -1592,6 +1592,12 @@
           "file": "src/nats/__tests__/nats-routes.test.ts",
           "line": 13,
           "snippet": "gateway: { secret: \"test-secret\", secret_header_name: \"x-client-shield-secret\", headers: {} },"
+        },
+        {
+          "repo": "sdk",
+          "file": "src/service/__tests__/service-identity.test.ts",
+          "line": 130,
+          "snippet": "const secret = \"test-derivation-secret\";"
         }
       ]
     },
@@ -1621,13 +1627,13 @@
         {
           "repo": "backend",
           "file": "src/controllers/http/mcp/oauth-metadata.router.ts",
-          "line": 95,
+          "line": 92,
           "snippet": "// Permissive CORS for discovery endpoints"
         },
         {
           "repo": "backend",
           "file": "src/controllers/http/mcp/oauth-metadata.router.ts",
-          "line": 96,
+          "line": 93,
           "snippet": "router.use(cors());"
         },
         {
@@ -1639,7 +1645,7 @@
         {
           "repo": "backend",
           "file": "src/index.ts",
-          "line": 53,
+          "line": 57,
           "snippet": "app.use(cors({ origin: true }));"
         },
         {
@@ -1661,7 +1667,7 @@
         "ISO 27001": "A.8.16"
       },
       "status": "compliant",
-      "evidenceCount": 413,
+      "evidenceCount": 472,
       "violationCount": 0,
       "reposScanned": [
         "backend",
@@ -1674,6 +1680,12 @@
           "file": "src/cache/cache-port-holder.ts",
           "line": 56,
           "snippet": "* Returns the Redis health status for the `/api/v1/health` endpoint."
+        },
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/client-registry.router.ts",
+          "line": 52,
+          "snippet": "const service = new ClientShieldRegistryService();"
         },
         {
           "repo": "backend",
@@ -1690,13 +1702,13 @@
         {
           "repo": "backend",
           "file": "src/controllers/http/system.router.ts",
-          "line": 10,
+          "line": 9,
           "snippet": "*   GET    /api/v1/system/services               → service registry list"
         },
         {
           "repo": "backend",
           "file": "src/controllers/http/system.router.ts",
-          "line": 13,
+          "line": 12,
           "snippet": "*   DELETE /api/v1/system/services/:code         → hard delete from registry"
         },
         {
@@ -1714,31 +1726,31 @@
         {
           "repo": "backend",
           "file": "src/controllers/nats-sub/__tests__/service-lifecycle-subscriber.test.ts",
-          "line": 13,
+          "line": 17,
           "snippet": "// Mock ServiceRegistryService — always returns the shared mockRepo instance"
         },
         {
           "repo": "backend",
           "file": "src/controllers/nats-sub/__tests__/service-lifecycle-subscriber.test.ts",
-          "line": 14,
+          "line": 18,
           "snippet": "vi.mock(\"../../../modules/system/service-registry.service.js\", () => ({"
         },
         {
           "repo": "backend",
           "file": "src/controllers/nats-sub/__tests__/service-lifecycle-subscriber.test.ts",
-          "line": 15,
+          "line": 19,
           "snippet": "ServiceRegistryService: vi.fn().mockImplementation(function () { return mockRepo; }),"
         },
         {
           "repo": "backend",
           "file": "src/controllers/nats-sub/__tests__/service-lifecycle-subscriber.test.ts",
-          "line": 45,
+          "line": 52,
           "snippet": "endpoints: { \"/health\": { method: \"GET\" } },"
         },
         {
           "repo": "backend",
           "file": "src/controllers/nats-sub/__tests__/service-lifecycle-subscriber.test.ts",
-          "line": 218,
+          "line": 314,
           "snippet": "// existing status is 'online' and heartbeat derives 'online' → no change log"
         },
         {
@@ -1782,12 +1794,6 @@
           "file": "src/controllers/nats-sub/internal-request-routes.ts",
           "line": 40,
           "snippet": "const serviceSvc = new ServiceRegistryService();"
-        },
-        {
-          "repo": "backend",
-          "file": "src/controllers/nats-sub/internal-request-routes.ts",
-          "line": 68,
-          "snippet": "// is the sanctioned replacement for direct public.service_registry"
         }
       ],
       "violations": []
@@ -1802,7 +1808,7 @@
         "ISO 27001": "A.5.23"
       },
       "status": "compliant",
-      "evidenceCount": 653,
+      "evidenceCount": 763,
       "violationCount": 0,
       "reposScanned": [
         "backend",
@@ -1810,6 +1816,12 @@
         "sdk"
       ],
       "evidence": [
+        {
+          "repo": "backend",
+          "file": "src/controllers/http/client-registry.router.ts",
+          "line": 52,
+          "snippet": "const service = new ClientShieldRegistryService();"
+        },
         {
           "repo": "backend",
           "file": "src/controllers/http/collaboration.router.ts",
@@ -1843,13 +1855,13 @@
         {
           "repo": "backend",
           "file": "src/controllers/http/system.router.ts",
-          "line": 10,
+          "line": 9,
           "snippet": "*   GET    /api/v1/system/services               → service registry list"
         },
         {
           "repo": "backend",
           "file": "src/controllers/http/system.router.ts",
-          "line": 13,
+          "line": 12,
           "snippet": "*   DELETE /api/v1/system/services/:code         → hard delete from registry"
         },
         {
@@ -1867,19 +1879,19 @@
         {
           "repo": "backend",
           "file": "src/controllers/nats-sub/__tests__/service-lifecycle-subscriber.test.ts",
-          "line": 13,
+          "line": 17,
           "snippet": "// Mock ServiceRegistryService — always returns the shared mockRepo instance"
         },
         {
           "repo": "backend",
           "file": "src/controllers/nats-sub/__tests__/service-lifecycle-subscriber.test.ts",
-          "line": 14,
+          "line": 18,
           "snippet": "vi.mock(\"../../../modules/system/service-registry.service.js\", () => ({"
         },
         {
           "repo": "backend",
           "file": "src/controllers/nats-sub/__tests__/service-lifecycle-subscriber.test.ts",
-          "line": 15,
+          "line": 19,
           "snippet": "ServiceRegistryService: vi.fn().mockImplementation(function () { return mockRepo; }),"
         },
         {
@@ -1923,12 +1935,6 @@
           "file": "src/controllers/nats-sub/internal-request-routes.ts",
           "line": 2,
           "snippet": "* Governed service-to-BE query endpoints (NATS pub/sub correlation-reply —"
-        },
-        {
-          "repo": "backend",
-          "file": "src/controllers/nats-sub/internal-request-routes.ts",
-          "line": 13,
-          "snippet": "import type { Msg } from \"nats\";"
         }
       ],
       "violations": []
@@ -1943,7 +1949,7 @@
         "OWASP": "A09:2021 — Security Logging"
       },
       "status": "compliant",
-      "evidenceCount": 218,
+      "evidenceCount": 222,
       "violationCount": 0,
       "reposScanned": [
         "backend",
@@ -2068,7 +2074,7 @@
         {
           "repo": "backend",
           "file": "src/controllers/http/mcp/oauth-authorize.router.ts",
-          "line": 86,
+          "line": 89,
           "snippet": "error_description: \"Only response_type=code is supported\","
         }
       ],
@@ -2085,7 +2091,7 @@
         "CCPA": "§1798.100(d)"
       },
       "status": "compliant",
-      "evidenceCount": 89,
+      "evidenceCount": 98,
       "violationCount": 0,
       "reposScanned": [
         "backend",
@@ -2148,24 +2154,6 @@
         },
         {
           "repo": "backend",
-          "file": "src/http/entity-meta.types.ts",
-          "line": 33,
-          "snippet": "* Entity field descriptor — the root-level `columns` dictionary."
-        },
-        {
-          "repo": "backend",
-          "file": "src/http/entity-meta.types.ts",
-          "line": 45,
-          "snippet": "* sticky column, hidden but selectable); `display_field` is `order: 0`. */"
-        },
-        {
-          "repo": "backend",
-          "file": "src/http/entity-meta.types.ts",
-          "line": 157,
-          "snippet": "/** Entity field dictionary (root-level, transversal). */"
-        },
-        {
-          "repo": "backend",
           "file": "src/http/list-query.ts",
           "line": 5,
           "snippet": "* notation (`filters[0][field]=x&filters[0][op]=ILIKE&filters[0][value]=%25x%25`),"
@@ -2211,20 +2199,55 @@
           "file": "src/modules/auth/services/config-entries.service.ts",
           "line": 751,
           "snippet": "Filter.fieldValue(field(ConfigEntryEntity, \"uuid\" as any), \"IN\", uuids),"
+        },
+        {
+          "repo": "backend",
+          "file": "src/modules/auth/services/invitation.service.ts",
+          "line": 122,
+          "snippet": "Filter.fieldValue(field(UserInvitationEntity, \"token_hash\" as any), \"=\", tokenHash),"
+        },
+        {
+          "repo": "backend",
+          "file": "src/modules/auth/services/invitation.service.ts",
+          "line": 139,
+          "snippet": "Filter.fieldValue(field(UserInvitationEntity, \"uuid\" as any), \"=\", uuid),"
+        },
+        {
+          "repo": "backend",
+          "file": "src/modules/auth/services/invitation.service.ts",
+          "line": 156,
+          "snippet": "Filter.fieldValue(field(UserInvitationEntity, \"user_profile_id\" as any), \"=\", userProfileId),"
         }
       ],
       "violations": []
     }
   ],
-  "dependencies": {},
+  "dependencies": {
+    "sdk": [
+      {
+        "package": "pluralize",
+        "version": "^8.0.0",
+        "severity": "low",
+        "type": "unpinned-version",
+        "description": "Version \"^8.0.0\" is not pinned — could resolve to a vulnerable release"
+      },
+      {
+        "package": "@types/pluralize",
+        "version": "^0.0.33",
+        "severity": "low",
+        "type": "unpinned-version",
+        "description": "Version \"^0.0.33\" is not pinned — could resolve to a vulnerable release"
+      }
+    ]
+  },
   "summary": {
     "totalControls": 17,
     "compliant": 14,
     "partiallyCompliant": 2,
     "notFound": 0,
     "nonCompliant": 1,
-    "totalEvidence": 5255,
-    "totalViolations": 8,
-    "unpinnedDependencies": 0
+    "totalEvidence": 5585,
+    "totalViolations": 9,
+    "unpinnedDependencies": 2
   }
 }

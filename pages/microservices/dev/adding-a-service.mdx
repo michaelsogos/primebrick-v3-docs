@@ -52,33 +52,40 @@ boot sequence.
 
 ```
 db-meta/
-  patches/           # ordered, sha256-registered migrations (applyPatches)
-  fire-and-forget/   # one-off operational SQL (idempotent, manual)
+  patches/           # ordered, sha256-registered migrations (dal-pg runMigrations, at boot)
+  MANIFEST.json      # Ed25519-signed patch_name → content_sha256 map
+  keys.json          # trusted signing keys (dev/release)
 ```
 
 Seed at minimum: `http_port`, `service_base_url`,
 `service_client_shield_secret` (type `secret` + `_header` companion),
 `nats_url`, plus the service's own config keys — all via a numbered patch.
 
-## 4. Routes — `src/controllers/http/`
+## 4. Routes + Spec — `src/service-routes.ts`
 
-Declare `RpcRoute[]` and serve them exclusively through `makeRpcRouter`
-(or `makeEntityRouter` / `docsPackRouteHandler` / `makeOpenApiHandler`,
-composed via `composeRouteHandlers`). Arbitrary handlers are rejected at
-boot — see the controller-boundary rule and SDK `rpc-router`/`entity-router`.
-
-## 5. Spec — `src/openapi.ts`
+Declare the service's whole HTTP surface ONCE via `makeServiceRoutes` —
+it derives BOTH the request routers and `/api/v1/openapi.json` from the
+same declaration, so the spec can never drift from the registered routes:
 
 ```ts
-export const MY_OPENAPI_SPEC = buildOpenApiSpec({
-  info: { title: "... Catalog", version: "1.0.0" },
+export const myServiceRouteHandler = makeServiceRoutes({
+  info: { title: "... Catalog", version: detectPackageIdentity().version ?? "0.0.0" },
   serverUrl: "http://localhost:30XX",
-  paths: { ...rpcSpec(MY_ROUTES), ...entityCrudSpec("my_entity", {...}) },
+  tags: [...],
+  entities: [ /* EntityRouteDecl — CRUD router + spec ops derived from
+    `permissions`/`meta`/`duplicate`; `spec:{tag,label,listResponse}` is
+    doc cosmetics only, never a second op list */ ],
+  rpc: [ MY_ROUTES /* RpcRoute[] — per-route `openapi` metadata feeds
+    the spec; `{ routes, deps }` form for router deps (e.g. apiKeyPort) */ ],
 });
 ```
 
-Same const feeds `makeOpenApiHandler` (live `/api/v1/openapi.json`) and
-the docs pack.
+Pass the result straight to `createMicroservice({ routeHandler })` — it
+is factory-branded. The handler carries `.spec` (the built OpenAPI doc):
+`scripts/build-docs-pack.ts` embeds `myServiceRouteHandler.spec`. A route
+that exists but isn't documented (or vice versa) is impossible by
+construction — never hand-compose `buildOpenApiSpec`/`entityCrudSpec`/
+`makeOpenApiHandler` separately.
 
 ## 6. Docs pack — `scripts/build-docs-pack.ts`
 
@@ -92,8 +99,24 @@ manifest.json` exists.
 On boot the service publishes `service.register`; the BE registry learns
 name, base_url, capabilities, endpoints — and the `/ws/<code>/*` proxy
 path becomes reachable. Nav/sidebar entries for its screens are declared
-in the BE's `module-nav-meta` (a static per-module declaration — add a
-case when the service owns FE routes).
+by the service itself in the `endpoints.nav` block of the
+`service.register` payload (`route_prefixes` + `nav[]` + full `routes`
+census — validated at enrollment; the BE's static `module-nav-meta`
+registry is reserved for BE-owned modules like `settings`).
+
+**Root level**: the service declares `partOf` in its registration options
+(`service_registry.part_of`). Its single FE route namespace is derived,
+never free-chosen: `/{part_of}/{code}` — e.g. `partOf: "system"` + code
+`job` → all nav hrefs and census routes under `/system/job/**`. When the
+service IS its own root (`partOf === code`, e.g. crm) the namespace
+collapses to `/{code}` → `/crm/**`. A mismatch is rejected at register
+time.
+
+**Display name**: declare `labelKey` (→ `service_registry.label_key`) —
+the i18n key for the module's localized name, resolved against the
+service's OWN `*.translations` schema (seed it there, like `nav[].label_key`
+entries). Every UI surface (app launcher, breadcrumbs, module menus)
+renders it via `resolveModuleLabel` with the raw `name` as fallback.
 
 ## 8. Docs
 
